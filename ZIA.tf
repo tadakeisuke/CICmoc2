@@ -24,6 +24,6 @@ resource "zia_url_categories" "TemoTemo" {
   description   = "Wankowanwan"
   super_category  = "USER_DEFINED"
   urls = [
-    "",
+    "temogold.com",
   ]
 }
