@@ -17,20 +17,13 @@ provider "zia" {
   zia_cloud = "zscalerthree"
 }
 
-#URLｶﾃｺﾞﾘ指定
+#URLｶﾃｺﾞﾘの作成
 resource "zia_url_categories" "TemoTemo" {
   custom_category = true
   configured_name = "TemoteURL"
   description   = "Wankowanwan"
   super_category  = "USER_DEFINED"
   urls = [
-    "temotemoz.com,temotemoy.com"
+    "temogold.com",
   ]
-}
-
-#自動アクティベーション
-data "zia_activation_status" "activation" {}
-
-resource "zia_activation_status" "activation" {
-  status                      = "ACTIVE"
 }
