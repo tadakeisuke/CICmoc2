@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMOTERRAIN - 佐野市感情マップ</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 320px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .header {
+            border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: #06b6d4;
+            margin-bottom: 5px;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #06b6d4;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .emotion-filters {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .emotion-btn {
+            padding: 10px 12px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            background: rgba(55, 65, 81, 0.5);
+            color: #06b6d4;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .emotion-btn:hover {
+            background: rgba(75, 85, 99, 0.5);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+
+        .emotion-btn.active {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: black;
+            border-color: #06b6d4;
+        }
+
+        .layer-controls {
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .control-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .toggle-btn {
+            padding: 4px 8px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            background: rgba(75, 85, 99, 0.5);
+            color: #9ca3af;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+        }
+
+        .opacity-slider {
+            width: 100%;
+            height: 4px;
+            background: #374151;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .stats-panel {
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+        }
+
+        .stat-value {
+            color: #06b6d4;
+            font-weight: bold;
+        }
+
+        .emotion-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Custom Leaflet Popup Styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+        }
+
+        .leaflet-popup-content {
+            color: white;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            margin: 15px;
+        }
+
+        .leaflet-popup-tip {
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .popup-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #06b6d4;
+            margin-bottom: 10px;
+        }
+
+        .popup-section {
+            margin-bottom: 12px;
+        }
+
+        .popup-label {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
+
+        .popup-value {
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .emotion-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.2);
+            color: #06b6d4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin: 2px 2px 2px 0;
+        }
+
+        /* Right Panel */
+        .details-panel {
+            width: 320px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .details-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #06b6d4;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .no-selection {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .no-selection-icon {
+            font-size: 48px;
+            color: #4b5563;
+            margin-bottom: 15px;
+        }
+
+        .no-selection-text {
+            color: #9ca3af;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: rgba(55, 65, 81, 0.4);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #06b6d4;
+            margin-bottom: 8px;
+        }
+
+        .info-item {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-bottom: 3px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+            
+            .details-panel {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+            
+            .map-container {
+                height: calc(100vh - 400px);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #06b6d4;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-top: 2px solid #06b6d4;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon">E</div>
+                    <div class="logo-text">EMOTERRAIN</div>
+                </div>
+                <div class="subtitle">佐野市感情マップ</div>
+                <div class="timestamp" id="timestamp"></div>
+                <div style="font-size: 10px; color: #6b7280; margin-top: 5px;">
+                    Powered by OpenStreetMap + Leaflet.js
+                </div>
+            </div>
+
+            <!-- Layer Controls -->
+            <div class="control-section">
+                <div class="section-title">
+                    <i class="fas fa-layer-group"></i>
+                    DISPLAY CONTROLS
+                </div>
+                <div class="layer-controls">
+                    <div class="control-item">
+                        <span class="control-label">Emotion Layer:</span>
+                        <button class="toggle-btn active" id="emotionLayerToggle">
+                            <i class="fas fa-eye"></i> ON
+                        </button>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-label">Area Labels:</span>
+                        <button class="toggle-btn active" id="labelsToggle">
+                            <i class="fas fa-eye"></i> ON
+                        </button>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-label">Layer Opacity:</span>
+                        <span class="stat-value" id="opacityValue">70%</span>
+                    </div>
+                    <input type="range" class="opacity-slider" id="opacitySlider" 
+                           min="0.2" max="1" step="0.1" value="0.7">
+                </div>
+            </div>
+
+            <!-- Emotion Filters -->
+            <div class="control-section">
+                <div class="section-title">
+                    <i class="fas fa-filter"></i>
+                    EMOTION FILTER
+                </div>
+                <div class="emotion-filters">
+                    <button class="emotion-btn active" data-emotion="all">
+                        <i class="fas fa-chart-bar"></i>
+                        ALL EMOTIONS
+                    </button>
+                    <button class="emotion-btn" data-emotion="joy">
+                        <i class="fas fa-smile"></i>
+                        JOY
+                    </button>
+                    <button class="emotion-btn" data-emotion="calm">
+                        <i class="fas fa-shield-alt"></i>
+                        CALM
+                    </button>
+                    <button class="emotion-btn" data-emotion="excitement">
+                        <i class="fas fa-bolt"></i>
+                        EXCITEMENT
+                    </button>
+                    <button class="emotion-btn" data-emotion="stress">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        STRESS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="control-section">
+                <div class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    STATISTICS
+                </div>
+                <div class="stats-panel" id="statsPanel">
+                    <!-- Statistics will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div class="loading" id="loadingIndicator">
+                <div class="spinner"></div>
+                Loading map data...
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Right Details Panel -->
+        <div class="details-panel">
+            <div class="details-title">
+                <i class="fas fa-info-circle"></i>
+                DETAILED ANALYSIS
+            </div>
+            
+            <div id="detailsContent">
+                <div class="no-selection">
+                    <div class="no-selection-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="no-selection-text">
+                        地図上のエリアをクリックして<br>
+                        詳細な感情分析データを表示
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-title">🗺️ システム情報:</div>
+                        <div class="info-item">• Leaflet.js + OpenStreetMap</div>
+                        <div class="info-item">• 字境界GeoJSONデータ</div>
+                        <div class="info-item">• リアルタイム感情分析</div>
+                        <div class="info-item">• 警視庁マップ準拠UI</div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-title">📋 操作方法:</div>
+                        <div class="info-item">• エリアクリックで詳細表示</div>
+                        <div class="info-item">• 感情フィルターで表示切替</div>
+                        <div class="info-item">• レイヤー制御で透明度調整</div>
+                        <div class="info-item">• ズーム・パンで地図操作</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 佐野市の字境界GeoJSONデータ（埋め込み版）
+        const sanoAzaGeoJSON = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "honcho-1-chome",
+                        "name": "本町一丁目",
+                        "type": "商業地域",
+                        "population": 680,
+                        "emotions": { "joy": 80, "calm": 40, "excitement": 90, "stress": 30 },
+                        "features": ["商店街", "レストラン", "銀行", "郵便局"],
+                        "analysis": {
+                            "primary": "excitement",
+                            "factors": ["活発な商業活動", "観光客の往来", "地域イベントの開催", "飲食店の充実"],
+                            "recommendations": ["歩行者空間の拡充", "イベント継続開催", "夜間照明の改善", "観光案内の充実"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5785, 36.3165],
+                            [139.5810, 36.3165],
+                            [139.5810, 36.3145],
+                            [139.5785, 36.3145],
+                            [139.5785, 36.3165]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "honcho-2-chome",
+                        "name": "本町二丁目",
+                        "type": "商業・住宅混在",
+                        "population": 520,
+                        "emotions": { "joy": 65, "calm": 55, "excitement": 70, "stress": 35 },
+                        "features": ["小売店", "住宅", "クリニック", "コンビニ"],
+                        "analysis": {
+                            "primary": "excitement",
+                            "factors": ["商住混在の利便性", "生活インフラの充実", "適度な人通り", "地域コミュニティ"],
+                            "recommendations": ["住環境の保護", "商業活動の支援", "交通安全対策", "バリアフリー化"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5810, 36.3165],
+                            [139.5835, 36.3165],
+                            [139.5835, 36.3145],
+                            [139.5810, 36.3145],
+                            [139.5810, 36.3165]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "takahagi-cho",
+                        "name": "高萩町",
+                        "type": "行政・業務地域",
+                        "population": 850,
+                        "emotions": { "joy": 45, "calm": 70, "excitement": 35, "stress": 75 },
+                        "features": ["佐野市役所", "税務署", "法務局", "駐車場"],
+                        "analysis": {
+                            "primary": "stress",
+                            "factors": ["官公庁手続きの緊張感", "駐車場不足", "平日の混雑", "待ち時間の長さ"],
+                            "recommendations": ["手続きのデジタル化", "リラックススペース設置", "待ち時間表示システム", "駐車場拡充"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5820, 36.3145],
+                            [139.5860, 36.3145],
+                            [139.5860, 36.3120],
+                            [139.5820, 36.3120],
+                            [139.5820, 36.3145]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "sumiyoshi-cho",
+                        "name": "住吉町",
+                        "type": "住宅地域",
+                        "population": 950,
+                        "emotions": { "joy": 75, "calm": 85, "excitement": 25, "stress": 20 },
+                        "features": ["住宅街", "佐野小学校", "児童公園", "コミュニティセンター"],
+                        "analysis": {
+                            "primary": "calm",
+                            "factors": ["静かな住環境", "教育施設の充実", "緑豊かな公園", "コミュニティ活動"],
+                            "recommendations": ["公園の維持管理", "防犯対策強化", "子育て支援充実", "コミュニティ活動促進"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5860, 36.3180],
+                            [139.5900, 36.3180],
+                            [139.5900, 36.3145],
+                            [139.5860, 36.3145],
+                            [139.5860, 36.3180]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "wakaba-cho",
+                        "name": "若葉町",
+                        "type": "複合商業地域",
+                        "population": 1100,
+                        "emotions": { "joy": 60, "calm": 60, "excitement": 70, "stress": 40 },
+                        "features": ["イオンモール", "佐野病院", "ファミレス", "ドラッグストア"],
+                        "analysis": {
+                            "primary": "excitement",
+                            "factors": ["ショッピング施設充実", "医療アクセス良好", "ファミリー層多数", "生活利便性高"],
+                            "recommendations": ["交通渋滞緩和", "緑地空間増設", "高齢者サービス充実", "バリアフリー推進"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5810, 36.3120],
+                            [139.5855, 36.3120],
+                            [139.5855, 36.3085],
+                            [139.5810, 36.3085],
+                            [139.5810, 36.3120]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "shiroyama-cho",
+                        "name": "城山町",
+                        "type": "公園・緑地",
+                        "population": 300,
+                        "emotions": { "joy": 90, "calm": 95, "excitement": 50, "stress": 10 },
+                        "features": ["城山公園", "展望台", "散策路", "桜並木", "駐車場"],
+                        "analysis": {
+                            "primary": "calm",
+                            "factors": ["豊富な自然環境", "四季の美しさ", "リクリエーション空間", "静寂な環境"],
+                            "recommendations": ["自然環境保護", "散策路整備", "イベントスペース活用", "案内看板充実"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5870, 36.3135],
+                            [139.5920, 36.3135],
+                            [139.5920, 36.3095],
+                            [139.5870, 36.3095],
+                            [139.5870, 36.3135]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "ekimae-cho",
+                        "name": "駅前町",
+                        "type": "交通拠点",
+                        "population": 1500,
+                        "emotions": { "joy": 35, "calm": 25, "excitement": 85, "stress": 80 },
+                        "features": ["JR佐野駅", "バスターミナル", "商業ビル", "タクシー乗り場"],
+                        "analysis": {
+                            "primary": "excitement",
+                            "factors": ["交通の要衝", "通勤ラッシュ", "商業活動活発", "人の往来激しい"],
+                            "recommendations": ["騒音対策", "待合環境改善", "案内表示充実", "駅前広場整備"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5730, 36.3145],
+                            [139.5775, 36.3145],
+                            [139.5775, 36.3115],
+                            [139.5730, 36.3115],
+                            [139.5730, 36.3145]
+                        ]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "id": "kogyo-danchi",
+                        "name": "工業団地",
+                        "type": "工業地域",
+                        "population": 450,
+                        "emotions": { "joy": 40, "calm": 35, "excitement": 45, "stress": 65 },
+                        "features": ["製造工場", "物流センター", "事業所", "従業員駐車場"],
+                        "analysis": {
+                            "primary": "stress",
+                            "factors": ["工場騒音", "大型車両通行", "夜勤作業", "労働環境"],
+                            "recommendations": ["騒音対策強化", "労働環境改善", "緑化推進", "交通安全対策"]
+                        }
+                    },
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[
+                            [139.5720, 36.3115],
+                            [139.5780, 36.3115],
+                            [139.5780, 36.3075],
+                            [139.5720, 36.3075],
+                            [139.5720, 36.3115]
+                        ]]
+                    }
+                }
+            ]
+        };
+
+        // Global variables
+        let map;
+        let emotionLayer;
+        let selectedEmotion = 'all';
+        let selectedArea = null;
+        let showEmotionLayer = true;
+        let showLabels = true;
+        let layerOpacity = 0.7;
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMap();
+            initializeControls();
+            updateTimestamp();
+            setInterval(updateTimestamp, 1000);
+        });
+
+        function initializeMap() {
+            // Create map
+            map = L.map('map').setView([36.3145, 139.5834], 15);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add city hall marker
+            const cityHallMarker = L.marker([36.3145, 139.5834], {
+                icon: L.divIcon({
+                    className: 'city-hall-marker',
+                    html: '<div style="background: #06b6d4; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
+            }).addTo(map);
+
+            cityHallMarker.bindPopup(`
+                <div class="popup-title">佐野市役所</div>
+                <div class="popup-section">
+                    <div class="popup-label">座標</div>
+                    <div class="popup-value">36.3145°N, 139.5834°E</div>
+                </div>
+                <div class="popup-section">
+                    <div class="popup-label">中心地点</div>
+                    <div class="popup-value">感情マップの基準点</div>
+                </div>
+            `);
+
+            // Load emotion data
+            loadEmotionData();
+
+            // Hide loading indicator
+            document.getElementById('loadingIndicator').style.display = 'none';
+        }
+
+        function loadEmotionData() {
+            // Create emotion layer
+            emotionLayer = L.geoJSON(sanoAzaGeoJSON, {
+                style: getEmotionStyle,
+                onEachFeature: function(feature, layer) {
+                    // Bind popup
+                    layer.bindPopup(createPopupContent(feature));
+                    
+                    // Add event listeners
+                    layer.on({
+                        mouseover: function(e) {
+                            const layer = e.target;
+                            layer.setStyle({
+                                weight: 3,
+                                color: '#06b6d4',
+                                dashArray: '',
+                                fillOpacity: layerOpacity + 0.1
+                            });
+                        },
+                        mouseout: function(e) {
+                            emotionLayer.resetStyle(e.target);
+                        },
+                        click: function(e) {
+                            selectArea(feature);
+                            map.fitBounds(e.target.getBounds());
+                        }
+                    });
+                }
+            }).addTo(map);
+
+            updateStatistics();
+        }
+
+        function getEmotionStyle(feature) {
+            const props = feature.properties;
+            let emotion, score;
+
+            if (selectedEmotion === 'all') {
+                const emotions = props.emotions;
+                emotion = Object.keys(emotions).reduce((a, b) => 
+                    emotions[a] > emotions[b] ? a : b
+                );
+                score = emotions[emotion];
+            } else {
+                emotion = selectedEmotion;
+                score = props.emotions[emotion];
+            }
+
+            return {
+                fillColor: getEmotionColor(emotion, score),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: showEmotionLayer ? layerOpacity : 0
+            };
+        }
+
+        function getEmotionColor(emotion, score) {
+            let baseColor;
+            
+            switch (emotion) {
+                case 'joy':
+                    baseColor = [34, 197, 94]; // Green
+                    break;
+                case 'calm':
+                    baseColor = [59, 130, 246]; // Blue
+                    break;
+                case 'excitement':
+                    baseColor = [245, 158, 11]; // Orange
+                    break;
+                case 'stress':
+                    baseColor = [239, 68, 68]; // Red
+                    break;
+                default:
+                    baseColor = [156, 163, 175]; // Gray
+            }
+
+            const intensity = Math.min(score / 100, 1);
+            return `rgb(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]})`;
+        }
+
+        function createPopupContent(feature) {
+            const props = feature.properties;
+            
+            let emotionScoresHtml = '';
+            Object.entries(props.emotions).forEach(([emotion, score]) => {
+                const color = getEmotionColor(emotion, score);
+                emotionScoresHtml += `
+                    <div class="emotion-score">
+                        <div style="display: flex; align-items: center;">
+                            <div class="emotion-indicator" style="background-color: ${color};"></div>
+                            <span style="text-transform: capitalize;">${emotion}</span>
+                        </div>
+                        <span>${score}</span>
+                    </div>
+                `;
+            });
+
+            let featuresHtml = '';
+            props.features.slice(0, 4).forEach(feature => {
+                featuresHtml += `<span class="feature-tag">${feature}</span>`;
+            });
+
+            return `
+                <div class="popup-title">${props.name}</div>
+                
+                <div class="popup-section">
+                    <div class="popup-label">タイプ</div>
+                    <div class="popup-value">${props.type}</div>
+                </div>
+                
+                <div class="popup-section">
+                    <div class="popup-label">人口</div>
+                    <div class="popup-value">${props.population.toLocaleString()}人</div>
+                </div>
+                
+                <div class="popup-section">
+                    <div class="popup-label">感情スコア</div>
+                    ${emotionScoresHtml}
+                </div>
+                
+                <div class="popup-section">
+                    <div class="popup-label">主要施設</div>
+                    <div>${featuresHtml}</div>
+                </div>
+            `;
+        }
+
+        function selectArea(feature) {
+            selectedArea = feature;
+            updateDetailsPanel();
+            
+            // Update layer styles to highlight selected area
+            emotionLayer.eachLayer(function(layer) {
+                if (layer.feature === feature) {
+                    layer.setStyle({
+                        weight: 4,
+                        color: '#06b6d4',
+                        dashArray: '',
+                        fillOpacity: layerOpacity + 0.2
+                    });
+                } else {
+                    emotionLayer.resetStyle(layer);
+                }
+            });
+        }
+
+        function updateDetailsPanel() {
+            const detailsContent = document.getElementById('detailsContent');
+            
+            if (!selectedArea) {
+                detailsContent.innerHTML = `
+                    <div class="no-selection">
+                        <div class="no-selection-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="no-selection-text">
+                            地図上のエリアをクリックして<br>
+                            詳細な感情分析データを表示
+                        </div>
+                        
+                        <div class="info-box">
+                            <div class="info-title">🗺️ システム情報:</div>
+                            <div class="info-item">• Leaflet.js + OpenStreetMap</div>
+                            <div class="info-item">• 字境界GeoJSONデータ</div>
+                            <div class="info-item">• リアルタイム感情分析</div>
+                            <div class="info-item">• 警視庁マップ準拠UI</div>
+                        </div>
+                        
+                        <div class="info-box">
+                            <div class="info-title">📋 操作方法:</div>
+                            <div class="info-item">• エリアクリックで詳細表示</div>
+                            <div class="info-item">• 感情フィルターで表示切替</div>
+                            <div class="info-item">• レイヤー制御で透明度調整</div>
+                            <div class="info-item">• ズーム・パンで地図操作</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const props = selectedArea.properties;
+            
+            let emotionScoresHtml = '';
+            Object.entries(props.emotions).forEach(([emotion, score]) => {
+                const color = getEmotionColor(emotion, score);
+                emotionScoresHtml += `
+                    <div class="stat-item">
+                        <div style="display: flex; align-items: center;">
+                            <div class="emotion-indicator" style="background-color: ${color};"></div>
+                            <span style="text-transform: capitalize;">${emotion}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="stat-value">${score}</span>
+                            <div style="width: 40px; height: 4px; background: #374151; border-radius: 2px;">
+                                <div style="width: ${score}%; height: 100%; background: ${color}; border-radius: 2px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            let featuresHtml = '';
+            props.features.forEach(feature => {
+                featuresHtml += `<span class="feature-tag">${feature}</span>`;
+            });
+
+            let factorsHtml = '';
+            props.analysis.factors.forEach(factor => {
+                factorsHtml += `<div class="info-item">• ${factor}</div>`;
+            });
+
+            let recommendationsHtml = '';
+            props.analysis.recommendations.forEach(rec => {
+                recommendationsHtml += `<div class="info-item">• ${rec}</div>`;
+            });
+
+            detailsContent.innerHTML = `
+                <div style="border-bottom: 1px solid rgba(6, 182, 212, 0.3); padding-bottom: 15px; margin-bottom: 20px;">
+                    <h3 style="font-size: 18px; font-weight: bold; color: #06b6d4; margin-bottom: 8px;">${props.name}</h3>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                        <span style="color: #9ca3af; font-size: 12px;">${props.type}</span>
+                        <span style="color: #06b6d4;">•</span>
+                        <span style="color: #9ca3af; font-size: 12px;">${props.population.toLocaleString()}人</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">感情スコア</div>
+                    ${emotionScoresHtml}
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">主要施設・特徴</div>
+                    <div style="margin-top: 8px;">${featuresHtml}</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">分析結果</div>
+                    <div class="stat-item" style="margin-bottom: 10px;">
+                        <span class="stat-label">主要感情:</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="emotion-indicator" style="background-color: ${getEmotionColor(props.analysis.primary, props.emotions[props.analysis.primary])};"></div>
+                            <span class="stat-value" style="text-transform: capitalize;">${props.analysis.primary}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">要因分析</div>
+                    ${factorsHtml}
+                </div>
+
+                <div class="info-box">
+                    <div class="info-title">改善提案</div>
+                    ${recommendationsHtml}
+                </div>
+            `;
+        }
+
+        function initializeControls() {
+            // Emotion filter buttons
+            document.querySelectorAll('.emotion-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update button states
+                    document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update selected emotion
+                    selectedEmotion = this.dataset.emotion;
+                    
+                    // Update map styles
+                    emotionLayer.eachLayer(function(layer) {
+                        emotionLayer.resetStyle(layer);
+                    });
+                    
+                    updateStatistics();
+                });
+            });
+
+            // Layer controls
+            document.getElementById('emotionLayerToggle').addEventListener('click', function() {
+                showEmotionLayer = !showEmotionLayer;
+                this.innerHTML = showEmotionLayer ? '<i class="fas fa-eye"></i> ON' : '<i class="fas fa-eye-slash"></i> OFF';
+                this.classList.toggle('active', showEmotionLayer);
+                
+                emotionLayer.eachLayer(function(layer) {
+                    emotionLayer.resetStyle(layer);
+                });
+            });
+
+            document.getElementById('labelsToggle').addEventListener('click', function() {
+                showLabels = !showLabels;
+                this.innerHTML = showLabels ? '<i class="fas fa-eye"></i> ON' : '<i class="fas fa-eye-slash"></i> OFF';
+                this.classList.toggle('active', showLabels);
+                // Label visibility would be handled in a more complex implementation
+            });
+
+            // Opacity slider
+            const opacitySlider = document.getElementById('opacitySlider');
+            const opacityValue = document.getElementById('opacityValue');
+            
+            opacitySlider.addEventListener('input', function() {
+                layerOpacity = parseFloat(this.value);
+                opacityValue.textContent = Math.round(layerOpacity * 100) + '%';
+                
+                emotionLayer.eachLayer(function(layer) {
+                    emotionLayer.resetStyle(layer);
+                });
+            });
+        }
+
+        function updateStatistics() {
+            const statsPanel = document.getElementById('statsPanel');
+            
+            // Calculate overall statistics
+            let totalPopulation = 0;
+            let emotionTotals = { joy: 0, calm: 0, excitement: 0, stress: 0 };
+            
+            sanoAzaGeoJSON.features.forEach(feature => {
+                const props = feature.properties;
+                totalPopulation += props.population;
+                
+                Object.keys(emotionTotals).forEach(emotion => {
+                    emotionTotals[emotion] += props.emotions[emotion] * props.population;
+                });
+            });
+
+            const emotionAverages = {};
+            Object.keys(emotionTotals).forEach(emotion => {
+                emotionAverages[emotion] = Math.round(emotionTotals[emotion] / totalPopulation);
+            });
+
+            let statsHtml = `
+                <div class="stat-item">
+                    <span class="stat-label">Total Population:</span>
+                    <span class="stat-value">${totalPopulation.toLocaleString()}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Areas Analyzed:</span>
+                    <span class="stat-value">${sanoAzaGeoJSON.features.length}字</span>
+                </div>
+            `;
+
+            Object.entries(emotionAverages).forEach(([emotion, average]) => {
+                const color = getEmotionColor(emotion, average);
+                statsHtml += `
+                    <div class="stat-item">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="emotion-indicator" style="background-color: ${color};"></div>
+                            <span class="stat-label" style="text-transform: capitalize;">${emotion}:</span>
+                        </div>
+                        <span class="stat-value">${average}</span>
+                    </div>
+                `;
+            });
+
+            statsPanel.innerHTML = statsHtml;
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('timestamp').textContent = now.toLocaleTimeString('ja-JP');
+        }
+
+        // Map event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Click outside map to deselect area
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.leaflet-popup') && !e.target.closest('path[fill]')) {
+                    if (selectedArea) {
+                        selectedArea = null;
+                        updateDetailsPanel();
+                        
+                        // Reset all layer styles
+                        if (emotionLayer) {
+                            emotionLayer.eachLayer(function(layer) {
+                                emotionLayer.resetStyle(layer);
+                            });
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+// 各字エリアの必須プロパティ
+{
+  "id": "string",           // ユニークID
+  "name": "string",         // 字名（日本語）
+  "type": "string",         // 地域タイプ
+  "population": number,     // 人口
+  "emotions": {             // 感情スコア（0-100）
+    "joy": number,
+    "calm": number, 
+    "excitement": number,
+    "stress": number
+  },
+  "features": ["array"],    // 主要施設リスト
+  "analysis": {             // 分析データ
+    "primary": "string",    // 主要感情
+    "factors": ["array"],   // 要因リスト
+    "recommendations": ["array"] // 改善提案
+  }
+}

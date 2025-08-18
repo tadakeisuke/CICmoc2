@@ -1,0 +1,7 @@
+// 感情別カラーコード
+{
+  "joy": "rgba(34, 197, 94, opacity)",      // 緑系
+  "calm": "rgba(59, 130, 246, opacity)",    // 青系  
+  "excitement": "rgba(245, 158, 11, opacity)", // オレンジ系
+  "stress": "rgba(239, 68, 68, opacity)"    // 赤系
+}
