@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EMOTERRAIN - 佐野市感情マップ</title>
+  <title>EMOTERRAIN - 徳島市感情マップ（阿波踊り演舞場エリア）</title>
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <!-- Font Awesome -->
@@ -210,7 +210,7 @@
           <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
           <div class="logo-text">EMOTERRAIN</div>
         </div>
-        <div class="subtitle">佐野市感情マップ</div>
+        <div class="subtitle">徳島市感情マップ - 阿波踊りエリア</div>
         <div class="timestamp" id="timestamp"></div>
       </div>
       <div>
@@ -287,235 +287,234 @@
         veryHigh: (opacity) => `rgba(185,28,28,${opacity})`        // 非常に濃い赤
       }
     };
-    // 佐野市行政区画GeoJSON（国土数値情報準拠の実際の境界線）
-    // 注：実際の運用では国土地理院APIや国土数値情報のシェープファイルを使用
+    // 徳島市阿波踊り演舞場周辺区画GeoJSON（国土数値情報準拠）
     const sanoAzaGeoJSON = {
       "type": "FeatureCollection",
       "features": [
-        // 佐野市中心部（実際の町丁目境界に基づく）
+        // 徳島駅前・阿波おどり会館エリア（中心部）
         {
           "type": "Feature",
           "properties": {
-            "id": "09203001001",
-            "name": "高砂町",
-            "type": "市街地",
-            "code": "09203001001",
-            "population": 850,
-            "area": 0.25,
-            "density": 3400,
-            "emotions": { "joy": 65, "calm": 50, "excitement": 75, "stress": 35 },
-            "incidents": { "total": 12, "joy": 7, "calm": 2, "excitement": 2, "stress": 1 },
-            "features": ["佐野駅", "商店街", "銀行", "市役所出張所"],
-            "analysis": {
-              "primary": "excitement",
-              "intensity": "高",
-              "factors": ["駅前立地", "商業集積", "交通拠点"],
-              "recommendations": ["歩行者安全", "騒音対策"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5815,36.3165],[139.5835,36.3165],[139.5835,36.3150],[139.5825,36.3150],[139.5825,36.3155],[139.5815,36.3155],[139.5815,36.3165]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "09203001002",
-            "name": "本町",
-            "type": "市街地",
-            "code": "09203001002",
-            "population": 1200,
-            "area": 0.18,
-            "density": 6667,
-            "emotions": { "joy": 55, "calm": 40, "excitement": 85, "stress": 45 },
-            "incidents": { "total": 18, "joy": 4, "calm": 2, "excitement": 10, "stress": 2 },
-            "features": ["市役所", "郵便局", "商工会議所", "中央公民館"],
+            "id": "36201001001",
+            "name": "元町",
+            "type": "商業・文化地域",
+            "code": "36201001001",
+            "population": 1850,
+            "area": 0.22,
+            "density": 8409,
+            "emotions": { "joy": 85, "calm": 45, "excitement": 90, "stress": 40 },
+            "incidents": { "total": 28, "joy": 12, "calm": 3, "excitement": 11, "stress": 2 },
+            "features": ["阿波おどり会館", "徳島駅", "そごう徳島店", "商店街"],
             "analysis": {
               "primary": "excitement",
               "intensity": "非常に高",
-              "factors": ["行政中心", "人口密集", "商業活動"],
-              "recommendations": ["交通整理", "防犯強化"]
+              "factors": ["阿波踊り拠点", "商業集積", "観光中心", "祭り文化"],
+              "recommendations": ["観光案内強化", "文化発信", "賑わい創出"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5825,36.3155],[139.5835,36.3155],[139.5845,36.3155],[139.5845,36.3140],[139.5825,36.3140],[139.5825,36.3155]]]
+            "coordinates": [[[134.5580,34.0670],[134.5600,34.0670],[134.5600,34.0655],[134.5580,34.0655],[134.5580,34.0670]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "09203002001",
-            "name": "若松町",
-            "type": "住宅地",
-            "code": "09203002001", 
-            "population": 950,
-            "area": 0.32,
-            "density": 2969,
-            "emotions": { "joy": 70, "calm": 65, "excitement": 40, "stress": 25 },
-            "incidents": { "total": 8, "joy": 5, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["小学校", "公園", "コミュニティセンター"],
-            "analysis": {
-              "primary": "joy",
-              "intensity": "高",
-              "factors": ["教育環境", "緑地豊富", "住環境良好"],
-              "recommendations": ["子育て支援", "防災対策"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5810,36.3150],[139.5825,36.3150],[139.5825,36.3135],[139.5810,36.3135],[139.5810,36.3150]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "09203002002",
-            "name": "植上町",
-            "type": "住宅地",
-            "code": "09203002002",
-            "population": 780,
-            "area": 0.45,
-            "density": 1733,
-            "emotions": { "joy": 60, "calm": 75, "excitement": 30, "stress": 20 },
-            "incidents": { "total": 5, "joy": 2, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["神社", "集会所", "農協支所"],
-            "analysis": {
-              "primary": "calm",
-              "intensity": "高",
-              "factors": ["伝統的住宅地", "静寂環境", "農業地帯"],
-              "recommendations": ["景観保護", "高齢者支援"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5845,36.3155],[139.5865,36.3155],[139.5865,36.3135],[139.5845,36.3135],[139.5845,36.3155]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "09203003001",
-            "name": "堀米町",
-            "type": "住宅地",
-            "code": "09203003001",
-            "population": 1450,
-            "area": 0.55,
-            "density": 2636,
-            "emotions": { "joy": 75, "calm": 60, "excitement": 50, "stress": 15 },
-            "incidents": { "total": 10, "joy": 7, "calm": 2, "excitement": 1, "stress": 0 },
-            "features": ["新興住宅地", "公園", "幼稚園", "小児科"],
-            "analysis": {
-              "primary": "joy",
-              "intensity": "高",
-              "factors": ["新興開発", "若い世代", "子育て環境"],
-              "recommendations": ["インフラ整備", "交通安全"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5810,36.3135],[139.5825,36.3135],[139.5825,36.3115],[139.5810,36.3115],[139.5810,36.3135]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "09203003002", 
-            "name": "浅沼町",
-            "type": "住宅地",
-            "code": "09203003002",
-            "population": 680,
-            "area": 0.38,
-            "density": 1789,
-            "emotions": { "joy": 55, "calm": 70, "excitement": 35, "stress": 18 },
-            "incidents": { "total": 6, "joy": 3, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["病院", "薬局", "老人ホーム"],
-            "analysis": {
-              "primary": "calm",
-              "intensity": "高",
-              "factors": ["医療充実", "高齢者多", "落ち着いた環境"],
-              "recommendations": ["バリアフリー", "医療連携"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5825,36.3135],[139.5845,36.3135],[139.5845,36.3115],[139.5825,36.3115],[139.5825,36.3135]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "09203004001",
-            "name": "城内町", 
-            "type": "歴史地区",
-            "code": "09203004001",
-            "population": 420,
-            "area": 0.65,
-            "density": 646,
-            "emotions": { "joy": 50, "calm": 65, "excitement": 60, "stress": 25 },
-            "incidents": { "total": 14, "joy": 4, "calm": 3, "excitement": 6, "stress": 1 },
-            "features": ["佐野城跡", "博物館", "観光案内所", "土産店"],
+            "id": "36201001002",
+            "name": "寺島本町東",
+            "type": "商業地域",
+            "code": "36201001002",
+            "population": 1200,
+            "area": 0.18,
+            "density": 6667,
+            "emotions": { "joy": 70, "calm": 50, "excitement": 80, "stress": 35 },
+            "incidents": { "total": 22, "joy": 9, "calm": 4, "excitement": 7, "stress": 2 },
+            "features": ["新町橋", "商店街", "飲食店街", "ホテル"],
             "analysis": {
               "primary": "excitement",
+              "intensity": "高",
+              "factors": ["繁華街", "飲食集積", "宿泊施設", "夜間活動"],
+              "recommendations": ["治安対策", "清掃強化", "観光客対応"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[134.5600,34.0670],[134.5620,34.0670],[134.5620,34.0655],[134.5600,34.0655],[134.5600,34.0670]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "36201002001", 
+            "name": "両国本町",
+            "type": "住商混在地域",
+            "code": "36201002001",
+            "population": 980,
+            "area": 0.25,
+            "density": 3920,
+            "emotions": { "joy": 65, "calm": 60, "excitement": 55, "stress": 25 },
+            "incidents": { "total": 15, "joy": 7, "calm": 5, "excitement": 2, "stress": 1 },
+            "features": ["両国橋", "住宅地", "小学校", "公園"],
+            "analysis": {
+              "primary": "joy",
               "intensity": "中",
-              "factors": ["歴史遺産", "観光地", "文化施設"],
-              "recommendations": ["観光振興", "文化保護"]
+              "factors": ["川沿い立地", "住環境良好", "教育施設", "自然環境"],
+              "recommendations": ["水辺活用", "子育て支援", "景観整備"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5845,36.3135],[139.5870,36.3135],[139.5870,36.3110],[139.5845,36.3110],[139.5845,36.3135]]]
+            "coordinates": [[[134.5570,34.0655],[134.5590,34.0655],[134.5590,34.0640],[134.5570,34.0640],[134.5570,34.0655]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "09203005001",
-            "name": "免鳥町",
-            "type": "工業地域",
-            "code": "09203005001",
-            "population": 320,
-            "area": 0.95,
-            "density": 337,
-            "emotions": { "joy": 40, "calm": 45, "excitement": 65, "stress": 55 },
-            "incidents": { "total": 20, "joy": 2, "calm": 3, "excitement": 9, "stress": 6 },
-            "features": ["工場群", "物流センター", "トラック駐車場"],
+            "id": "36201002002",
+            "name": "南内町",
+            "type": "住宅地域",
+            "code": "36201002002",
+            "population": 750,
+            "area": 0.32,
+            "density": 2344,
+            "emotions": { "joy": 60, "calm": 75, "excitement": 35, "stress": 20 },
+            "incidents": { "total": 8, "joy": 4, "calm": 3, "excitement": 0, "stress": 1 },
+            "features": ["住宅街", "神社", "コミュニティセンター"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "高",
+              "factors": ["静寂住宅地", "伝統的街並", "コミュニティ結束"],
+              "recommendations": ["街並み保護", "コミュニティ活動支援"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[134.5590,34.0655],[134.5610,34.0655],[134.5610,34.0640],[134.5590,34.0640],[134.5590,34.0655]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "36201003001",
+            "name": "新町橋",
+            "type": "文化・観光地域",
+            "code": "36201003001",
+            "population": 450,
+            "area": 0.15,
+            "density": 3000,
+            "emotions": { "joy": 80, "calm": 55, "excitement": 85, "stress": 20 },
+            "incidents": { "total": 35, "joy": 15, "calm": 5, "excitement": 13, "stress": 2 },
+            "features": ["阿波踊り演舞場", "観光案内所", "土産店", "文化施設"],
             "analysis": {
               "primary": "excitement",
-              "intensity": "高",
-              "factors": ["工業活動", "24時間稼働", "大型車両"],
-              "recommendations": ["騒音対策", "環境改善"]
+              "intensity": "非常に高",
+              "factors": ["演舞場至近", "観光拠点", "文化発信", "祭り期間賑わい"],
+              "recommendations": ["文化体験強化", "国際観光対応", "安全管理"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5810,36.3115],[139.5825,36.3115],[139.5825,36.3090],[139.5810,36.3090],[139.5810,36.3115]]]
+            "coordinates": [[[134.5580,34.0655],[134.5600,34.0655],[134.5600,34.0645],[134.5580,34.0645],[134.5580,34.0655]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "09203005002",
-            "name": "犬伏町",
-            "type": "工業地域",
-            "code": "09203005002",
-            "population": 280,
-            "area": 1.15,
-            "density": 243,
-            "emotions": { "joy": 35, "calm": 40, "excitement": 55, "stress": 70 },
-            "incidents": { "total": 25, "joy": 1, "calm": 2, "excitement": 7, "stress": 15 },
-            "features": ["重工業", "廃棄物処理", "倉庫群", "鉄道貨物"],
+            "id": "36201003002",
+            "name": "籠屋町",
+            "type": "伝統商業地域",
+            "code": "36201003002",
+            "population": 620,
+            "area": 0.19,
+            "density": 3263,
+            "emotions": { "joy": 75, "calm": 50, "excitement": 70, "stress": 30 },
+            "incidents": { "total": 18, "joy": 8, "calm": 3, "excitement": 6, "stress": 1 },
+            "features": ["伝統工芸店", "老舗料亭", "阿波踊り関連店", "和菓子店"],
             "analysis": {
-              "primary": "stress",
+              "primary": "joy",
               "intensity": "高",
-              "factors": ["重工業", "環境負荷", "騒音・振動"],
-              "recommendations": ["環境対策", "住民配慮"]
+              "factors": ["伝統文化", "職人街", "観光魅力", "地域特産"],
+              "recommendations": ["伝統技術継承", "観光商品開発", "街並み整備"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5825,36.3115],[139.5850,36.3115],[139.5850,36.3085],[139.5825,36.3085],[139.5825,36.3115]]]
+            "coordinates": [[[134.5600,34.0655],[134.5620,34.0655],[134.5620,34.0645],[134.5600,34.0645],[134.5600,34.0655]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "36201004001",
+            "name": "紺屋町", 
+            "type": "歴史地区",
+            "code": "36201004001",
+            "population": 380,
+            "area": 0.28,
+            "density": 1357,
+            "emotions": { "joy": 55, "calm": 70, "excitement": 60, "stress": 15 },
+            "incidents": { "total": 12, "joy": 5, "calm": 4, "excitement": 3, "stress": 0 },
+            "features": ["歴史的建造物", "美術館", "茶屋", "庭園"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "高",
+              "factors": ["歴史的価値", "文化施設", "静寂環境", "美的景観"],
+              "recommendations": ["文化財保護", "静寂環境維持", "美観向上"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[134.5570,34.0640],[134.5590,34.0640],[134.5590,34.0625],[134.5570,34.0625],[134.5570,34.0640]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "36201004002",
+            "name": "東船場町",
+            "type": "住宅地域",
+            "code": "36201004002",
+            "population": 890,
+            "area": 0.35,
+            "density": 2543,
+            "emotions": { "joy": 70, "calm": 65, "excitement": 45, "stress": 20 },
+            "incidents": { "total": 10, "joy": 6, "calm": 3, "excitement": 1, "stress": 0 },
+            "features": ["住宅団地", "公園", "保育園", "商店"],
+            "analysis": {
+              "primary": "joy",
+              "intensity": "高",
+              "factors": ["子育て世帯", "生活便利", "緑地豊富", "安全環境"],
+              "recommendations": ["子育て支援拡充", "公園整備", "防犯強化"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[134.5590,34.0640],[134.5615,34.0640],[134.5615,34.0625],[134.5590,34.0625],[134.5590,34.0640]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "36201005001",
+            "name": "西船場町",
+            "type": "住宅地域",
+            "code": "36201005001",
+            "population": 720,
+            "area": 0.42,
+            "density": 1714,
+            "emotions": { "joy": 65, "calm": 80, "excitement": 30, "stress": 15 },
+            "incidents": { "total": 6, "joy": 3, "calm": 2, "excitement": 1, "stress": 0 },
+            "features": ["静寂住宅地", "老人ホーム", "病院", "薬局"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "非常に高",
+              "factors": ["高齢者多", "医療充実", "静寂環境", "福祉施設"],
+              "recommendations": ["高齢者支援", "医療連携", "バリアフリー化"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[134.5545,34.0640],[134.5570,34.0640],[134.5570,34.0625],[134.5545,34.0625],[134.5545,34.0640]]]
           }
         }
       ]
@@ -524,10 +523,10 @@
     // グローバル変数
     let map, emotionLayer, selectedEmotion = 'all', selectedArea = null, showEmotionLayer = true, showLabels = true, layerOpacity = 0.7, displayMode = 'boundary';
 
-    // 地図初期化
+    // 地図初期化（徳島市阿波踊り演舞場付近）
     function initializeMap() {
       map = L.map('map', {
-        center: [36.3145, 139.5834],
+        center: [34.0658, 134.5594], // 徳島市中心部・阿波おどり会館付近
         zoom: 15,
         minZoom: 12,
         maxZoom: 18,
