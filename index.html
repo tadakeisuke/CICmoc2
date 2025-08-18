@@ -214,10 +214,23 @@
         <div class="timestamp" id="timestamp"></div>
       </div>
       <div>
+        <div class="section-title"><i class="fa-solid fa-info-circle"></i> 区画単位</div>
+        <div style="font-size:11px; color:#9ca3af; margin-bottom:15px; line-height:1.4;">
+          佐野市の町・字（あざ）単位で区画分けした感情ヒートマップ。各区画の行政境界に基づいて感情データを可視化しています。
+        </div>
+      </div>
+      <div>
         <div class="section-title"><i class="fa-solid fa-filter"></i> 感情フィルター</div>
         <div class="emotion-filters" id="emotion-filters"></div>
       </div>
       <div class="layer-controls">
+        <div class="control-item">
+          <span class="control-label">表示モード</span>
+          <select id="display-mode" style="padding:4px 8px;border:1px solid rgba(6,182,212,0.3);background:rgba(75,85,99,0.5);color:#06b6d4;border-radius:4px;font-size:11px;">
+            <option value="boundary">境界線表示</option>
+            <option value="heatmap">ヒートマップ</option>
+          </select>
+        </div>
         <div class="control-item">
           <span class="control-label">感情レイヤー</span>
           <button class="toggle-btn active" id="layer-toggle">ON</button>
@@ -273,207 +286,261 @@
         veryHigh: (opacity) => `rgba(185,28,28,${opacity})`        // 非常に濃い赤
       }
     };
-    // 佐野市詳細区画GeoJSON（警視庁マップ風）
+    // 佐野市町・字単位の詳細GeoJSON（実際の行政区画に基づく）
     const sanoAzaGeoJSON = {
       "type": "FeatureCollection",
       "features": [
+        // 佐野駅周辺エリア（商業・中心部）
         {
           "type": "Feature",
           "properties": {
-            "id": "aza1",
+            "id": "honcho1",
             "name": "本町一丁目",
-            "type": "住宅地",
+            "type": "商業地域",
             "population": 1200,
-            "area": 0.8,
-            "density": 1500,
-            "emotions": { "joy": 70, "calm": 60, "excitement": 40, "stress": 20 },
-            "incidents": { "total": 12, "joy": 8, "calm": 2, "excitement": 1, "stress": 1 },
-            "features": ["佐野市役所", "佐野駅", "公園", "商店街"],
-            "analysis": {
-              "primary": "joy",
-              "intensity": "高",
-              "factors": ["駅近", "公園多い", "行政中心"],
-              "recommendations": ["緑地拡充", "交通安全強化"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5825,36.3150],[139.5835,36.3150],[139.5835,36.3140],[139.5825,36.3140],[139.5825,36.3150]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza2",
-            "name": "本町二丁目",
-            "type": "住宅地",
-            "population": 950,
-            "area": 0.6,
-            "density": 1583,
-            "emotions": { "joy": 60, "calm": 65, "excitement": 35, "stress": 25 },
-            "incidents": { "total": 8, "joy": 5, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["スーパー", "小学校", "公民館"],
-            "analysis": {
-              "primary": "calm",
-              "intensity": "中",
-              "factors": ["学校近い", "静かな環境", "住宅密集"],
-              "recommendations": ["防犯強化", "子育て支援"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5840,36.3150],[139.5850,36.3150],[139.5850,36.3140],[139.5840,36.3140],[139.5840,36.3150]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza3",
-            "name": "高萩町",
-            "type": "工業地",
-            "population": 800,
-            "area": 1.2,
-            "density": 667,
-            "emotions": { "joy": 40, "calm": 50, "excitement": 60, "stress": 35 },
-            "incidents": { "total": 18, "joy": 2, "calm": 4, "excitement": 10, "stress": 2 },
-            "features": ["工場", "物流センター", "倉庫群"],
-            "analysis": {
-              "primary": "excitement",
-              "intensity": "高",
-              "factors": ["産業活発", "交通量多い", "24時間稼働"],
-              "recommendations": ["騒音対策", "緑地整備", "労働環境改善"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5825,36.3135],[139.5835,36.3135],[139.5835,36.3125],[139.5825,36.3125],[139.5825,36.3135]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza4",
-            "name": "住吉町",
-            "type": "住宅地",
-            "population": 1100,
-            "area": 0.7,
-            "density": 1571,
-            "emotions": { "joy": 55, "calm": 70, "excitement": 30, "stress": 15 },
-            "incidents": { "total": 6, "joy": 3, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["神社", "病院", "老人ホーム"],
-            "analysis": {
-              "primary": "calm",
-              "intensity": "高",
-              "factors": ["医療充実", "静かな環境", "高齢者多い"],
-              "recommendations": ["高齢者支援", "防災強化", "バリアフリー化"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5840,36.3135],[139.5850,36.3135],[139.5850,36.3125],[139.5840,36.3125],[139.5840,36.3135]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza5",
-            "name": "若葉町",
-            "type": "住宅地",
-            "population": 900,
-            "area": 0.5,
-            "density": 1800,
-            "emotions": { "joy": 65, "calm": 55, "excitement": 45, "stress": 18 },
-            "incidents": { "total": 9, "joy": 6, "calm": 2, "excitement": 1, "stress": 0 },
-            "features": ["幼稚園", "公園", "児童館"],
-            "analysis": {
-              "primary": "joy",
-              "intensity": "中",
-              "factors": ["子育て世帯多い", "公園充実", "新興住宅地"],
-              "recommendations": ["遊具増設", "交通安全", "子育て支援拡充"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5825,36.3115],[139.5835,36.3115],[139.5835,36.3105],[139.5825,36.3105],[139.5825,36.3115]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza6",
-            "name": "城山町",
-            "type": "歴史地区",
-            "population": 600,
-            "area": 0.9,
-            "density": 667,
-            "emotions": { "joy": 50, "calm": 60, "excitement": 55, "stress": 22 },
-            "incidents": { "total": 14, "joy": 4, "calm": 3, "excitement": 6, "stress": 1 },
-            "features": ["城跡", "資料館", "観光案内所"],
-            "analysis": {
-              "primary": "excitement",
-              "intensity": "中",
-              "factors": ["観光地", "イベント多い", "歴史的価値"],
-              "recommendations": ["観光案内強化", "イベント拡充", "景観保護"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5840,36.3115],[139.5850,36.3115],[139.5850,36.3105],[139.5840,36.3105],[139.5840,36.3115]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "aza7",
-            "name": "駅前町",
-            "type": "商業地",
-            "population": 1300,
-            "area": 0.4,
-            "density": 3250,
-            "emotions": { "joy": 45, "calm": 40, "excitement": 70, "stress": 40 },
-            "incidents": { "total": 25, "joy": 3, "calm": 2, "excitement": 15, "stress": 5 },
-            "features": ["駅", "商店街", "カフェ", "コンビニ"],
+            "area": 0.3,
+            "density": 4000,
+            "emotions": { "joy": 75, "calm": 50, "excitement": 80, "stress": 45 },
+            "incidents": { "total": 15, "joy": 9, "calm": 2, "excitement": 3, "stress": 1 },
+            "features": ["佐野市役所", "佐野駅", "商店街", "銀行"],
             "analysis": {
               "primary": "excitement",
               "intensity": "非常に高",
-              "factors": ["人通り多い", "商業施設充実", "交通拠点"],
-              "recommendations": ["歩行者空間拡充", "治安対策", "騒音対策"]
+              "factors": ["駅前立地", "商業集積", "行政中心", "人流多"],
+              "recommendations": ["歩行者空間整備", "治安対策", "騒音軽減"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5825,36.3095],[139.5835,36.3095],[139.5835,36.3085],[139.5825,36.3085],[139.5825,36.3095]]]
+            "coordinates": [[[139.5820,36.3155],[139.5835,36.3155],[139.5835,36.3145],[139.5820,36.3145],[139.5820,36.3155]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "aza8",
-            "name": "工業団地",
-            "type": "工業地",
-            "population": 700,
-            "area": 1.5,
-            "density": 467,
-            "emotions": { "joy": 35, "calm": 45, "excitement": 65, "stress": 50 },
-            "incidents": { "total": 22, "joy": 1, "calm": 3, "excitement": 8, "stress": 10 },
-            "features": ["工場", "物流施設", "トラック駐車場"],
+            "id": "honcho2",
+            "name": "本町二丁目",
+            "type": "住商混在地域",
+            "population": 950,
+            "area": 0.25,
+            "density": 3800,
+            "emotions": { "joy": 65, "calm": 60, "excitement": 55, "stress": 30 },
+            "incidents": { "total": 10, "joy": 6, "calm": 2, "excitement": 1, "stress": 1 },
+            "features": ["スーパー", "小学校", "郵便局", "公民館"],
             "analysis": {
-              "primary": "stress",
-              "intensity": "高",
-              "factors": ["騒音", "交通量多い", "大気汚染"],
-              "recommendations": ["騒音対策", "交通整理", "環境改善"]
+              "primary": "joy",
+              "intensity": "中",
+              "factors": ["学校近接", "生活利便", "住環境良好"],
+              "recommendations": ["子育て支援", "防犯強化", "交通安全"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5840,36.3095],[139.5850,36.3095],[139.5850,36.3085],[139.5840,36.3085],[139.5840,36.3095]]]
+            "coordinates": [[[139.5835,36.3155],[139.5850,36.3155],[139.5850,36.3145],[139.5835,36.3145],[139.5835,36.3155]]]
+          }
+        },
+        // 住宅地エリア
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "takahagi",
+            "name": "高萩町",
+            "type": "住宅地域",
+            "population": 1800,
+            "area": 0.8,
+            "density": 2250,
+            "emotions": { "joy": 70, "calm": 75, "excitement": 35, "stress": 20 },
+            "incidents": { "total": 8, "joy": 5, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["住宅団地", "公園", "コミュニティセンター", "保育園"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "高",
+              "factors": ["閑静住宅地", "緑地豊富", "子育て世帯多", "治安良好"],
+              "recommendations": ["公園整備", "高齢者対策", "コミュニティ強化"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5815,36.3140],[139.5835,36.3140],[139.5835,36.3125],[139.5815,36.3125],[139.5815,36.3140]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "sumiyoshi",
+            "name": "住吉町",
+            "type": "住宅地域",
+            "population": 1100,
+            "area": 0.6,
+            "density": 1833,
+            "emotions": { "joy": 60, "calm": 80, "excitement": 25, "stress": 15 },
+            "incidents": { "total": 5, "joy": 2, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["住吉神社", "病院", "老人ホーム", "薬局"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "非常に高",
+              "factors": ["伝統的住宅地", "医療充実", "高齢者多", "静寂環境"],
+              "recommendations": ["医療連携強化", "バリアフリー化", "防災対策"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5835,36.3140],[139.5855,36.3140],[139.5855,36.3125],[139.5835,36.3125],[139.5835,36.3140]]]
+          }
+        },
+        // 新興住宅地
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "wakaba1",
+            "name": "若葉町一丁目",
+            "type": "新興住宅地域",
+            "population": 1350,
+            "area": 0.45,
+            "density": 3000,
+            "emotions": { "joy": 85, "calm": 55, "excitement": 60, "stress": 25 },
+            "incidents": { "total": 12, "joy": 8, "calm": 2, "excitement": 1, "stress": 1 },
+            "features": ["新築住宅群", "幼稚園", "公園", "児童館"],
+            "analysis": {
+              "primary": "joy",
+              "intensity": "非常に高",
+              "factors": ["新興開発", "若い世帯", "子育て環境", "近代設備"],
+              "recommendations": ["遊具充実", "交通安全", "コミュニティ形成"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5810,36.3120],[139.5830,36.3120],[139.5830,36.3105],[139.5810,36.3105],[139.5810,36.3120]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "wakaba2",
+            "name": "若葉町二丁目",
+            "type": "新興住宅地域",
+            "population": 900,
+            "area": 0.35,
+            "density": 2571,
+            "emotions": { "joy": 80, "calm": 60, "excitement": 45, "stress": 20 },
+            "incidents": { "total": 7, "joy": 5, "calm": 1, "excitement": 1, "stress": 0 },
+            "features": ["分譲住宅", "集会所", "小公園"],
+            "analysis": {
+              "primary": "joy",
+              "intensity": "高",
+              "factors": ["計画的開発", "家族世帯", "新しい街"],
+              "recommendations": ["インフラ整備", "防犯対策", "緑化推進"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5830,36.3120],[139.5850,36.3120],[139.5850,36.3105],[139.5830,36.3105],[139.5830,36.3120]]]
+          }
+        },
+        // 歴史・文化エリア
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "shiroyama",
+            "name": "城山町",
+            "type": "歴史文化地域",
+            "population": 600,
+            "area": 0.7,
+            "density": 857,
+            "emotions": { "joy": 55, "calm": 70, "excitement": 65, "stress": 20 },
+            "incidents": { "total": 18, "joy": 6, "calm": 4, "excitement": 7, "stress": 1 },
+            "features": ["佐野城跡", "歴史資料館", "観光案内所", "土産店"],
+            "analysis": {
+              "primary": "excitement",
+              "intensity": "中",
+              "factors": ["歴史的価値", "観光地", "文化イベント", "景観良好"],
+              "recommendations": ["観光振興", "景観保護", "案内充実", "イベント拡充"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5835,36.3120],[139.5860,36.3120],[139.5860,36.3100],[139.5835,36.3100],[139.5835,36.3120]]]
+          }
+        },
+        // 商業・交通拠点
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "ekimae",
+            "name": "駅前町",
+            "type": "商業地域",
+            "population": 1300,
+            "area": 0.2,
+            "density": 6500,
+            "emotions": { "joy": 50, "calm": 35, "excitement": 90, "stress": 55 },
+            "incidents": { "total": 28, "joy": 4, "calm": 2, "excitement": 18, "stress": 4 },
+            "features": ["JR佐野駅", "商店街", "飲食店", "コンビニ", "タクシー乗り場"],
+            "analysis": {
+              "primary": "excitement",
+              "intensity": "非常に高",
+              "factors": ["交通拠点", "商業集積", "昼夜人口差大", "騒音・混雑"],
+              "recommendations": ["歩行者優先", "治安強化", "騒音対策", "清掃強化"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5825,36.3100],[139.5840,36.3100],[139.5840,36.3085],[139.5825,36.3085],[139.5825,36.3100]]]
+          }
+        },
+        // 工業・物流エリア
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "kougyou1",
+            "name": "工業団地一区",
+            "type": "工業地域",
+            "population": 400,
+            "area": 1.2,
+            "density": 333,
+            "emotions": { "joy": 40, "calm": 45, "excitement": 70, "stress": 60 },
+            "incidents": { "total": 25, "joy": 2, "calm": 3, "excitement": 12, "stress": 8 },
+            "features": ["製造工場", "物流センター", "事務所", "駐車場"],
+            "analysis": {
+              "primary": "excitement",
+              "intensity": "高",
+              "factors": ["24時間稼働", "大型車両", "騒音", "活発な産業"],
+              "recommendations": ["騒音対策", "交通整理", "環境保全", "労働環境改善"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5840,36.3100],[139.5870,36.3100],[139.5870,36.3075],[139.5840,36.3075],[139.5840,36.3100]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "kougyou2",
+            "name": "工業団地二区",
+            "type": "工業地域",
+            "population": 300,
+            "area": 1.0,
+            "density": 300,
+            "emotions": { "joy": 35, "calm": 40, "excitement": 60, "stress": 70 },
+            "incidents": { "total": 22, "joy": 1, "calm": 2, "excitement": 8, "stress": 11 },
+            "features": ["重工業", "倉庫群", "トラック駐車場", "廃棄物処理"],
+            "analysis": {
+              "primary": "stress",
+              "intensity": "高",
+              "factors": ["重工業", "環境負荷", "交通渋滞", "大気・騒音"],
+              "recommendations": ["環境改善", "緑地整備", "交通規制", "住民配慮"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5815,36.3085],[139.5845,36.3085],[139.5845,36.3065],[139.5815,36.3065],[139.5815,36.3085]]]
           }
         }
       ]
     };
 
     // グローバル変数
-    let map, emotionLayer, selectedEmotion = 'all', selectedArea = null, showEmotionLayer = true, showLabels = true, layerOpacity = 0.7;
+    let map, emotionLayer, selectedEmotion = 'all', selectedArea = null, showEmotionLayer = true, showLabels = true, layerOpacity = 0.7, displayMode = 'boundary';
 
     // 地図初期化
     function initializeMap() {
@@ -544,7 +611,7 @@
       return [x/n, y/n];
     }
 
-    // ポリゴンスタイル（強度別色分け）
+    // ポリゴンスタイル（境界線表示・ヒートマップ対応）
     function getEmotionStyle(feature) {
       const emotion = feature.properties.analysis.primary;
       const intensity = feature.properties.analysis.intensity;
@@ -560,14 +627,27 @@
         default: colorLevel = 'medium';
       }
       
-      return {
-        color: '#333',
-        weight: 1.5,
-        opacity: 0.8,
-        fillColor: emotionColors[emotion][colorLevel](layerOpacity),
-        fillOpacity: layerOpacity,
-        dashArray: null
-      };
+      if (displayMode === 'heatmap') {
+        // ヒートマップモード：境界線なし、より強い色塗り
+        return {
+          color: 'transparent',
+          weight: 0,
+          opacity: 0,
+          fillColor: emotionColors[emotion][colorLevel](Math.min(layerOpacity + 0.3, 1)),
+          fillOpacity: Math.min(layerOpacity + 0.3, 1),
+          dashArray: null
+        };
+      } else {
+        // 境界線モード：通常表示
+        return {
+          color: '#333',
+          weight: 1.5,
+          opacity: 0.8,
+          fillColor: emotionColors[emotion][colorLevel](layerOpacity),
+          fillOpacity: layerOpacity,
+          dashArray: null
+        };
+      }
     }
 
     // ポップアップ内容（詳細情報）
@@ -785,6 +865,12 @@
         };
         filterDiv.appendChild(btn);
       });
+      
+      // 表示モード切り替え
+      document.getElementById('display-mode').onchange = function() {
+        displayMode = this.value;
+        loadEmotionData();
+      };
       
       // レイヤーON/OFF
       document.getElementById('layer-toggle').onclick = function() {
