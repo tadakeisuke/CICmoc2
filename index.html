@@ -246,14 +246,34 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
-    // 感情カラー
+    // 感情カラー（強度別）
     const emotionColors = {
-      joy:      (opacity) => `rgba(34,197,94,${opacity})`,      // 緑
-      calm:     (opacity) => `rgba(59,130,246,${opacity})`,     // 青
-      excitement:(opacity)=> `rgba(245,158,11,${opacity})`,     // オレンジ
-      stress:   (opacity) => `rgba(239,68,68,${opacity})`       // 赤
+      joy: {
+        low: (opacity) => `rgba(34,197,94,${opacity * 0.4})`,      // 薄い緑
+        medium: (opacity) => `rgba(34,197,94,${opacity * 0.7})`,   // 中緑
+        high: (opacity) => `rgba(34,197,94,${opacity})`,           // 濃い緑
+        veryHigh: (opacity) => `rgba(21,128,61,${opacity})`        // 非常に濃い緑
+      },
+      calm: {
+        low: (opacity) => `rgba(59,130,246,${opacity * 0.4})`,     // 薄い青
+        medium: (opacity) => `rgba(59,130,246,${opacity * 0.7})`,  // 中青
+        high: (opacity) => `rgba(59,130,246,${opacity})`,          // 濃い青
+        veryHigh: (opacity) => `rgba(37,99,235,${opacity})`        // 非常に濃い青
+      },
+      excitement: {
+        low: (opacity) => `rgba(245,158,11,${opacity * 0.4})`,     // 薄いオレンジ
+        medium: (opacity) => `rgba(245,158,11,${opacity * 0.7})`,  // 中オレンジ
+        high: (opacity) => `rgba(245,158,11,${opacity})`,          // 濃いオレンジ
+        veryHigh: (opacity) => `rgba(217,119,6,${opacity})`        // 非常に濃いオレンジ
+      },
+      stress: {
+        low: (opacity) => `rgba(239,68,68,${opacity * 0.4})`,      // 薄い赤
+        medium: (opacity) => `rgba(239,68,68,${opacity * 0.7})`,   // 中赤
+        high: (opacity) => `rgba(239,68,68,${opacity})`,           // 濃い赤
+        veryHigh: (opacity) => `rgba(185,28,28,${opacity})`        // 非常に濃い赤
+      }
     };
-    // 佐野市8字エリアGeoJSON（ダミーデータ例）
+    // 佐野市詳細区画GeoJSON（警視庁マップ風）
     const sanoAzaGeoJSON = {
       "type": "FeatureCollection",
       "features": [
@@ -264,11 +284,15 @@
             "name": "本町一丁目",
             "type": "住宅地",
             "population": 1200,
+            "area": 0.8,
+            "density": 1500,
             "emotions": { "joy": 70, "calm": 60, "excitement": 40, "stress": 20 },
-            "features": ["佐野市役所", "佐野駅", "公園"],
+            "incidents": { "total": 12, "joy": 8, "calm": 2, "excitement": 1, "stress": 1 },
+            "features": ["佐野市役所", "佐野駅", "公園", "商店街"],
             "analysis": {
               "primary": "joy",
-              "factors": ["駅近", "公園多い"],
+              "intensity": "高",
+              "factors": ["駅近", "公園多い", "行政中心"],
               "recommendations": ["緑地拡充", "交通安全強化"]
             }
           },
@@ -284,11 +308,15 @@
             "name": "本町二丁目",
             "type": "住宅地",
             "population": 950,
+            "area": 0.6,
+            "density": 1583,
             "emotions": { "joy": 60, "calm": 65, "excitement": 35, "stress": 25 },
-            "features": ["スーパー", "小学校"],
+            "incidents": { "total": 8, "joy": 5, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["スーパー", "小学校", "公民館"],
             "analysis": {
               "primary": "calm",
-              "factors": ["学校近い", "静かな環境"],
+              "intensity": "中",
+              "factors": ["学校近い", "静かな環境", "住宅密集"],
               "recommendations": ["防犯強化", "子育て支援"]
             }
           },
@@ -304,12 +332,16 @@
             "name": "高萩町",
             "type": "工業地",
             "population": 800,
+            "area": 1.2,
+            "density": 667,
             "emotions": { "joy": 40, "calm": 50, "excitement": 60, "stress": 35 },
-            "features": ["工場", "物流センター"],
+            "incidents": { "total": 18, "joy": 2, "calm": 4, "excitement": 10, "stress": 2 },
+            "features": ["工場", "物流センター", "倉庫群"],
             "analysis": {
               "primary": "excitement",
-              "factors": ["産業活発", "交通量多い"],
-              "recommendations": ["騒音対策", "緑地整備"]
+              "intensity": "高",
+              "factors": ["産業活発", "交通量多い", "24時間稼働"],
+              "recommendations": ["騒音対策", "緑地整備", "労働環境改善"]
             }
           },
           "geometry": {
@@ -324,12 +356,16 @@
             "name": "住吉町",
             "type": "住宅地",
             "population": 1100,
+            "area": 0.7,
+            "density": 1571,
             "emotions": { "joy": 55, "calm": 70, "excitement": 30, "stress": 15 },
-            "features": ["神社", "病院"],
+            "incidents": { "total": 6, "joy": 3, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["神社", "病院", "老人ホーム"],
             "analysis": {
               "primary": "calm",
-              "factors": ["医療充実", "静かな環境"],
-              "recommendations": ["高齢者支援", "防災強化"]
+              "intensity": "高",
+              "factors": ["医療充実", "静かな環境", "高齢者多い"],
+              "recommendations": ["高齢者支援", "防災強化", "バリアフリー化"]
             }
           },
           "geometry": {
@@ -344,12 +380,16 @@
             "name": "若葉町",
             "type": "住宅地",
             "population": 900,
+            "area": 0.5,
+            "density": 1800,
             "emotions": { "joy": 65, "calm": 55, "excitement": 45, "stress": 18 },
-            "features": ["幼稚園", "公園"],
+            "incidents": { "total": 9, "joy": 6, "calm": 2, "excitement": 1, "stress": 0 },
+            "features": ["幼稚園", "公園", "児童館"],
             "analysis": {
               "primary": "joy",
-              "factors": ["子育て世帯多い", "公園充実"],
-              "recommendations": ["遊具増設", "交通安全"]
+              "intensity": "中",
+              "factors": ["子育て世帯多い", "公園充実", "新興住宅地"],
+              "recommendations": ["遊具増設", "交通安全", "子育て支援拡充"]
             }
           },
           "geometry": {
@@ -364,12 +404,16 @@
             "name": "城山町",
             "type": "歴史地区",
             "population": 600,
+            "area": 0.9,
+            "density": 667,
             "emotions": { "joy": 50, "calm": 60, "excitement": 55, "stress": 22 },
-            "features": ["城跡", "資料館"],
+            "incidents": { "total": 14, "joy": 4, "calm": 3, "excitement": 6, "stress": 1 },
+            "features": ["城跡", "資料館", "観光案内所"],
             "analysis": {
               "primary": "excitement",
-              "factors": ["観光地", "イベント多い"],
-              "recommendations": ["観光案内強化", "イベント拡充"]
+              "intensity": "中",
+              "factors": ["観光地", "イベント多い", "歴史的価値"],
+              "recommendations": ["観光案内強化", "イベント拡充", "景観保護"]
             }
           },
           "geometry": {
@@ -384,12 +428,16 @@
             "name": "駅前町",
             "type": "商業地",
             "population": 1300,
+            "area": 0.4,
+            "density": 3250,
             "emotions": { "joy": 45, "calm": 40, "excitement": 70, "stress": 40 },
-            "features": ["駅", "商店街", "カフェ"],
+            "incidents": { "total": 25, "joy": 3, "calm": 2, "excitement": 15, "stress": 5 },
+            "features": ["駅", "商店街", "カフェ", "コンビニ"],
             "analysis": {
               "primary": "excitement",
-              "factors": ["人通り多い", "商業施設充実"],
-              "recommendations": ["歩行者空間拡充", "治安対策"]
+              "intensity": "非常に高",
+              "factors": ["人通り多い", "商業施設充実", "交通拠点"],
+              "recommendations": ["歩行者空間拡充", "治安対策", "騒音対策"]
             }
           },
           "geometry": {
@@ -404,12 +452,16 @@
             "name": "工業団地",
             "type": "工業地",
             "population": 700,
+            "area": 1.5,
+            "density": 467,
             "emotions": { "joy": 35, "calm": 45, "excitement": 65, "stress": 50 },
-            "features": ["工場", "物流施設"],
+            "incidents": { "total": 22, "joy": 1, "calm": 3, "excitement": 8, "stress": 10 },
+            "features": ["工場", "物流施設", "トラック駐車場"],
             "analysis": {
               "primary": "stress",
-              "factors": ["騒音", "交通量多い"],
-              "recommendations": ["騒音対策", "交通整理"]
+              "intensity": "高",
+              "factors": ["騒音", "交通量多い", "大気汚染"],
+              "recommendations": ["騒音対策", "交通整理", "環境改善"]
             }
           },
           "geometry": {
@@ -492,80 +544,144 @@
       return [x/n, y/n];
     }
 
-    // ポリゴンスタイル
+    // ポリゴンスタイル（強度別色分け）
     function getEmotionStyle(feature) {
       const emotion = feature.properties.analysis.primary;
+      const intensity = feature.properties.analysis.intensity;
       const score = feature.properties.emotions[emotion];
+      
+      // 強度に応じた色選択
+      let colorLevel;
+      switch(intensity) {
+        case '低': colorLevel = 'low'; break;
+        case '中': colorLevel = 'medium'; break;
+        case '高': colorLevel = 'high'; break;
+        case '非常に高': colorLevel = 'veryHigh'; break;
+        default: colorLevel = 'medium';
+      }
+      
       return {
-        color: '#222',
-        weight: 2,
-        fillColor: emotionColors[emotion](layerOpacity),
-        fillOpacity: layerOpacity
+        color: '#333',
+        weight: 1.5,
+        opacity: 0.8,
+        fillColor: emotionColors[emotion][colorLevel](layerOpacity),
+        fillOpacity: layerOpacity,
+        dashArray: null
       };
     }
 
-    // ポップアップ内容
+    // ポップアップ内容（詳細情報）
     function createPopupContent(feature) {
       const p = feature.properties;
+      const primaryEmotion = p.analysis.primary;
+      const intensity = p.analysis.intensity;
+      
       return `
-        <div class="popup-title">${p.name}</div>
+        <div class="popup-title">${p.name} <span style="color:#9ca3af;">(${p.type})</span></div>
+        
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-users"></i> 人口</div>
-          <div class="popup-value">${p.population}人</div>
+          <div class="popup-label"><i class="fa-solid fa-chart-simple"></i> 基本情報</div>
+          <div class="popup-value">
+            人口: <strong>${p.population}人</strong> | 面積: <strong>${p.area}km²</strong><br>
+            人口密度: <strong>${p.density}人/km²</strong>
+          </div>
         </div>
+        
         <div class="popup-section">
           <div class="popup-label"><i class="fa-solid fa-face-smile"></i> 感情スコア</div>
           ${Object.entries(p.emotions).map(([k,v])=>`
             <div class="emotion-score">
-              <span class="emotion-indicator" style="background:${emotionColors[k](1)}"></span>
-              ${capitalize(k)}: <span>${v}</span>
+              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>
+              ${capitalize(k)}: <span style="font-weight:${k === primaryEmotion ? 'bold' : 'normal'}; color:${k === primaryEmotion ? '#06b6d4' : '#fff'}">${v}</span>
             </div>
           `).join('')}
         </div>
+        
+        <div class="popup-section">
+          <div class="popup-label"><i class="fa-solid fa-exclamation-triangle"></i> 感情分析</div>
+          <div class="popup-value">
+            主要感情: <strong style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)} (${intensity})</strong><br>
+            事案総数: <strong>${p.incidents.total}件</strong>
+          </div>
+        </div>
+        
         <div class="popup-section">
           <div class="popup-label"><i class="fa-solid fa-location-dot"></i> 主要施設</div>
           <div>${p.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
         </div>
       `;
     }
+    
+    // ポップアップ用色取得
+    function getEmotionColorForPopup(emotion, score) {
+      if (score >= 70) return emotionColors[emotion].veryHigh(1);
+      if (score >= 60) return emotionColors[emotion].high(1);
+      if (score >= 40) return emotionColors[emotion].medium(1);
+      return emotionColors[emotion].low(1);
+    }
 
-    // 詳細パネル更新
+    // 詳細パネル更新（警視庁マップ風）
     function updateDetailsPanel() {
       const panel = document.getElementById('details-panel');
       if (!selectedArea) {
         panel.innerHTML = `
           <div class="no-selection">
             <div class="no-selection-icon"><i class="fa-solid fa-map"></i></div>
-            <div class="no-selection-text">エリアを選択すると詳細分析が表示されます</div>
+            <div class="no-selection-text">区画を選択すると詳細分析が表示されます</div>
           </div>
         `;
         return;
       }
       const p = selectedArea.properties;
+      const primaryEmotion = p.analysis.primary;
+      
       panel.innerHTML = `
-        <div class="details-title">${p.name}（${p.type}）</div>
+        <div class="details-title">${p.name}</div>
+        
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-users"></i> 人口</div>
-          <div class="info-item">${p.population}人</div>
+          <div class="info-title"><i class="fa-solid fa-info-circle"></i> 区画情報</div>
+          <div class="info-item">種別: <strong>${p.type}</strong></div>
+          <div class="info-item">人口: <strong>${p.population}人</strong></div>
+          <div class="info-item">面積: <strong>${p.area}km²</strong></div>
+          <div class="info-item">人口密度: <strong>${p.density}人/km²</strong></div>
         </div>
+        
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-face-smile"></i> 感情スコア</div>
+          <div class="info-title"><i class="fa-solid fa-face-smile"></i> 感情分析</div>
+          <div class="info-item" style="margin-bottom:10px;">
+            主要感情: <span style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])};font-weight:bold;font-size:14px;">
+              ${capitalize(primaryEmotion)} (${p.analysis.intensity})
+            </span>
+          </div>
           ${Object.entries(p.emotions).map(([k,v])=>`
-            <div class="emotion-score">
-              <span class="emotion-indicator" style="background:${emotionColors[k](1)}"></span>
-              ${capitalize(k)}: <span>${v}</span>
+            <div class="emotion-score" style="margin-bottom:6px;">
+              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>
+              ${capitalize(k)}: <span style="font-weight:${k === primaryEmotion ? 'bold' : 'normal'}">${v}</span>
             </div>
           `).join('')}
         </div>
+        
+        <div class="info-box">
+          <div class="info-title"><i class="fa-solid fa-chart-bar"></i> 事案統計</div>
+          <div class="info-item">総事案数: <strong style="color:#06b6d4;">${p.incidents.total}件</strong></div>
+          ${Object.entries(p.incidents).filter(([k]) => k !== 'total').map(([k,v])=>`
+            <div class="info-item" style="font-size:11px;">
+              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, 50)}"></span>
+              ${capitalize(k)}: ${v}件
+            </div>
+          `).join('')}
+        </div>
+        
         <div class="info-box">
           <div class="info-title"><i class="fa-solid fa-location-dot"></i> 主要施設</div>
           <div>${p.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
         </div>
+        
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-chart-line"></i> 要因分析</div>
-          <div class="info-item">主要感情: <span style="color:${emotionColors[p.analysis.primary](1)};font-weight:bold;">${capitalize(p.analysis.primary)}</span></div>
+          <div class="info-title"><i class="fa-solid fa-search"></i> 要因分析</div>
           <div class="info-item">要因: ${p.analysis.factors.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
         </div>
+        
         <div class="info-box">
           <div class="info-title"><i class="fa-solid fa-lightbulb"></i> 改善提案</div>
           <div>${p.analysis.recommendations.map(r=>`<span class="feature-tag">${r}</span>`).join('')}</div>
@@ -579,14 +695,19 @@
       updateDetailsPanel();
     }
 
-    // 統計パネル更新
+    // 統計パネル更新（詳細統計）
     function updateStatistics() {
       const statsPanel = document.getElementById('stats-panel');
       const filtered = sanoAzaGeoJSON.features.filter(f => {
         if (selectedEmotion === 'all') return true;
         return f.properties.analysis.primary === selectedEmotion;
       });
+      
       const totalPop = filtered.reduce((sum,f)=>sum+f.properties.population,0);
+      const totalArea = filtered.reduce((sum,f)=>sum+f.properties.area,0);
+      const totalIncidents = filtered.reduce((sum,f)=>sum+f.properties.incidents.total,0);
+      const avgDensity = filtered.length ? Math.round(totalPop / totalArea) : 0;
+      
       const avgEmotions = { joy:0, calm:0, excitement:0, stress:0 };
       filtered.forEach(f=>{
         Object.keys(avgEmotions).forEach(k=>{
@@ -596,29 +717,58 @@
       Object.keys(avgEmotions).forEach(k=>{
         avgEmotions[k] = filtered.length ? Math.round(avgEmotions[k]/filtered.length) : 0;
       });
+      
+      // 強度別集計
+      const intensityCount = { '低': 0, '中': 0, '高': 0, '非常に高': 0 };
+      filtered.forEach(f => {
+        const intensity = f.properties.analysis.intensity;
+        if (intensityCount[intensity] !== undefined) {
+          intensityCount[intensity]++;
+        }
+      });
+      
       statsPanel.innerHTML = `
-        <div class="section-title"><i class="fa-solid fa-chart-pie"></i> 統計</div>
-        <div class="stat-item"><span class="stat-label">エリア数</span><span class="stat-value">${filtered.length}</span></div>
-        <div class="stat-item"><span class="stat-label">総人口</span><span class="stat-value">${totalPop}人</span></div>
+        <div class="section-title"><i class="fa-solid fa-chart-pie"></i> 統計情報</div>
+        
+        <div class="stat-item"><span class="stat-label">区画数</span><span class="stat-value">${filtered.length}</span></div>
+        <div class="stat-item"><span class="stat-label">総人口</span><span class="stat-value">${totalPop.toLocaleString()}人</span></div>
+        <div class="stat-item"><span class="stat-label">総面積</span><span class="stat-value">${totalArea}km²</span></div>
+        <div class="stat-item"><span class="stat-label">平均密度</span><span class="stat-value">${avgDensity.toLocaleString()}人/km²</span></div>
+        <div class="stat-item"><span class="stat-label">総事案数</span><span class="stat-value" style="color:#f59e0b;">${totalIncidents}件</span></div>
+        
+        <div style="margin:12px 0 8px 0; font-size:11px; color:#06b6d4; font-weight:bold;">
+          <i class="fa-solid fa-face-smile"></i> 感情スコア平均
+        </div>
         ${Object.entries(avgEmotions).map(([k,v])=>`
           <div class="stat-item">
-            <span class="stat-label"><span class="emotion-indicator" style="background:${emotionColors[k](1)}"></span>${capitalize(k)}平均</span>
+            <span class="stat-label"><span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>${capitalize(k)}</span>
             <span class="stat-value">${v}</span>
+          </div>
+        `).join('')}
+        
+        <div style="margin:12px 0 8px 0; font-size:11px; color:#06b6d4; font-weight:bold;">
+          <i class="fa-solid fa-signal"></i> 強度分布
+        </div>
+        ${Object.entries(intensityCount).map(([intensity, count])=>`
+          <div class="stat-item">
+            <span class="stat-label">${intensity}</span>
+            <span class="stat-value">${count}区画</span>
           </div>
         `).join('')}
       `;
     }
 
-    // 感情フィルター初期化
+    // 感情フィルター初期化（更新版）
     function initializeControls() {
       const filterDiv = document.getElementById('emotion-filters');
       const emotions = [
-        { key:'all', label:'ALL', icon:'fa-layer-group' },
-        { key:'joy', label:'Joy', icon:'fa-face-smile' },
-        { key:'calm', label:'Calm', icon:'fa-face-meh' },
-        { key:'excitement', label:'Excitement', icon:'fa-bolt' },
-        { key:'stress', label:'Stress', icon:'fa-face-frown' }
+        { key:'all', label:'全表示', icon:'fa-layer-group' },
+        { key:'joy', label:'Joy (喜び)', icon:'fa-face-smile' },
+        { key:'calm', label:'Calm (平静)', icon:'fa-face-meh' },
+        { key:'excitement', label:'Excitement (興奮)', icon:'fa-bolt' },
+        { key:'stress', label:'Stress (ストレス)', icon:'fa-face-frown' }
       ];
+      
       filterDiv.innerHTML = '';
       emotions.forEach(e=>{
         const btn = document.createElement('button');
@@ -626,11 +776,16 @@
         btn.innerHTML = `<i class="fa-solid ${e.icon}"></i> ${e.label}`;
         btn.onclick = ()=>{
           selectedEmotion = e.key;
+          // すべてのボタンのactiveクラスを削除
+          filterDiv.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
+          // クリックされたボタンにactiveクラスを追加
+          btn.classList.add('active');
           loadEmotionData();
           updateStatistics();
         };
         filterDiv.appendChild(btn);
       });
+      
       // レイヤーON/OFF
       document.getElementById('layer-toggle').onclick = function() {
         showEmotionLayer = !showEmotionLayer;
@@ -639,6 +794,7 @@
         if (showEmotionLayer) loadEmotionData();
         else if (emotionLayer) map.removeLayer(emotionLayer);
       };
+      
       // ラベルON/OFF
       document.getElementById('label-toggle').onclick = function() {
         showLabels = !showLabels;
@@ -646,6 +802,7 @@
         this.textContent = showLabels ? 'ON' : 'OFF';
         loadEmotionData();
       };
+      
       // 透明度スライダー
       document.getElementById('opacity-slider').oninput = function() {
         layerOpacity = parseFloat(this.value);
