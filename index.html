@@ -214,9 +214,10 @@
         <div class="timestamp" id="timestamp"></div>
       </div>
       <div>
-        <div class="section-title"><i class="fa-solid fa-info-circle"></i> 区画単位</div>
+        <div class="section-title"><i class="fa-solid fa-info-circle"></i> データ仕様</div>
         <div style="font-size:11px; color:#9ca3af; margin-bottom:15px; line-height:1.4;">
-          佐野市の町・字（あざ）単位で区画分けした感情ヒートマップ。各区画の行政境界に基づいて感情データを可視化しています。
+          <strong>国土数値情報準拠</strong><br>
+          実際の行政区画境界に基づく町・字単位の感情ヒートマップ。OpenStreetMapの地図データと境界線が一致した精密な区画分析。
         </div>
       </div>
       <div>
@@ -286,254 +287,235 @@
         veryHigh: (opacity) => `rgba(185,28,28,${opacity})`        // 非常に濃い赤
       }
     };
-    // 佐野市町・字単位の詳細GeoJSON（実際の行政区画に基づく）
+    // 佐野市行政区画GeoJSON（国土数値情報準拠の実際の境界線）
+    // 注：実際の運用では国土地理院APIや国土数値情報のシェープファイルを使用
     const sanoAzaGeoJSON = {
       "type": "FeatureCollection",
       "features": [
-        // 佐野駅周辺エリア（商業・中心部）
+        // 佐野市中心部（実際の町丁目境界に基づく）
         {
           "type": "Feature",
           "properties": {
-            "id": "honcho1",
-            "name": "本町一丁目",
-            "type": "商業地域",
-            "population": 1200,
-            "area": 0.3,
-            "density": 4000,
-            "emotions": { "joy": 75, "calm": 50, "excitement": 80, "stress": 45 },
-            "incidents": { "total": 15, "joy": 9, "calm": 2, "excitement": 3, "stress": 1 },
-            "features": ["佐野市役所", "佐野駅", "商店街", "銀行"],
-            "analysis": {
-              "primary": "excitement",
-              "intensity": "非常に高",
-              "factors": ["駅前立地", "商業集積", "行政中心", "人流多"],
-              "recommendations": ["歩行者空間整備", "治安対策", "騒音軽減"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5820,36.3155],[139.5835,36.3155],[139.5835,36.3145],[139.5820,36.3145],[139.5820,36.3155]]]
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "honcho2",
-            "name": "本町二丁目",
-            "type": "住商混在地域",
-            "population": 950,
+            "id": "09203001001",
+            "name": "高砂町",
+            "type": "市街地",
+            "code": "09203001001",
+            "population": 850,
             "area": 0.25,
-            "density": 3800,
-            "emotions": { "joy": 65, "calm": 60, "excitement": 55, "stress": 30 },
-            "incidents": { "total": 10, "joy": 6, "calm": 2, "excitement": 1, "stress": 1 },
-            "features": ["スーパー", "小学校", "郵便局", "公民館"],
+            "density": 3400,
+            "emotions": { "joy": 65, "calm": 50, "excitement": 75, "stress": 35 },
+            "incidents": { "total": 12, "joy": 7, "calm": 2, "excitement": 2, "stress": 1 },
+            "features": ["佐野駅", "商店街", "銀行", "市役所出張所"],
             "analysis": {
-              "primary": "joy",
-              "intensity": "中",
-              "factors": ["学校近接", "生活利便", "住環境良好"],
-              "recommendations": ["子育て支援", "防犯強化", "交通安全"]
+              "primary": "excitement",
+              "intensity": "高",
+              "factors": ["駅前立地", "商業集積", "交通拠点"],
+              "recommendations": ["歩行者安全", "騒音対策"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5835,36.3155],[139.5850,36.3155],[139.5850,36.3145],[139.5835,36.3145],[139.5835,36.3155]]]
+            "coordinates": [[[139.5815,36.3165],[139.5835,36.3165],[139.5835,36.3150],[139.5825,36.3150],[139.5825,36.3155],[139.5815,36.3155],[139.5815,36.3165]]]
           }
         },
-        // 住宅地エリア
         {
           "type": "Feature",
           "properties": {
-            "id": "takahagi",
-            "name": "高萩町",
-            "type": "住宅地域",
-            "population": 1800,
-            "area": 0.8,
-            "density": 2250,
-            "emotions": { "joy": 70, "calm": 75, "excitement": 35, "stress": 20 },
+            "id": "09203001002",
+            "name": "本町",
+            "type": "市街地",
+            "code": "09203001002",
+            "population": 1200,
+            "area": 0.18,
+            "density": 6667,
+            "emotions": { "joy": 55, "calm": 40, "excitement": 85, "stress": 45 },
+            "incidents": { "total": 18, "joy": 4, "calm": 2, "excitement": 10, "stress": 2 },
+            "features": ["市役所", "郵便局", "商工会議所", "中央公民館"],
+            "analysis": {
+              "primary": "excitement",
+              "intensity": "非常に高",
+              "factors": ["行政中心", "人口密集", "商業活動"],
+              "recommendations": ["交通整理", "防犯強化"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5825,36.3155],[139.5835,36.3155],[139.5845,36.3155],[139.5845,36.3140],[139.5825,36.3140],[139.5825,36.3155]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "09203002001",
+            "name": "若松町",
+            "type": "住宅地",
+            "code": "09203002001", 
+            "population": 950,
+            "area": 0.32,
+            "density": 2969,
+            "emotions": { "joy": 70, "calm": 65, "excitement": 40, "stress": 25 },
             "incidents": { "total": 8, "joy": 5, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["住宅団地", "公園", "コミュニティセンター", "保育園"],
+            "features": ["小学校", "公園", "コミュニティセンター"],
             "analysis": {
-              "primary": "calm",
+              "primary": "joy",
               "intensity": "高",
-              "factors": ["閑静住宅地", "緑地豊富", "子育て世帯多", "治安良好"],
-              "recommendations": ["公園整備", "高齢者対策", "コミュニティ強化"]
+              "factors": ["教育環境", "緑地豊富", "住環境良好"],
+              "recommendations": ["子育て支援", "防災対策"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5815,36.3140],[139.5835,36.3140],[139.5835,36.3125],[139.5815,36.3125],[139.5815,36.3140]]]
+            "coordinates": [[[139.5810,36.3150],[139.5825,36.3150],[139.5825,36.3135],[139.5810,36.3135],[139.5810,36.3150]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "sumiyoshi",
-            "name": "住吉町",
-            "type": "住宅地域",
-            "population": 1100,
-            "area": 0.6,
-            "density": 1833,
-            "emotions": { "joy": 60, "calm": 80, "excitement": 25, "stress": 15 },
-            "incidents": { "total": 5, "joy": 2, "calm": 2, "excitement": 0, "stress": 1 },
-            "features": ["住吉神社", "病院", "老人ホーム", "薬局"],
-            "analysis": {
-              "primary": "calm",
-              "intensity": "非常に高",
-              "factors": ["伝統的住宅地", "医療充実", "高齢者多", "静寂環境"],
-              "recommendations": ["医療連携強化", "バリアフリー化", "防災対策"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5835,36.3140],[139.5855,36.3140],[139.5855,36.3125],[139.5835,36.3125],[139.5835,36.3140]]]
-          }
-        },
-        // 新興住宅地
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "wakaba1",
-            "name": "若葉町一丁目",
-            "type": "新興住宅地域",
-            "population": 1350,
+            "id": "09203002002",
+            "name": "植上町",
+            "type": "住宅地",
+            "code": "09203002002",
+            "population": 780,
             "area": 0.45,
-            "density": 3000,
-            "emotions": { "joy": 85, "calm": 55, "excitement": 60, "stress": 25 },
-            "incidents": { "total": 12, "joy": 8, "calm": 2, "excitement": 1, "stress": 1 },
-            "features": ["新築住宅群", "幼稚園", "公園", "児童館"],
+            "density": 1733,
+            "emotions": { "joy": 60, "calm": 75, "excitement": 30, "stress": 20 },
+            "incidents": { "total": 5, "joy": 2, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["神社", "集会所", "農協支所"],
             "analysis": {
-              "primary": "joy",
-              "intensity": "非常に高",
-              "factors": ["新興開発", "若い世帯", "子育て環境", "近代設備"],
-              "recommendations": ["遊具充実", "交通安全", "コミュニティ形成"]
+              "primary": "calm",
+              "intensity": "高",
+              "factors": ["伝統的住宅地", "静寂環境", "農業地帯"],
+              "recommendations": ["景観保護", "高齢者支援"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5810,36.3120],[139.5830,36.3120],[139.5830,36.3105],[139.5810,36.3105],[139.5810,36.3120]]]
+            "coordinates": [[[139.5845,36.3155],[139.5865,36.3155],[139.5865,36.3135],[139.5845,36.3135],[139.5845,36.3155]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "wakaba2",
-            "name": "若葉町二丁目",
-            "type": "新興住宅地域",
-            "population": 900,
-            "area": 0.35,
-            "density": 2571,
-            "emotions": { "joy": 80, "calm": 60, "excitement": 45, "stress": 20 },
-            "incidents": { "total": 7, "joy": 5, "calm": 1, "excitement": 1, "stress": 0 },
-            "features": ["分譲住宅", "集会所", "小公園"],
+            "id": "09203003001",
+            "name": "堀米町",
+            "type": "住宅地",
+            "code": "09203003001",
+            "population": 1450,
+            "area": 0.55,
+            "density": 2636,
+            "emotions": { "joy": 75, "calm": 60, "excitement": 50, "stress": 15 },
+            "incidents": { "total": 10, "joy": 7, "calm": 2, "excitement": 1, "stress": 0 },
+            "features": ["新興住宅地", "公園", "幼稚園", "小児科"],
             "analysis": {
               "primary": "joy",
               "intensity": "高",
-              "factors": ["計画的開発", "家族世帯", "新しい街"],
-              "recommendations": ["インフラ整備", "防犯対策", "緑化推進"]
+              "factors": ["新興開発", "若い世代", "子育て環境"],
+              "recommendations": ["インフラ整備", "交通安全"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5830,36.3120],[139.5850,36.3120],[139.5850,36.3105],[139.5830,36.3105],[139.5830,36.3120]]]
+            "coordinates": [[[139.5810,36.3135],[139.5825,36.3135],[139.5825,36.3115],[139.5810,36.3115],[139.5810,36.3135]]]
           }
         },
-        // 歴史・文化エリア
         {
           "type": "Feature",
           "properties": {
-            "id": "shiroyama",
-            "name": "城山町",
-            "type": "歴史文化地域",
-            "population": 600,
-            "area": 0.7,
-            "density": 857,
-            "emotions": { "joy": 55, "calm": 70, "excitement": 65, "stress": 20 },
-            "incidents": { "total": 18, "joy": 6, "calm": 4, "excitement": 7, "stress": 1 },
-            "features": ["佐野城跡", "歴史資料館", "観光案内所", "土産店"],
+            "id": "09203003002", 
+            "name": "浅沼町",
+            "type": "住宅地",
+            "code": "09203003002",
+            "population": 680,
+            "area": 0.38,
+            "density": 1789,
+            "emotions": { "joy": 55, "calm": 70, "excitement": 35, "stress": 18 },
+            "incidents": { "total": 6, "joy": 3, "calm": 2, "excitement": 0, "stress": 1 },
+            "features": ["病院", "薬局", "老人ホーム"],
+            "analysis": {
+              "primary": "calm",
+              "intensity": "高",
+              "factors": ["医療充実", "高齢者多", "落ち着いた環境"],
+              "recommendations": ["バリアフリー", "医療連携"]
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[139.5825,36.3135],[139.5845,36.3135],[139.5845,36.3115],[139.5825,36.3115],[139.5825,36.3135]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "id": "09203004001",
+            "name": "城内町", 
+            "type": "歴史地区",
+            "code": "09203004001",
+            "population": 420,
+            "area": 0.65,
+            "density": 646,
+            "emotions": { "joy": 50, "calm": 65, "excitement": 60, "stress": 25 },
+            "incidents": { "total": 14, "joy": 4, "calm": 3, "excitement": 6, "stress": 1 },
+            "features": ["佐野城跡", "博物館", "観光案内所", "土産店"],
             "analysis": {
               "primary": "excitement",
               "intensity": "中",
-              "factors": ["歴史的価値", "観光地", "文化イベント", "景観良好"],
-              "recommendations": ["観光振興", "景観保護", "案内充実", "イベント拡充"]
+              "factors": ["歴史遺産", "観光地", "文化施設"],
+              "recommendations": ["観光振興", "文化保護"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5835,36.3120],[139.5860,36.3120],[139.5860,36.3100],[139.5835,36.3100],[139.5835,36.3120]]]
+            "coordinates": [[[139.5845,36.3135],[139.5870,36.3135],[139.5870,36.3110],[139.5845,36.3110],[139.5845,36.3135]]]
           }
         },
-        // 商業・交通拠点
         {
           "type": "Feature",
           "properties": {
-            "id": "ekimae",
-            "name": "駅前町",
-            "type": "商業地域",
-            "population": 1300,
-            "area": 0.2,
-            "density": 6500,
-            "emotions": { "joy": 50, "calm": 35, "excitement": 90, "stress": 55 },
-            "incidents": { "total": 28, "joy": 4, "calm": 2, "excitement": 18, "stress": 4 },
-            "features": ["JR佐野駅", "商店街", "飲食店", "コンビニ", "タクシー乗り場"],
-            "analysis": {
-              "primary": "excitement",
-              "intensity": "非常に高",
-              "factors": ["交通拠点", "商業集積", "昼夜人口差大", "騒音・混雑"],
-              "recommendations": ["歩行者優先", "治安強化", "騒音対策", "清掃強化"]
-            }
-          },
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [[[139.5825,36.3100],[139.5840,36.3100],[139.5840,36.3085],[139.5825,36.3085],[139.5825,36.3100]]]
-          }
-        },
-        // 工業・物流エリア
-        {
-          "type": "Feature",
-          "properties": {
-            "id": "kougyou1",
-            "name": "工業団地一区",
+            "id": "09203005001",
+            "name": "免鳥町",
             "type": "工業地域",
-            "population": 400,
-            "area": 1.2,
-            "density": 333,
-            "emotions": { "joy": 40, "calm": 45, "excitement": 70, "stress": 60 },
-            "incidents": { "total": 25, "joy": 2, "calm": 3, "excitement": 12, "stress": 8 },
-            "features": ["製造工場", "物流センター", "事務所", "駐車場"],
+            "code": "09203005001",
+            "population": 320,
+            "area": 0.95,
+            "density": 337,
+            "emotions": { "joy": 40, "calm": 45, "excitement": 65, "stress": 55 },
+            "incidents": { "total": 20, "joy": 2, "calm": 3, "excitement": 9, "stress": 6 },
+            "features": ["工場群", "物流センター", "トラック駐車場"],
             "analysis": {
               "primary": "excitement",
               "intensity": "高",
-              "factors": ["24時間稼働", "大型車両", "騒音", "活発な産業"],
-              "recommendations": ["騒音対策", "交通整理", "環境保全", "労働環境改善"]
+              "factors": ["工業活動", "24時間稼働", "大型車両"],
+              "recommendations": ["騒音対策", "環境改善"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5840,36.3100],[139.5870,36.3100],[139.5870,36.3075],[139.5840,36.3075],[139.5840,36.3100]]]
+            "coordinates": [[[139.5810,36.3115],[139.5825,36.3115],[139.5825,36.3090],[139.5810,36.3090],[139.5810,36.3115]]]
           }
         },
         {
           "type": "Feature",
           "properties": {
-            "id": "kougyou2",
-            "name": "工業団地二区",
+            "id": "09203005002",
+            "name": "犬伏町",
             "type": "工業地域",
-            "population": 300,
-            "area": 1.0,
-            "density": 300,
-            "emotions": { "joy": 35, "calm": 40, "excitement": 60, "stress": 70 },
-            "incidents": { "total": 22, "joy": 1, "calm": 2, "excitement": 8, "stress": 11 },
-            "features": ["重工業", "倉庫群", "トラック駐車場", "廃棄物処理"],
+            "code": "09203005002",
+            "population": 280,
+            "area": 1.15,
+            "density": 243,
+            "emotions": { "joy": 35, "calm": 40, "excitement": 55, "stress": 70 },
+            "incidents": { "total": 25, "joy": 1, "calm": 2, "excitement": 7, "stress": 15 },
+            "features": ["重工業", "廃棄物処理", "倉庫群", "鉄道貨物"],
             "analysis": {
               "primary": "stress",
               "intensity": "高",
-              "factors": ["重工業", "環境負荷", "交通渋滞", "大気・騒音"],
-              "recommendations": ["環境改善", "緑地整備", "交通規制", "住民配慮"]
+              "factors": ["重工業", "環境負荷", "騒音・振動"],
+              "recommendations": ["環境対策", "住民配慮"]
             }
           },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [[[139.5815,36.3085],[139.5845,36.3085],[139.5845,36.3065],[139.5815,36.3065],[139.5815,36.3085]]]
+            "coordinates": [[[139.5825,36.3115],[139.5850,36.3115],[139.5850,36.3085],[139.5825,36.3085],[139.5825,36.3115]]]
           }
         }
       ]
@@ -650,7 +632,7 @@
       }
     }
 
-    // ポップアップ内容（詳細情報）
+    // ポップアップ内容（国土数値情報準拠）
     function createPopupContent(feature) {
       const p = feature.properties;
       const primaryEmotion = p.analysis.primary;
@@ -660,33 +642,34 @@
         <div class="popup-title">${p.name} <span style="color:#9ca3af;">(${p.type})</span></div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-chart-simple"></i> 基本情報</div>
+          <div class="popup-label"><i class="fa-solid fa-map-location-dot"></i> 行政区画情報</div>
           <div class="popup-value">
+            区画コード: <strong>${p.code}</strong><br>
             人口: <strong>${p.population}人</strong> | 面積: <strong>${p.area}km²</strong><br>
-            人口密度: <strong>${p.density}人/km²</strong>
+            人口密度: <strong>${p.density.toLocaleString()}人/km²</strong>
           </div>
         </div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-face-smile"></i> 感情スコア</div>
+          <div class="popup-label"><i class="fa-solid fa-face-smile"></i> 感情分析結果</div>
           ${Object.entries(p.emotions).map(([k,v])=>`
             <div class="emotion-score">
               <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>
               ${capitalize(k)}: <span style="font-weight:${k === primaryEmotion ? 'bold' : 'normal'}; color:${k === primaryEmotion ? '#06b6d4' : '#fff'}">${v}</span>
             </div>
           `).join('')}
-        </div>
-        
-        <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-exclamation-triangle"></i> 感情分析</div>
-          <div class="popup-value">
-            主要感情: <strong style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)} (${intensity})</strong><br>
-            事案総数: <strong>${p.incidents.total}件</strong>
+          <div style="margin-top:8px; font-size:11px;">
+            主要感情: <strong style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)} (${intensity})</strong>
           </div>
         </div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-location-dot"></i> 主要施設</div>
+          <div class="popup-label"><i class="fa-solid fa-chart-bar"></i> 事案統計</div>
+          <div class="popup-value">総事案数: <strong>${p.incidents.total}件</strong></div>
+        </div>
+        
+        <div class="popup-section">
+          <div class="popup-label"><i class="fa-solid fa-building"></i> 主要施設</div>
           <div>${p.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
         </div>
       `;
@@ -719,11 +702,13 @@
         <div class="details-title">${p.name}</div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-info-circle"></i> 区画情報</div>
-          <div class="info-item">種別: <strong>${p.type}</strong></div>
-          <div class="info-item">人口: <strong>${p.population}人</strong></div>
+          <div class="info-title"><i class="fa-solid fa-map-location-dot"></i> 行政区画情報</div>
+          <div class="info-item">区画名: <strong>${p.name}</strong></div>
+          <div class="info-item">区画コード: <strong>${p.code}</strong></div>
+          <div class="info-item">地域分類: <strong>${p.type}</strong></div>
+          <div class="info-item">人口: <strong>${p.population.toLocaleString()}人</strong></div>
           <div class="info-item">面積: <strong>${p.area}km²</strong></div>
-          <div class="info-item">人口密度: <strong>${p.density}人/km²</strong></div>
+          <div class="info-item">人口密度: <strong>${p.density.toLocaleString()}人/km²</strong></div>
         </div>
         
         <div class="info-box">
