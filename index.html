@@ -315,61 +315,200 @@
     // データソース：国土交通省 国土数値情報（行政区域データ）
     // 「令和5年全国都道府県市区町村別面積調」（国土地理院）を加工
     
-    // 実際の政府統計データから境界線を直接インポート
-    const loadRealGISData = async () => {
+    // KMLデータから指定町域のGeoJSONを生成
+    const loadKMLDataToGeoJSON = async () => {
       try {
-        // GeoJSONファイルから境界線データを直接読み込み
-        const response = await fetch('./N03-23_36_230101.geojson');
-        const realGeoJSON = await response.json();
-        console.log('政府統計GISデータを読み込みました:', realGeoJSON.features.length, 'の区画');
+        // 対象町域の定義（リクエストされた8町域）
+        const targetDistricts = [
+          '両国本町', '寺島本町西１丁目', '寺島本町西２丁目', '寺島本町東１丁目', 
+          '寺島本町東２丁目', '南内町１丁目', '一番町', '籠屋町１丁目', '籠屋町２丁目',
+          '東船場町１丁目', '東船場町２丁目', '西船場町３丁目', '西船場町５丁目',
+          '八百屋町' // 紺屋町の代わりに近接する町域として
+        ];
+
+        // KMLファイルを読み込み
+        const response = await fetch('./1755581695189.kml');
+        const kmlText = await response.text();
+        const parser = new DOMParser();
+        const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
         
-        // 徳島市の行政区域を全て取得し、感情データと統合
-        const tokushimaCityFeatures = realGeoJSON.features
-          .filter(feature => 
-            feature.properties.N03_004 === '徳島市' && 
-            feature.properties.N03_007 === '36201'
-          );
+        // PlacemarkからGeoJSON featureを生成
+        const placemarks = kmlDoc.getElementsByTagName('Placemark');
+        const features = [];
 
-        console.log('徳島市の区画数:', tokushimaCityFeatures.length);
-
-        // 境界線の品質チェック（座標精度・ポリゴン完整性）
-        const qualityFeatures = tokushimaCityFeatures
-          .filter(feature => {
-            const coords = feature.geometry.coordinates;
-            return coords && coords[0] && coords[0].length >= 4; // 最小ポリゴン要件
-          })
-          .slice(0, 20) // パフォーマンス調整
-          .map((feature, index) => {
-            // 各区画に感情データを付与
-            const emotionData = getEmotionDataForIndex(index);
-            return {
-              ...feature,
-              properties: {
-                ...feature.properties,
-                ...emotionData,
-                originalIndex: index,
-                boundaryQuality: 'government_official',
-                coordinateCount: feature.geometry.coordinates[0].length
+        for (let i = 0; i < placemarks.length; i++) {
+          const placemark = placemarks[i];
+          const nameElement = placemark.getElementsByTagName('name')[0];
+          
+          if (nameElement) {
+            const districtName = nameElement.textContent;
+            
+            // 対象町域かチェック
+            if (targetDistricts.includes(districtName)) {
+              const feature = await convertPlacemarkToGeoJSON(placemark, features.length);
+              if (feature) {
+                features.push(feature);
               }
-            };
-          });
+            }
+          }
+        }
 
-        console.log('処理された境界区画:', qualityFeatures.length);
+        console.log(`KMLから${features.length}の町域を抽出しました:`, features.map(f => f.properties.name));
 
         return {
           type: "FeatureCollection",
-          features: qualityFeatures,
+          features: features,
           metadata: {
-            source: 'e-Stat 国土数値情報',
-            year: '2023',
-            precision: 'sub_meter',
-            totalBoundaries: qualityFeatures.length
+            source: 'jSTAT MAP KML',
+            year: '2027',  // 平成27年国勢調査
+            precision: 'high',
+            totalDistricts: features.length
           }
         };
+
       } catch (error) {
-        console.warn('政府GISデータの読み込みエラー。フォールバックモードに切り替えます:', error);
-        return getFallbackGeoJSON(); // 代替データを返す
+        console.warn('KMLデータの読み込みエラー。フォールバックモードを使用:', error);
+        return getFallbackGeoJSON();
       }
+    };
+
+    // 町域名に基づく感情データ生成
+    const generateEmotionDataForDistrict = (districtName, data) => {
+      const population = parseInt(data.JINKO) || 50;
+      const area = parseFloat(data.AREA) / 1000000 || 0.1;
+      const density = population / area;
+
+      // 町域の特性による感情パターン
+      let baseEmotions = {};
+      let primaryEmotion = 'calm';
+      let intensity = '中程度';
+      
+      if (districtName.includes('両国本町')) {
+        // 阿波踊りの中心地 - 高い興奮度と喜び
+        baseEmotions = { joy: 85, calm: 45, excitement: 90, stress: 40 };
+        primaryEmotion = 'excitement';
+        intensity = '非常に高';
+      } else if (districtName.includes('寺島本町')) {
+        // ビジネス・住宅地 - バランス型
+        baseEmotions = { joy: 65, calm: 70, excitement: 60, stress: 45 };
+        primaryEmotion = 'calm';
+        intensity = '中程度';
+      } else if (districtName.includes('一番町')) {
+        // 商業中心地 - 活気と軽度ストレス
+        baseEmotions = { joy: 75, calm: 55, excitement: 80, stress: 55 };
+        primaryEmotion = 'excitement';
+        intensity = '高';
+      } else if (districtName.includes('南内町')) {
+        // 住宅地 - 落ち着きと平穏
+        baseEmotions = { joy: 60, calm: 80, excitement: 45, stress: 35 };
+        primaryEmotion = 'calm';
+        intensity = '高';
+      } else if (districtName.includes('籠屋町') || districtName.includes('八百屋町')) {
+        // 伝統商業地 - 中程度の活気
+        baseEmotions = { joy: 70, calm: 60, excitement: 70, stress: 50 };
+        primaryEmotion = 'joy';
+        intensity = '中程度';
+      } else if (districtName.includes('船場町')) {
+        // 港湾・商業地 - 活発な経済活動
+        baseEmotions = { joy: 72, calm: 52, excitement: 75, stress: 58 };
+        primaryEmotion = 'excitement';
+        intensity = '高';
+      } else {
+        // デフォルト
+        baseEmotions = { joy: 60, calm: 65, excitement: 55, stress: 45 };
+        primaryEmotion = 'calm';
+      }
+
+      // 人口密度による調整
+      if (density > 2000) {
+        baseEmotions.stress += 10;
+        baseEmotions.excitement += 5;
+      } else if (density < 500) {
+        baseEmotions.calm += 10;
+        baseEmotions.stress -= 5;
+      }
+
+      // 範囲制限
+      Object.keys(baseEmotions).forEach(key => {
+        baseEmotions[key] = Math.max(0, Math.min(100, baseEmotions[key]));
+      });
+
+      return {
+        emotions: baseEmotions,
+        incidents: {
+          total: Math.floor(population / 5) + Math.floor(Math.random() * 10),
+          joy: Math.floor(baseEmotions.joy / 10),
+          calm: Math.floor(baseEmotions.calm / 10),
+          excitement: Math.floor(baseEmotions.excitement / 10),
+          stress: Math.floor(baseEmotions.stress / 10)
+        },
+        analysis: {
+          primary: primaryEmotion,
+          intensity: intensity,
+          factors: getDistrictFactors(districtName),
+          recommendations: getDistrictRecommendations(districtName)
+        }
+      };
+    };
+
+    // 町域タイプ判定
+    const getDistrictType = (districtName) => {
+      if (districtName.includes('両国本町')) return '文化・観光地域';
+      if (districtName.includes('寺島本町')) return 'ビジネス・住宅地域';
+      if (districtName.includes('一番町')) return '商業地域';
+      if (districtName.includes('南内町')) return '住宅地域';
+      if (districtName.includes('籠屋町') || districtName.includes('八百屋町')) return '伝統商業地域';
+      if (districtName.includes('船場町')) return '港湾・商業地域';
+      return '混合地域';
+    };
+
+    // 町域の主要施設
+    const getDistrictFeatures = (districtName) => {
+      const features = {
+        '両国本町': ['阿波おどり会館', '元町演舞場', '観光案内所', '商店街'],
+        '寺島本町西１丁目': ['JR徳島駅', 'オフィスビル', '銀行', '商業施設'],
+        '寺島本町西２丁目': ['徳島駅前', 'ホテル', '飲食店街', '交通拠点'],
+        '寺島本町東１丁目': ['住宅街', '小学校', '公園', '医院'],
+        '寺島本町東２丁目': ['マンション', 'コンビニ', '薬局', '郵便局'],
+        '一番町': ['商店街', 'デパート', 'カフェ', '文化施設'],
+        '南内町１丁目': ['住宅街', '保育園', '公民館', '商店'],
+        '籠屋町１丁目': ['老舗商店', '伝統工芸', '地域センター', '市場'],
+        '籠屋町２丁目': ['商店街', '銀行支店', '薬局', '飲食店'],
+        '東船場町１丁目': ['港湾施設', '倉庫街', '運送会社', '市場'],
+        '東船場町２丁目': ['漁協', '水産会社', '卸売市場', '冷蔵庫'],
+        '西船場町３丁目': ['商業港', '物流センター', 'オフィス', '倉庫'],
+        '西船場町５丁目': ['港湾管理', '海運会社', '貿易事務所', '税関'],
+        '八百屋町': ['市場', '青果店', '食材店', '老舗商店']
+      };
+      return features[districtName] || ['住宅街', '商店', '公園', '学校'];
+    };
+
+    // 町域の特性要因
+    const getDistrictFactors = (districtName) => {
+      const factors = {
+        '両国本町': ['阿波踊り拠点', '観光中心', '文化発信', '祭り文化'],
+        '寺島本町西１丁目': ['交通拠点', 'ビジネス中心', '利便性', '都市機能'],
+        '寺島本町西２丁目': ['駅前立地', 'ホテル街', '商業集積', 'アクセス'],
+        '一番町': ['商業中心', '買い物便利', '都市活力', '人口集積'],
+        '南内町１丁目': ['住宅密集', '生活利便', '地域コミュニティ', '静穏'],
+        '籠屋町１丁目': ['伝統文化', '地域商業', 'コミュニティ', '歴史'],
+        '東船場町１丁目': ['港湾立地', '物流拠点', '産業活動', '経済活力'],
+        '八百屋町': ['市場文化', '食文化', '伝統商業', '地域交流']
+      };
+      return factors[districtName] || ['住環境', '生活利便', 'コミュニティ', '安全性'];
+    };
+
+    // 町域への推奨事項
+    const getDistrictRecommendations = (districtName) => {
+      const recommendations = {
+        '両国本町': ['観光案内強化', '文化発信', '賑わい創出', '伝統継承'],
+        '寺島本町西１丁目': ['交通整備', 'ビジネス支援', '都市機能充実', '利便性向上'],
+        '一番町': ['商業活性化', '歩行環境整備', 'イベント開催', '集客力向上'],
+        '南内町１丁目': ['住環境保全', 'コミュニティ強化', '緑化推進', '安全確保'],
+        '籠屋町１丁目': ['伝統保護', '商業支援', '地域活性化', '文化継承'],
+        '東船場町１丁目': ['物流効率化', '産業支援', 'インフラ整備', '港湾発展']
+      };
+      return recommendations[districtName] || ['環境改善', '利便性向上', 'コミュニティ支援', '安全強化'];
     };
 
     // 区画インデックスに基づく感情データの生成
@@ -633,12 +772,20 @@
     // 実際のGISデータまたはフォールバックデータを取得
     let sanoAzaGeoJSON;
     
-    // データ初期化関数
+    // データ初期化関数（KML統合版）
     const initializeGeoData = async () => {
       try {
-        sanoAzaGeoJSON = await loadRealGISData();
-        console.log('実際のGISデータを使用しています');
+        console.log('KMLベースのGISデータ読み込み開始...');
+        sanoAzaGeoJSON = await loadKMLDataToGeoJSON();
+        
+        if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
+          console.log(`KMLから${sanoAzaGeoJSON.features.length}の町域データを読み込みました`);
+          console.log('読み込まれた町域:', sanoAzaGeoJSON.features.map(f => f.properties.name));
+        } else {
+          throw new Error('KMLデータが空または無効');
+        }
       } catch (error) {
+        console.warn('KMLデータ読み込み失敗、フォールバックデータを使用:', error);
         sanoAzaGeoJSON = getFallbackGeoJSON();
         console.log('フォールバックデータを使用しています');
       }
