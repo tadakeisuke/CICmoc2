@@ -332,43 +332,187 @@
         const parser = new DOMParser();
         const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
         
-        // PlacemarkからGeoJSON featureを生成
-        const placemarks = kmlDoc.getElementsByTagName('Placemark');
+        console.log('KML解析開始...');
+        const placemarks = kmlDoc.querySelectorAll('Placemark');
         const features = [];
+        let processedCount = 0;
+        
+        console.log(`総Placemark数: ${placemarks.length}`);
 
         for (let i = 0; i < placemarks.length; i++) {
           const placemark = placemarks[i];
-          const nameElement = placemark.getElementsByTagName('name')[0];
+          const nameElement = placemark.querySelector('name');
           
           if (nameElement) {
-            const districtName = nameElement.textContent;
+            const districtName = nameElement.textContent.trim();
             
-            // 対象町域かチェック
-            if (targetDistricts.includes(districtName)) {
-              const feature = await convertPlacemarkToGeoJSON(placemark, features.length);
+            // 対象町域のチェック（部分一致も含む）
+            const isTargetDistrict = targetDistricts.some(target => 
+              districtName.includes(target) || target.includes(districtName)
+            );
+            
+            if (isTargetDistrict) {
+              console.log(`対象町域発見: ${districtName}`);
+              const feature = convertPlacemarkToGeoJSON(placemark);
+              
               if (feature) {
+                // ExtendedDataから統計データ取得
+                const extendedDataElements = placemark.querySelectorAll('ExtendedData Data');
+                const statisticsData = {};
+                
+                extendedDataElements.forEach(dataElement => {
+                  const nameAttr = dataElement.getAttribute('name');
+                  const valueElement = dataElement.querySelector('value');
+                  if (nameAttr && valueElement) {
+                    statisticsData[nameAttr] = valueElement.textContent.trim();
+                  }
+                });
+                
+                // 感情データ生成
+                const emotionData = generateEmotionDataForDistrict(districtName, statisticsData);
+                
+                // プロパティを統合
+                feature.properties = {
+                  ...feature.properties,
+                  type: getDistrictType(districtName),
+                  features: getDistrictFeatures(districtName),
+                  statistics: statisticsData,
+                  emotions: emotionData.emotions,
+                  incidents: emotionData.incidents,
+                  analysis: emotionData.analysis,
+                  population: parseInt(statisticsData.JINKO) || 0,
+                  households: parseInt(statisticsData.SETAI) || 0,
+                  area: parseFloat(statisticsData.AREA) || 0
+                };
+                
                 features.push(feature);
+                processedCount++;
+                console.log(`処理完了: ${districtName} (${processedCount}件目)`);
               }
             }
           }
+          
+          // プログレス表示（1000件ごと）
+          if (i % 1000 === 0 && i > 0) {
+            console.log(`KML処理進捗: ${i}/${placemarks.length} (${(i/placemarks.length*100).toFixed(1)}%)`);
+          }
         }
 
-        console.log(`KMLから${features.length}の町域を抽出しました:`, features.map(f => f.properties.name));
+        console.log(`✅ KML処理完了: ${processedCount}件の町域を抽出`);
+        console.log('抽出された町域:', features.map(f => f.properties.name));
 
         return {
           type: "FeatureCollection",
           features: features,
           metadata: {
-            source: 'jSTAT MAP KML',
-            year: '2027',  // 平成27年国勢調査
-            precision: 'high',
-            totalDistricts: features.length
+            source: 'jSTAT MAP KML Data',
+            processed: new Date().toISOString(),
+            totalFeatures: processedCount,
+            originalPlacemarks: placemarks.length
           }
         };
 
       } catch (error) {
         console.warn('KMLデータの読み込みエラー。フォールバックモードを使用:', error);
         return getFallbackGeoJSON();
+      }
+    };
+
+    // PlacemarkをGeoJSON Featureに変換（KML統合版）
+    const convertPlacemarkToGeoJSON = (placemark) => {
+      try {
+        const nameElement = placemark.querySelector('name');
+        if (!nameElement) {
+          console.warn('Placemarkに名前がありません');
+          return null;
+        }
+
+        const districtName = nameElement.textContent.trim();
+        console.log(`処理中の町域: ${districtName}`);
+
+        // MultiGeometry または Polygon を探す
+        let coordinatesArray = [];
+        
+        // MultiGeometry内のPolygonを処理
+        const multiGeometry = placemark.querySelector('MultiGeometry');
+        if (multiGeometry) {
+          const polygons = multiGeometry.querySelectorAll('Polygon');
+          console.log(`${districtName}: MultiGeometry内に${polygons.length}個のPolygonを発見`);
+          
+          polygons.forEach((polygon, index) => {
+            const outerBoundary = polygon.querySelector('outerBoundaryIs LinearRing coordinates');
+            if (outerBoundary) {
+              const coords = parseKMLCoordinates(outerBoundary.textContent);
+              if (coords && coords.length >= 3) {
+                coordinatesArray.push(coords);
+                console.log(`  Polygon ${index + 1}: ${coords.length}個の座標点`);
+              }
+            }
+          });
+        } else {
+          // 単一のPolygonを処理
+          const polygon = placemark.querySelector('Polygon');
+          if (polygon) {
+            const outerBoundary = polygon.querySelector('outerBoundaryIs LinearRing coordinates');
+            if (outerBoundary) {
+              const coords = parseKMLCoordinates(outerBoundary.textContent);
+              if (coords && coords.length >= 3) {
+                coordinatesArray.push(coords);
+                console.log(`${districtName}: 単一Polygon、${coords.length}個の座標点`);
+              }
+            }
+          }
+        }
+
+        if (coordinatesArray.length === 0) {
+          console.warn(`${districtName}: 有効な座標データが見つかりませんでした`);
+          return null;
+        }
+
+        // GeoJSON Feature作成
+        const geometry = coordinatesArray.length === 1 ? {
+          type: "Polygon",
+          coordinates: coordinatesArray
+        } : {
+          type: "MultiPolygon", 
+          coordinates: coordinatesArray.map(coords => [coords])
+        };
+
+        return {
+          type: "Feature",
+          geometry: geometry,
+          properties: {
+            name: districtName,
+            coordinateCount: coordinatesArray.reduce((total, coords) => total + coords.length, 0)
+          }
+        };
+
+      } catch (error) {
+        console.error('Placemark変換エラー:', error);
+        return null;
+      }
+    };
+
+    // KML座標文字列を解析
+    const parseKMLCoordinates = (coordinatesText) => {
+      try {
+        return coordinatesText.trim()
+          .split(/\s+/)
+          .map(coord => {
+            const parts = coord.trim().split(',');
+            if (parts.length >= 2) {
+              const lng = parseFloat(parts[0]);
+              const lat = parseFloat(parts[1]);
+              if (!isNaN(lng) && !isNaN(lat)) {
+                return [lng, lat];
+              }
+            }
+            return null;
+          })
+          .filter(coord => coord !== null);
+      } catch (error) {
+        console.error('座標解析エラー:', error);
+        return [];
       }
     };
 
@@ -776,18 +920,34 @@
     const initializeGeoData = async () => {
       try {
         console.log('KMLベースのGISデータ読み込み開始...');
+        
+        // まずKMLファイルが存在するかチェック
+        const testResponse = await fetch('./1755581695189.kml');
+        console.log('KMLファイル存在チェック:', testResponse.ok ? '成功' : `失敗 (${testResponse.status})`);
+        
+        if (!testResponse.ok) {
+          throw new Error(`KMLファイルが見つかりません: HTTP ${testResponse.status}`);
+        }
+        
         sanoAzaGeoJSON = await loadKMLDataToGeoJSON();
         
         if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
-          console.log(`KMLから${sanoAzaGeoJSON.features.length}の町域データを読み込みました`);
+          console.log(`✅ KMLから${sanoAzaGeoJSON.features.length}の町域データを読み込みました`);
           console.log('読み込まれた町域:', sanoAzaGeoJSON.features.map(f => f.properties.name));
+          
+          // 最初の町域の座標をサンプル表示
+          if (sanoAzaGeoJSON.features[0]) {
+            const firstFeature = sanoAzaGeoJSON.features[0];
+            console.log(`サンプル町域「${firstFeature.properties.name}」の座標:`, 
+              firstFeature.geometry.coordinates[0].slice(0, 3)); // 最初の3点のみ表示
+          }
         } else {
           throw new Error('KMLデータが空または無効');
         }
       } catch (error) {
-        console.warn('KMLデータ読み込み失敗、フォールバックデータを使用:', error);
+        console.warn('❌ KMLデータ読み込み失敗、フォールバックデータを使用:', error);
         sanoAzaGeoJSON = getFallbackGeoJSON();
-        console.log('フォールバックデータを使用しています');
+        console.log('⚠️ 手動作成のフォールバックデータを使用しています');
       }
     };
 
