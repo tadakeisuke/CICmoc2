@@ -64,7 +64,8 @@
     .logo-text {
       font-size: 18px; font-weight: bold;
       background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-blue), var(--cyber-purple));
-      background-clip: text; -webkit-background-clip: text;
+      -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .subtitle { font-size: 12px; color: var(--cyber-cyan); }
@@ -153,6 +154,7 @@
     #map { height: 100%; width: 100%; }
     .leaflet-popup-content-wrapper {
       background: var(--panel-bg);
+      -webkit-backdrop-filter: blur(20px);
       backdrop-filter: blur(20px);
       border: 1px solid var(--border-cyan);
       border-radius: 8px;
@@ -249,7 +251,7 @@
       <div class="layer-controls">
         <div class="control-item">
           <span class="control-label">表示モード</span>
-          <select id="display-mode" style="padding:4px 8px;border:1px solid rgba(6,182,212,0.3);background:rgba(75,85,99,0.5);color:#06b6d4;border-radius:4px;font-size:11px;">
+          <select id="display-mode" title="表示モード選択" style="padding:4px 8px;border:1px solid rgba(6,182,212,0.3);background:rgba(75,85,99,0.5);color:#06b6d4;border-radius:4px;font-size:11px;">
             <option value="boundary">境界線表示</option>
             <option value="heatmap">ヒートマップ</option>
           </select>
@@ -265,7 +267,7 @@
         <div class="control-item">
           <span class="control-label">透明度</span>
         </div>
-        <input type="range" min="0.2" max="1" step="0.01" value="0.7" class="opacity-slider" id="opacity-slider">
+        <input type="range" min="0.2" max="1" step="0.01" value="0.7" class="opacity-slider" id="opacity-slider" title="透明度調整">
       </div>
       <div class="stats-panel" id="stats-panel"></div>
     </div>
@@ -273,7 +275,7 @@
     <div class="map-container">
       <div id="map"></div>
       <div style="position:absolute;bottom:8px;right:12px;z-index:999;font-size:11px;background:rgba(26,26,46,0.7);padding:4px 10px;border-radius:6px;">
-        © <a href="https://openstreetmap.org" target="_blank" style="color:#06b6d4;text-decoration:underline;">OpenStreetMap</a> contributors
+        © <a href="https://openstreetmap.org" target="_blank" rel="noopener" style="color:#06b6d4;text-decoration:underline;">OpenStreetMap</a> contributors
       </div>
     </div>
     <!-- Right Details Panel -->
@@ -541,7 +543,6 @@
     };
 
     // フォールバック用のGeoJSONデータ
-    const getFallbackGeoJSON = () => {
     // フォールバック用のGeoJSONデータ
     const getFallbackGeoJSON = () => {
       return {
