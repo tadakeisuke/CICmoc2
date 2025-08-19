@@ -357,16 +357,20 @@
               
               if (feature) {
                 // ExtendedDataから統計データ取得
-                const extendedDataElements = placemark.querySelectorAll('ExtendedData Data');
+                const schemaData = placemark.querySelector('ExtendedData SchemaData');
                 const statisticsData = {};
                 
-                extendedDataElements.forEach(dataElement => {
-                  const nameAttr = dataElement.getAttribute('name');
-                  const valueElement = dataElement.querySelector('value');
-                  if (nameAttr && valueElement) {
-                    statisticsData[nameAttr] = valueElement.textContent.trim();
-                  }
-                });
+                if (schemaData) {
+                  const simpleDataElements = schemaData.querySelectorAll('SimpleData');
+                  simpleDataElements.forEach(dataElement => {
+                    const nameAttr = dataElement.getAttribute('name');
+                    const value = dataElement.textContent.trim();
+                    if (nameAttr && value) {
+                      statisticsData[nameAttr] = value;
+                    }
+                  });
+                  console.log(`${districtName}の統計データ:`, statisticsData);
+                }
                 
                 // 感情データ生成
                 const emotionData = generateEmotionDataForDistrict(districtName, statisticsData);
