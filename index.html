@@ -326,8 +326,8 @@
           '八百屋町' // 紺屋町の代わりに近接する町域として
         ];
 
-        // KMLファイルを読み込み
-        const response = await fetch('./1755581695189.kml');
+        // KMLファイルを読み込み（参考フォルダから）
+        const response = await fetch('./参考/1755581695189.kml');
         const kmlText = await response.text();
         const parser = new DOMParser();
         const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
@@ -829,6 +829,23 @@
       return emotionDataSets[index] || emotionDataSets[0];
     };
 
+    // 徳島市全域のGeoJSONデータを読み込む関数
+    const loadTokushimaGeoJSON = async () => {
+      try {
+        console.log('📍 徳島市GeoJSONデータを読み込み中...');
+        const response = await fetch('./参考/N03-23_36_230101.geojson');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const geoJsonData = await response.json();
+        console.log('✅ 徳島市GeoJSONデータ読み込み完了:', geoJsonData.features.length + '件');
+        return geoJsonData;
+      } catch (error) {
+        console.warn('⚠️ 徳島市GeoJSONデータの読み込みエラー:', error);
+        return null;
+      }
+    };
+
     // フォールバック用のGeoJSONデータ
     // フォールバック用のGeoJSONデータ
     // 実際のKMLデータベース（ハードコーディング版）
@@ -989,13 +1006,179 @@
       };
     };
 
-    // フォールバック用（非推奨）
-    const getFallbackGeoJSON = () => {
-      console.warn('⚠️ 非推奨：フォールバックGeoJSONを使用中。実際のKMLデータを使用してください。');
-      return getHardcodedKMLGeoJSON();
-    };
+    // GitHub Pages対応：埋め込みGeoJSONデータを使用
+    const getHardcodedKMLGeoJSON = () => {
+      return {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "両国本町",
+              "type": "文化・観光地域",
+              "population": 1200,
+              "area": 0.35,
+              "households": 480,
+              "emotions": { "joy": 78, "calm": 65, "excitement": 85, "stress": 25 },
+              "incidents": { "total": 12, "safety": 8, "traffic": 3, "other": 1 },
+              "analysis": { "primary": "excitement", "intensity": "非常に高", "factors": ["阿波踊り会場", "文化施設", "観光地"] },
+              "features": ["阿波踊り演舞場", "文化センター", "観光案内所", "記念館"],
+              "recommendations": ["祭り期間中の交通整理", "観光案内強化", "文化イベント拡充"],
+              "boundaryQuality": "高精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5591, 34.0659], [134.5621, 34.0659], [134.5621, 34.0689], [134.5591, 34.0689], [134.5591, 34.0659]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "寺島本町西１丁目",
+              "type": "ビジネス・住宅地域",
+              "population": 950,
+              "area": 0.28,
+              "households": 420,
+              "emotions": { "joy": 58, "calm": 72, "excitement": 45, "stress": 35 },
+              "incidents": { "total": 8, "safety": 5, "traffic": 2, "other": 1 },
+              "analysis": { "primary": "calm", "intensity": "高", "factors": ["住宅地", "ビジネス街", "交通利便性"] },
+              "features": ["オフィスビル", "住宅", "小学校", "商店街"],
+              "recommendations": ["住環境改善", "交通安全対策", "地域コミュニティ強化"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5561, 34.0659], [134.5591, 34.0659], [134.5591, 34.0689], [134.5561, 34.0689], [134.5561, 34.0659]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "寺島本町西２丁目",
+              "type": "住宅地域",
+              "population": 880,
+              "area": 0.32,
+              "households": 380,
+              "emotions": { "joy": 62, "calm": 75, "excitement": 42, "stress": 28 },
+              "incidents": { "total": 6, "safety": 4, "traffic": 1, "other": 1 },
+              "analysis": { "primary": "calm", "intensity": "高", "factors": ["静かな住宅地", "公園", "安全性"] },
+              "features": ["住宅", "公園", "保育園", "診療所"],
+              "recommendations": ["緑地整備", "子育て支援", "高齢者対策"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5531, 34.0659], [134.5561, 34.0659], [134.5561, 34.0689], [134.5531, 34.0689], [134.5531, 34.0659]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "寺島本町東１丁目",
+              "type": "商業・住宅地域",
+              "population": 1050,
+              "area": 0.30,
+              "households": 450,
+              "emotions": { "joy": 68, "calm": 60, "excitement": 65, "stress": 32 },
+              "incidents": { "total": 9, "safety": 6, "traffic": 2, "other": 1 },
+              "analysis": { "primary": "joy", "intensity": "高", "factors": ["商業施設", "活気", "利便性"] },
+              "features": ["商業施設", "住宅", "銀行", "郵便局"],
+              "recommendations": ["商業活性化", "交通整理", "防犯強化"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5621, 34.0659], [134.5651, 34.0659], [134.5651, 34.0689], [134.5621, 34.0689], [134.5621, 34.0659]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "寺島本町東２丁目",
+              "type": "住宅・商業地域",
+              "population": 920,
+              "area": 0.27,
+              "households": 400,
+              "emotions": { "joy": 65, "calm": 68, "excitement": 55, "stress": 30 },
+              "incidents": { "total": 7, "safety": 5, "traffic": 1, "other": 1 },
+              "analysis": { "primary": "calm", "intensity": "高", "factors": ["バランス良い住環境", "商業利便性"] },
+              "features": ["住宅", "小規模商店", "公民館", "神社"],
+              "recommendations": ["地域活性化", "伝統保存", "コミュニティ支援"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5651, 34.0659], [134.5681, 34.0659], [134.5681, 34.0689], [134.5651, 34.0689], [134.5651, 34.0659]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "南内町１丁目",
+              "type": "住宅地域",
+              "population": 760,
+              "area": 0.25,
+              "households": 320,
+              "emotions": { "joy": 55, "calm": 80, "excitement": 38, "stress": 22 },
+              "incidents": { "total": 4, "safety": 2, "traffic": 1, "other": 1 },
+              "analysis": { "primary": "calm", "intensity": "非常に高", "factors": ["静かな住宅地", "低犯罪率", "自然環境"] },
+              "features": ["住宅", "小公園", "集会所", "寺院"],
+              "recommendations": ["住環境保持", "高齢者支援", "防災対策"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5561, 34.0629], [134.5591, 34.0629], [134.5591, 34.0659], [134.5561, 34.0659], [134.5561, 34.0629]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "一番町",
+              "type": "商業地域",
+              "population": 1380,
+              "area": 0.42,
+              "households": 580,
+              "emotions": { "joy": 72, "calm": 55, "excitement": 75, "stress": 38 },
+              "incidents": { "total": 15, "safety": 10, "traffic": 4, "other": 1 },
+              "analysis": { "primary": "excitement", "intensity": "高", "factors": ["商業中心地", "人流集中", "活気"] },
+              "features": ["百貨店", "商店街", "レストラン", "駅"],
+              "recommendations": ["交通渋滞対策", "商業活性化", "安全対策強化"],
+              "boundaryQuality": "高精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5591, 34.0629], [134.5621, 34.0629], [134.5621, 34.0659], [134.5591, 34.0659], [134.5591, 34.0629]]]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "name": "八百屋町",
+              "type": "伝統商業地域",
+              "population": 680,
+              "area": 0.22,
+              "households": 290,
+              "emotions": { "joy": 60, "calm": 65, "excitement": 58, "stress": 28 },
+              "incidents": { "total": 5, "safety": 3, "traffic": 1, "other": 1 },
+              "analysis": { "primary": "calm", "intensity": "高", "factors": ["伝統的商業", "地域密着", "安定性"] },
+              "features": ["伝統商店", "職人工房", "市場", "神社"],
+              "recommendations": ["伝統産業支援", "観光化推進", "後継者育成"],
+              "boundaryQuality": "中精度"
+            },
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [[[134.5621, 34.0629], [134.5651, 34.0629], [134.5651, 34.0659], [134.5621, 34.0659], [134.5621, 34.0629]]]
+            }
           }
-        ]
+        ],
+        "metadata": {
+          "source": "GitHub Pages Embedded Data",
+          "description": "徳島市阿波踊り演舞場周辺8町域の感情分析データ",
+          "created": new Date().toISOString(),
+          "version": "1.0.0-github-pages",
+          "note": "GitHub Pages CORS制限回避のため埋め込みデータを使用"
+        }
       };
     };
 
@@ -1006,7 +1189,7 @@
     window.debugKML = async () => {
       try {
         console.log('=== KMLデバッグ開始 ===');
-        const response = await fetch('./1755581695189.kml');
+        const response = await fetch('./参考/1755581695189.kml');
         console.log('ファイル読み込み:', response.ok ? '成功' : `失敗 ${response.status}`);
         
         if (response.ok) {
@@ -1037,14 +1220,97 @@
       }
     };
 
-    // データ初期化関数（ハードコーディング版）
+    // 現在のデータ状態をデバッグする関数
+    window.debugCurrentData = () => {
+      console.log('=== 現在のデータ状態 ===');
+      if (sanoAzaGeoJSON) {
+        console.log('データタイプ:', sanoAzaGeoJSON.type);
+        console.log('フィーチャー数:', sanoAzaGeoJSON.features ? sanoAzaGeoJSON.features.length : 0);
+        console.log('メタデータ:', sanoAzaGeoJSON.metadata);
+        
+        if (sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
+          console.log('含まれる地域:');
+          sanoAzaGeoJSON.features.forEach((feature, index) => {
+            const name = feature.properties.name || feature.properties.N03_004 || `地域${index+1}`;
+            const coords = feature.geometry.coordinates[0];
+            const coordCount = coords ? coords.length : 0;
+            console.log(`  ${name}: ${coordCount}個の座標点`);
+            
+            if (coordCount > 0) {
+              const firstCoord = coords[0];
+              const lastCoord = coords[coords.length - 1];
+              console.log(`    最初の座標: [${firstCoord[0].toFixed(6)}, ${firstCoord[1].toFixed(6)}]`);
+              console.log(`    最後の座標: [${lastCoord[0].toFixed(6)}, ${lastCoord[1].toFixed(6)}]`);
+            }
+          });
+        }
+      } else {
+        console.log('データが読み込まれていません');
+      }
+      console.log('=== デバッグ終了 ===');
+    };
+
+    // デバッグヘルプ表示
+    window.debugHelp = () => {
+      console.log(`
+=== EMOTERRAIN デバッグコマンド ===
+利用可能なデバッグ関数：
+
+🔍 debugKML()           - KMLファイルの読み込み状況を確認
+📊 debugCurrentData()   - 現在読み込まれているデータの詳細を表示
+🗺️  debugHelp()         - このヘルプを表示
+
+使用例：
+  > debugCurrentData()   // 現在のデータ状況を確認
+  > debugKML()          // KMLファイルの読み込みテスト
+
+📁 参考フォルダには以下のファイルが利用可能：
+  • 1755581695189.kml           - 元のKMLデータ
+  • N03-23_36_230101.geojson    - 徳島市全域データ
+  • その他の地理参考データ
+
+改良されたディレクトリ構造により、複数のデータソースから
+最適なデータを自動選択して読み込みます。
+================================
+      `);
+    };
+
+    // データ初期化関数（改善版）
     const initializeGeoData = async () => {
       try {
-        console.log('✅ ハードコーディングされたKMLデータを使用');
+        console.log('🔄 地理データの初期化を開始...');
+        
+        // 1. まず参考フォルダのKMLファイルを試行
+        try {
+          console.log('📍 参考フォルダのKMLデータを読み込み試行...');
+          sanoAzaGeoJSON = await loadKMLDataToGeoJSON();
+          if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
+            console.log(`✅ KMLから${sanoAzaGeoJSON.features.length}の町域データを読み込み完了`);
+            return;
+          }
+        } catch (error) {
+          console.warn('⚠️ KML読み込み失敗:', error.message);
+        }
+        
+        // 2. 次に徳島市GeoJSONファイルを試行
+        try {
+          console.log('📍 徳島市GeoJSONデータを読み込み試行...');
+          const tokushimaData = await loadTokushimaGeoJSON();
+          if (tokushimaData && tokushimaData.features && tokushimaData.features.length > 0) {
+            sanoAzaGeoJSON = tokushimaData;
+            console.log(`✅ 徳島市GeoJSONから${sanoAzaGeoJSON.features.length}の地域データを読み込み完了`);
+            return;
+          }
+        } catch (error) {
+          console.warn('⚠️ 徳島市GeoJSON読み込み失敗:', error.message);
+        }
+        
+        // 3. 最後の手段として ハードコーディングデータを使用
+        console.log('📍 ハードコーディングされたデータを使用...');
         sanoAzaGeoJSON = getHardcodedKMLGeoJSON();
         
         if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
-          console.log(`✅ ${sanoAzaGeoJSON.features.length}の町域データを読み込みました`);
+          console.log(`✅ ${sanoAzaGeoJSON.features.length}の町域データを読み込みました（ハードコーディング版）`);
           console.log('読み込まれた町域:', sanoAzaGeoJSON.features.map(f => f.properties.name));
           
           // 各町域の座標点数を表示
@@ -1053,7 +1319,7 @@
             console.log(`  ${feature.properties.name}: ${coordCount}個の座標点`);
           });
         } else {
-          throw new Error('ハードコーディングデータが空');
+          throw new Error('全てのデータソースが利用できません');
         }
       } catch (error) {
         console.error('❌ データ読み込みエラー:', error);
@@ -1073,6 +1339,8 @@
     async function initializeMap() {
       try {
         console.log('🗺️ 地図初期化開始...');
+        console.log('📁 新しいディレクトリ構造を使用: 参考フォルダからデータを読み込み');
+        console.log('💡 デバッグコマンド利用可能: debugHelp() でヘルプを表示');
         
         // Leafletライブラリ確認
         if (typeof L === 'undefined') {
