@@ -132,23 +132,23 @@
     
     /* 地図直接色塗り用CSS */
     .leaflet-interactive {
-      mix-blend-mode: multiply;  /* 地図タイルとの色合成 */
+      mix-blend-mode: multiply;
     }
     
     .leaflet-overlay-pane svg {
       pointer-events: auto;
     }
     
-    /* 地図一体化用の境界線スタイル - より精密で自然な表現 */
+    /* 地図一体化用の境界線スタイル */
     path.leaflet-interactive {
       stroke-linecap: round;
       stroke-linejoin: round;
-      vector-effect: non-scaling-stroke; /* ズーム時の線幅を一定に保持 */
+      vector-effect: non-scaling-stroke;
     }
     
     /* OpenStreetMapとの境界線調和 */
     .leaflet-overlay-pane path {
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1)); /* 微細な影効果 */
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
     }
     
     #map { height: 100%; width: 100%; }
@@ -206,6 +206,17 @@
     }
     .info-title { font-size: 13px; font-weight: bold; color: var(--cyber-cyan); margin-bottom: 8px;}
     .info-item { font-size: 12px; margin-bottom: 6px;}
+    
+    .data-info {
+      background: rgba(255,193,7,0.1);
+      border: 1px solid rgba(255,193,7,0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 11px;
+      color: #ffc107;
+    }
+    
     @media (max-width: 1024px) {
       .sidebar { width: 220px; padding: 10px;}
       .details-panel { width: 220px; padding: 10px;}
@@ -231,17 +242,24 @@
     <div class="sidebar">
       <div class="header">
         <div class="logo">
-          <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
+          <div class="logo-icon">E</div>
           <div class="logo-text">EMOTERRAIN</div>
         </div>
         <div class="subtitle">徳島市感情マップ - 阿波踊りエリア</div>
         <div class="timestamp" id="timestamp"></div>
       </div>
+      
+      <div class="data-info">
+        <strong>⚠️ GitHub Pages対応版</strong><br>
+        ローカルファイルアクセス制限により、埋め込みデータを使用しています。
+        実際のKML/GeoJSONファイルを表示するには、ローカル環境で実行してください。
+      </div>
+      
       <div>
         <div class="section-title"><i class="fa-solid fa-info-circle"></i> データ仕様</div>
         <div style="font-size:11px; color:#9ca3af; margin-bottom:15px; line-height:1.4;">
-          <strong>国土数値情報準拠</strong><br>
-          実際の行政区画境界に基づく町・字単位の感情ヒートマップ。OpenStreetMapの地図データと境界線が一致した精密な区画分析。
+          本システムは政府統計データ（国土数値情報）に基づき、阿波踊り演舞場周辺8町域の感情分析を可視化します。
+          データは安全・統計・社会的要因を総合的に分析しています。
         </div>
       </div>
       <div>
@@ -251,8 +269,8 @@
       <div class="layer-controls">
         <div class="control-item">
           <span class="control-label">表示モード</span>
-          <select id="display-mode" title="表示モード選択" style="padding:4px 8px;border:1px solid rgba(6,182,212,0.3);background:rgba(75,85,99,0.5);color:#06b6d4;border-radius:4px;font-size:11px;">
-            <option value="boundary">境界線表示</option>
+          <select id="display-mode" style="background:#374151; color:#9ca3af; border:1px solid var(--border-cyan); padding:2px 6px; border-radius:4px; font-size:10px;">
+            <option value="boundary">境界線</option>
             <option value="heatmap">ヒートマップ</option>
           </select>
         </div>
@@ -266,11 +284,13 @@
         </div>
         <div class="control-item">
           <span class="control-label">透明度</span>
+          <span class="stat-value">70%</span>
         </div>
         <input type="range" min="0.2" max="1" step="0.01" value="0.7" class="opacity-slider" id="opacity-slider" title="透明度調整">
       </div>
       <div class="stats-panel" id="stats-panel"></div>
     </div>
+    
     <!-- Map Container -->
     <div class="map-container">
       <div id="map"></div>
@@ -278,736 +298,44 @@
         © <a href="https://openstreetmap.org" target="_blank" rel="noopener" style="color:#06b6d4;text-decoration:underline;">OpenStreetMap</a> contributors
       </div>
     </div>
+    
     <!-- Right Details Panel -->
     <div class="details-panel" id="details-panel"></div>
   </div>
+  
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
     // 感情カラー（強度別）
     const emotionColors = {
       joy: {
-        low: (opacity) => `rgba(34,197,94,${opacity * 0.4})`,      // 薄い緑
-        medium: (opacity) => `rgba(34,197,94,${opacity * 0.7})`,   // 中緑
-        high: (opacity) => `rgba(34,197,94,${opacity})`,           // 濃い緑
-        veryHigh: (opacity) => `rgba(21,128,61,${opacity})`        // 非常に濃い緑
+        low: (opacity) => `rgba(34,197,94,${opacity * 0.4})`,
+        medium: (opacity) => `rgba(34,197,94,${opacity * 0.7})`,
+        high: (opacity) => `rgba(34,197,94,${opacity})`,
+        veryHigh: (opacity) => `rgba(21,128,61,${opacity})`
       },
       calm: {
-        low: (opacity) => `rgba(59,130,246,${opacity * 0.4})`,     // 薄い青
-        medium: (opacity) => `rgba(59,130,246,${opacity * 0.7})`,  // 中青
-        high: (opacity) => `rgba(59,130,246,${opacity})`,          // 濃い青
-        veryHigh: (opacity) => `rgba(37,99,235,${opacity})`        // 非常に濃い青
+        low: (opacity) => `rgba(59,130,246,${opacity * 0.4})`,
+        medium: (opacity) => `rgba(59,130,246,${opacity * 0.7})`,
+        high: (opacity) => `rgba(59,130,246,${opacity})`,
+        veryHigh: (opacity) => `rgba(37,99,235,${opacity})`
       },
       excitement: {
-        low: (opacity) => `rgba(245,158,11,${opacity * 0.4})`,     // 薄いオレンジ
-        medium: (opacity) => `rgba(245,158,11,${opacity * 0.7})`,  // 中オレンジ
-        high: (opacity) => `rgba(245,158,11,${opacity})`,          // 濃いオレンジ
-        veryHigh: (opacity) => `rgba(217,119,6,${opacity})`        // 非常に濃いオレンジ
+        low: (opacity) => `rgba(251,146,60,${opacity * 0.4})`,
+        medium: (opacity) => `rgba(251,146,60,${opacity * 0.7})`,
+        high: (opacity) => `rgba(251,146,60,${opacity})`,
+        veryHigh: (opacity) => `rgba(217,119,6,${opacity})`
       },
       stress: {
-        low: (opacity) => `rgba(239,68,68,${opacity * 0.4})`,      // 薄い赤
-        medium: (opacity) => `rgba(239,68,68,${opacity * 0.7})`,   // 中赤
-        high: (opacity) => `rgba(239,68,68,${opacity})`,           // 濃い赤
-        veryHigh: (opacity) => `rgba(185,28,28,${opacity})`        // 非常に濃い赤
-      }
-    };
-    // 徳島市阿波踊り演舞場周辺区画GeoJSON（国土交通省・e-Stat公式データ活用）
-    // データソース：国土交通省 国土数値情報（行政区域データ）
-    // 「令和5年全国都道府県市区町村別面積調」（国土地理院）を加工
-    
-    // KMLデータから指定町域のGeoJSONを生成
-    const loadKMLDataToGeoJSON = async () => {
-      try {
-        // 対象町域の定義（リクエストされた8町域）
-        const targetDistricts = [
-          '両国本町', '寺島本町西１丁目', '寺島本町西２丁目', '寺島本町東１丁目', 
-          '寺島本町東２丁目', '南内町１丁目', '一番町', '籠屋町１丁目', '籠屋町２丁目',
-          '東船場町１丁目', '東船場町２丁目', '西船場町３丁目', '西船場町５丁目',
-          '八百屋町' // 紺屋町の代わりに近接する町域として
-        ];
-
-        // KMLファイルを読み込み（参考フォルダから）
-        const response = await fetch('./参考/1755581695189.kml');
-        const kmlText = await response.text();
-        const parser = new DOMParser();
-        const kmlDoc = parser.parseFromString(kmlText, 'text/xml');
-        
-        console.log('KML解析開始...');
-        const placemarks = kmlDoc.querySelectorAll('Placemark');
-        const features = [];
-        let processedCount = 0;
-        
-        console.log(`総Placemark数: ${placemarks.length}`);
-
-        for (let i = 0; i < placemarks.length; i++) {
-          const placemark = placemarks[i];
-          const nameElement = placemark.querySelector('name');
-          
-          if (nameElement) {
-            const districtName = nameElement.textContent.trim();
-            
-            // 対象町域のチェック（部分一致も含む）
-            const isTargetDistrict = targetDistricts.some(target => 
-              districtName.includes(target) || target.includes(districtName)
-            );
-            
-            if (isTargetDistrict) {
-              console.log(`対象町域発見: ${districtName}`);
-              const feature = convertPlacemarkToGeoJSON(placemark);
-              
-              if (feature) {
-                // ExtendedDataから統計データ取得
-                const schemaData = placemark.querySelector('ExtendedData SchemaData');
-                const statisticsData = {};
-                
-                if (schemaData) {
-                  const simpleDataElements = schemaData.querySelectorAll('SimpleData');
-                  simpleDataElements.forEach(dataElement => {
-                    const nameAttr = dataElement.getAttribute('name');
-                    const value = dataElement.textContent.trim();
-                    if (nameAttr && value) {
-                      statisticsData[nameAttr] = value;
-                    }
-                  });
-                  console.log(`${districtName}の統計データ:`, statisticsData);
-                }
-                
-                // 感情データ生成
-                const emotionData = generateEmotionDataForDistrict(districtName, statisticsData);
-                
-                // プロパティを統合
-                feature.properties = {
-                  ...feature.properties,
-                  type: getDistrictType(districtName),
-                  features: getDistrictFeatures(districtName),
-                  statistics: statisticsData,
-                  emotions: emotionData.emotions,
-                  incidents: emotionData.incidents,
-                  analysis: emotionData.analysis,
-                  population: parseInt(statisticsData.JINKO) || 0,
-                  households: parseInt(statisticsData.SETAI) || 0,
-                  area: parseFloat(statisticsData.AREA) || 0
-                };
-                
-                features.push(feature);
-                processedCount++;
-                console.log(`処理完了: ${districtName} (${processedCount}件目)`);
-              }
-            }
-          }
-          
-          // プログレス表示（1000件ごと）
-          if (i % 1000 === 0 && i > 0) {
-            console.log(`KML処理進捗: ${i}/${placemarks.length} (${(i/placemarks.length*100).toFixed(1)}%)`);
-          }
-        }
-
-        console.log(`✅ KML処理完了: ${processedCount}件の町域を抽出`);
-        console.log('抽出された町域:', features.map(f => f.properties.name));
-
-        return {
-          type: "FeatureCollection",
-          features: features,
-          metadata: {
-            source: 'jSTAT MAP KML Data',
-            processed: new Date().toISOString(),
-            totalFeatures: processedCount,
-            originalPlacemarks: placemarks.length
-          }
-        };
-
-      } catch (error) {
-        console.warn('KMLデータの読み込みエラー。フォールバックモードを使用:', error);
-        return getFallbackGeoJSON();
+        low: (opacity) => `rgba(248,113,113,${opacity * 0.4})`,
+        medium: (opacity) => `rgba(248,113,113,${opacity * 0.7})`,
+        high: (opacity) => `rgba(248,113,113,${opacity})`,
+        veryHigh: (opacity) => `rgba(220,38,38,${opacity})`
       }
     };
 
-    // PlacemarkをGeoJSON Featureに変換（KML統合版）
-    const convertPlacemarkToGeoJSON = (placemark) => {
-      try {
-        const nameElement = placemark.querySelector('name');
-        if (!nameElement) {
-          console.warn('Placemarkに名前がありません');
-          return null;
-        }
-
-        const districtName = nameElement.textContent.trim();
-        console.log(`処理中の町域: ${districtName}`);
-
-        // MultiGeometry または Polygon を探す
-        let coordinatesArray = [];
-        
-        // MultiGeometry内のPolygonを処理
-        const multiGeometry = placemark.querySelector('MultiGeometry');
-        if (multiGeometry) {
-          const polygons = multiGeometry.querySelectorAll('Polygon');
-          console.log(`${districtName}: MultiGeometry内に${polygons.length}個のPolygonを発見`);
-          
-          polygons.forEach((polygon, index) => {
-            const outerBoundary = polygon.querySelector('outerBoundaryIs LinearRing coordinates');
-            if (outerBoundary) {
-              const coords = parseKMLCoordinates(outerBoundary.textContent);
-              if (coords && coords.length >= 3) {
-                coordinatesArray.push(coords);
-                console.log(`  Polygon ${index + 1}: ${coords.length}個の座標点`);
-              }
-            }
-          });
-        } else {
-          // 単一のPolygonを処理
-          const polygon = placemark.querySelector('Polygon');
-          if (polygon) {
-            const outerBoundary = polygon.querySelector('outerBoundaryIs LinearRing coordinates');
-            if (outerBoundary) {
-              const coords = parseKMLCoordinates(outerBoundary.textContent);
-              if (coords && coords.length >= 3) {
-                coordinatesArray.push(coords);
-                console.log(`${districtName}: 単一Polygon、${coords.length}個の座標点`);
-              }
-            }
-          }
-        }
-
-        if (coordinatesArray.length === 0) {
-          console.warn(`${districtName}: 有効な座標データが見つかりませんでした`);
-          return null;
-        }
-
-        // GeoJSON Feature作成
-        const geometry = coordinatesArray.length === 1 ? {
-          type: "Polygon",
-          coordinates: coordinatesArray
-        } : {
-          type: "MultiPolygon", 
-          coordinates: coordinatesArray.map(coords => [coords])
-        };
-
-        return {
-          type: "Feature",
-          geometry: geometry,
-          properties: {
-            name: districtName,
-            coordinateCount: coordinatesArray.reduce((total, coords) => total + coords.length, 0)
-          }
-        };
-
-      } catch (error) {
-        console.error('Placemark変換エラー:', error);
-        return null;
-      }
-    };
-
-    // KML座標文字列を解析
-    const parseKMLCoordinates = (coordinatesText) => {
-      try {
-        return coordinatesText.trim()
-          .split(/\s+/)
-          .map(coord => {
-            const parts = coord.trim().split(',');
-            if (parts.length >= 2) {
-              const lng = parseFloat(parts[0]);
-              const lat = parseFloat(parts[1]);
-              if (!isNaN(lng) && !isNaN(lat)) {
-                return [lng, lat];
-              }
-            }
-            return null;
-          })
-          .filter(coord => coord !== null);
-      } catch (error) {
-        console.error('座標解析エラー:', error);
-        return [];
-      }
-    };
-
-    // 町域名に基づく感情データ生成
-    const generateEmotionDataForDistrict = (districtName, data) => {
-      const population = parseInt(data.JINKO) || 50;
-      const area = parseFloat(data.AREA) / 1000000 || 0.1;
-      const density = population / area;
-
-      // 町域の特性による感情パターン
-      let baseEmotions = {};
-      let primaryEmotion = 'calm';
-      let intensity = '中程度';
-      
-      if (districtName.includes('両国本町')) {
-        // 阿波踊りの中心地 - 高い興奮度と喜び
-        baseEmotions = { joy: 85, calm: 45, excitement: 90, stress: 40 };
-        primaryEmotion = 'excitement';
-        intensity = '非常に高';
-      } else if (districtName.includes('寺島本町')) {
-        // ビジネス・住宅地 - バランス型
-        baseEmotions = { joy: 65, calm: 70, excitement: 60, stress: 45 };
-        primaryEmotion = 'calm';
-        intensity = '中程度';
-      } else if (districtName.includes('一番町')) {
-        // 商業中心地 - 活気と軽度ストレス
-        baseEmotions = { joy: 75, calm: 55, excitement: 80, stress: 55 };
-        primaryEmotion = 'excitement';
-        intensity = '高';
-      } else if (districtName.includes('南内町')) {
-        // 住宅地 - 落ち着きと平穏
-        baseEmotions = { joy: 60, calm: 80, excitement: 45, stress: 35 };
-        primaryEmotion = 'calm';
-        intensity = '高';
-      } else if (districtName.includes('籠屋町') || districtName.includes('八百屋町')) {
-        // 伝統商業地 - 中程度の活気
-        baseEmotions = { joy: 70, calm: 60, excitement: 70, stress: 50 };
-        primaryEmotion = 'joy';
-        intensity = '中程度';
-      } else if (districtName.includes('船場町')) {
-        // 港湾・商業地 - 活発な経済活動
-        baseEmotions = { joy: 72, calm: 52, excitement: 75, stress: 58 };
-        primaryEmotion = 'excitement';
-        intensity = '高';
-      } else {
-        // デフォルト
-        baseEmotions = { joy: 60, calm: 65, excitement: 55, stress: 45 };
-        primaryEmotion = 'calm';
-      }
-
-      // 人口密度による調整
-      if (density > 2000) {
-        baseEmotions.stress += 10;
-        baseEmotions.excitement += 5;
-      } else if (density < 500) {
-        baseEmotions.calm += 10;
-        baseEmotions.stress -= 5;
-      }
-
-      // 範囲制限
-      Object.keys(baseEmotions).forEach(key => {
-        baseEmotions[key] = Math.max(0, Math.min(100, baseEmotions[key]));
-      });
-
-      return {
-        emotions: baseEmotions,
-        incidents: {
-          total: Math.floor(population / 5) + Math.floor(Math.random() * 10),
-          joy: Math.floor(baseEmotions.joy / 10),
-          calm: Math.floor(baseEmotions.calm / 10),
-          excitement: Math.floor(baseEmotions.excitement / 10),
-          stress: Math.floor(baseEmotions.stress / 10)
-        },
-        analysis: {
-          primary: primaryEmotion,
-          intensity: intensity,
-          factors: getDistrictFactors(districtName),
-          recommendations: getDistrictRecommendations(districtName)
-        }
-      };
-    };
-
-    // 町域タイプ判定
-    const getDistrictType = (districtName) => {
-      if (districtName.includes('両国本町')) return '文化・観光地域';
-      if (districtName.includes('寺島本町')) return 'ビジネス・住宅地域';
-      if (districtName.includes('一番町')) return '商業地域';
-      if (districtName.includes('南内町')) return '住宅地域';
-      if (districtName.includes('籠屋町') || districtName.includes('八百屋町')) return '伝統商業地域';
-      if (districtName.includes('船場町')) return '港湾・商業地域';
-      return '混合地域';
-    };
-
-    // 町域の主要施設
-    const getDistrictFeatures = (districtName) => {
-      const features = {
-        '両国本町': ['阿波おどり会館', '元町演舞場', '観光案内所', '商店街'],
-        '寺島本町西１丁目': ['JR徳島駅', 'オフィスビル', '銀行', '商業施設'],
-        '寺島本町西２丁目': ['徳島駅前', 'ホテル', '飲食店街', '交通拠点'],
-        '寺島本町東１丁目': ['住宅街', '小学校', '公園', '医院'],
-        '寺島本町東２丁目': ['マンション', 'コンビニ', '薬局', '郵便局'],
-        '一番町': ['商店街', 'デパート', 'カフェ', '文化施設'],
-        '南内町１丁目': ['住宅街', '保育園', '公民館', '商店'],
-        '籠屋町１丁目': ['老舗商店', '伝統工芸', '地域センター', '市場'],
-        '籠屋町２丁目': ['商店街', '銀行支店', '薬局', '飲食店'],
-        '東船場町１丁目': ['港湾施設', '倉庫街', '運送会社', '市場'],
-        '東船場町２丁目': ['漁協', '水産会社', '卸売市場', '冷蔵庫'],
-        '西船場町３丁目': ['商業港', '物流センター', 'オフィス', '倉庫'],
-        '西船場町５丁目': ['港湾管理', '海運会社', '貿易事務所', '税関'],
-        '八百屋町': ['市場', '青果店', '食材店', '老舗商店']
-      };
-      return features[districtName] || ['住宅街', '商店', '公園', '学校'];
-    };
-
-    // 町域の特性要因
-    const getDistrictFactors = (districtName) => {
-      const factors = {
-        '両国本町': ['阿波踊り拠点', '観光中心', '文化発信', '祭り文化'],
-        '寺島本町西１丁目': ['交通拠点', 'ビジネス中心', '利便性', '都市機能'],
-        '寺島本町西２丁目': ['駅前立地', 'ホテル街', '商業集積', 'アクセス'],
-        '一番町': ['商業中心', '買い物便利', '都市活力', '人口集積'],
-        '南内町１丁目': ['住宅密集', '生活利便', '地域コミュニティ', '静穏'],
-        '籠屋町１丁目': ['伝統文化', '地域商業', 'コミュニティ', '歴史'],
-        '東船場町１丁目': ['港湾立地', '物流拠点', '産業活動', '経済活力'],
-        '八百屋町': ['市場文化', '食文化', '伝統商業', '地域交流']
-      };
-      return factors[districtName] || ['住環境', '生活利便', 'コミュニティ', '安全性'];
-    };
-
-    // 町域への推奨事項
-    const getDistrictRecommendations = (districtName) => {
-      const recommendations = {
-        '両国本町': ['観光案内強化', '文化発信', '賑わい創出', '伝統継承'],
-        '寺島本町西１丁目': ['交通整備', 'ビジネス支援', '都市機能充実', '利便性向上'],
-        '一番町': ['商業活性化', '歩行環境整備', 'イベント開催', '集客力向上'],
-        '南内町１丁目': ['住環境保全', 'コミュニティ強化', '緑化推進', '安全確保'],
-        '籠屋町１丁目': ['伝統保護', '商業支援', '地域活性化', '文化継承'],
-        '東船場町１丁目': ['物流効率化', '産業支援', 'インフラ整備', '港湾発展']
-      };
-      return recommendations[districtName] || ['環境改善', '利便性向上', 'コミュニティ支援', '安全強化'];
-    };
-
-    // 区画インデックスに基づく感情データの生成
-    const getEmotionDataForIndex = (index) => {
-      const emotionDataSets = [
-        {
-          id: "36201_real_001",
-          name: "両国本町",
-          type: "商業・文化地域",
-          code: "36201001", 
-          population: 131,
-          area: 0.077,
-          density: 1701,
-          emotions: { joy: 85, calm: 45, excitement: 90, stress: 40 },
-          incidents: { total: 28, joy: 12, calm: 3, excitement: 11, stress: 2 },
-          features: ["元町演舞場", "阿波おどり会館", "商店街", "観光案内所"],
-          analysis: {
-            primary: "excitement",
-            intensity: "非常に高",
-            factors: ["阿波踊り拠点", "商業集積", "観光中心", "祭り文化"],
-            recommendations: ["観光案内強化", "文化発信", "賑わい創出"]
-          }
-        },
-        {
-          id: "36201_real_002",
-          name: "寺島本町東",
-          type: "商業地域",
-          code: "36201002",
-          population: 24,
-          area: 0.139,
-          density: 173,
-          emotions: { joy: 70, calm: 50, excitement: 80, stress: 35 },
-          incidents: { total: 22, joy: 9, calm: 4, excitement: 7, stress: 2 },
-          features: ["新町橋", "商店街", "飲食店街", "ホテル"],
-          analysis: {
-            primary: "excitement",
-            intensity: "高",
-            factors: ["繁華街", "飲食集積", "宿泊施設", "夜間活動"],
-            recommendations: ["治安対策", "清掃強化", "観光客対応"]
-          }
-        },
-        {
-          id: "36201_real_003",
-          name: "南内町",
-          type: "住宅地域",
-          code: "36201003",
-          population: 214,
-          area: 0.310,
-          density: 690,
-          emotions: { joy: 60, calm: 75, excitement: 35, stress: 20 },
-          incidents: { total: 8, joy: 4, calm: 3, excitement: 0, stress: 1 },
-          features: ["住宅街", "神社", "コミュニティセンター"],
-          analysis: {
-            primary: "calm",
-            intensity: "高",
-            factors: ["静寂住宅地", "伝統的街並", "コミュニティ結束"],
-            recommendations: ["街並み保護", "コミュニティ活動支援"]
-          }
-        },
-        {
-          id: "36201_real_004",
-          name: "一番町",
-          type: "商業・行政地域",
-          code: "36201004",
-          population: 33,
-          area: 0.117,
-          density: 282,
-          emotions: { joy: 75, calm: 50, excitement: 70, stress: 30 },
-          incidents: { total: 18, joy: 8, calm: 3, excitement: 6, stress: 1 },
-          features: ["県庁", "行政施設", "商業ビル", "官公庁街"],
-          analysis: {
-            primary: "joy",
-            intensity: "高",
-            factors: ["行政中枢", "商業集積", "アクセス良好", "都市機能"],
-            recommendations: ["行政サービス向上", "商業活性化", "街並み整備"]
-          }
-        },
-        {
-          id: "36201_real_005",
-          name: "籠屋町",
-          type: "伝統商業地域",
-          code: "36201005",
-          population: 69,
-          area: 0.056,
-          density: 1232,
-          emotions: { joy: 75, calm: 50, excitement: 70, stress: 30 },
-          incidents: { total: 18, joy: 8, calm: 3, excitement: 6, stress: 1 },
-          features: ["伝統工芸店", "老舗料亭", "阿波踊り関連店", "和菓子店"],
-          analysis: {
-            primary: "joy",
-            intensity: "高",
-            factors: ["伝統文化", "職人街", "観光魅力", "地域特産"],
-            recommendations: ["伝統技術継承", "観光商品開発", "街並み整備"]
-          }
-        },
-        {
-          id: "36201_real_006",
-          name: "紺屋町",
-          type: "歴史地区",
-          code: "36201006",
-          population: 380,
-          area: 0.240,
-          density: 1583,
-          emotions: { joy: 55, calm: 70, excitement: 60, stress: 15 },
-          incidents: { total: 12, joy: 5, calm: 4, excitement: 3, stress: 0 },
-          features: ["歴史的建造物", "美術館", "茶屋", "庭園"],
-          analysis: {
-            primary: "calm",
-            intensity: "高",
-            factors: ["歴史的価値", "文化施設", "静寂環境", "美的景観"],
-            recommendations: ["文化財保護", "静寂環境維持", "美観向上"]
-          }
-        },
-        {
-          id: "36201_real_007",
-          name: "東船場町",
-          type: "住宅地域",
-          code: "36201007",
-          population: 890,
-          area: 0.210,
-          density: 4238,
-          emotions: { joy: 70, calm: 65, excitement: 45, stress: 20 },
-          incidents: { total: 10, joy: 6, calm: 3, excitement: 1, stress: 0 },
-          features: ["住宅団地", "公園", "保育園", "商店"],
-          analysis: {
-            primary: "joy",
-            intensity: "高",
-            factors: ["子育て世帯", "生活便利", "緑地豊富", "安全環境"],
-            recommendations: ["子育て支援拡充", "公園整備", "防犯強化"]
-          }
-        },
-        {
-          id: "36201_real_008",
-          name: "西船場町",
-          type: "住宅地域",
-          code: "36201008",
-          population: 720,
-          area: 0.153,
-          density: 4706,
-          emotions: { joy: 65, calm: 80, excitement: 30, stress: 15 },
-          incidents: { total: 6, joy: 3, calm: 2, excitement: 1, stress: 0 },
-          features: ["静寂住宅地", "老人ホーム", "病院", "薬局"],
-          analysis: {
-            primary: "calm",
-            intensity: "非常に高",
-            factors: ["高齢者多", "医療充実", "静寂環境", "福祉施設"],
-            recommendations: ["高齢者支援", "医療連携", "バリアフリー化"]
-          }
-        },
-        {
-          id: "36201_real_009",
-          name: "新町橋",
-          type: "交通拠点",
-          code: "36201009",
-          population: 45,
-          area: 0.089,
-          density: 506,
-          emotions: { joy: 50, calm: 40, excitement: 85, stress: 60 },
-          incidents: { total: 15, joy: 5, calm: 2, excitement: 6, stress: 2 },
-          features: ["新町橋", "バス停", "歩道橋", "信号"],
-          analysis: {
-            primary: "excitement",
-            intensity: "高",
-            factors: ["交通要衝", "人流集中", "移動拠点", "接続性"],
-            recommendations: ["交通安全対策", "歩行者保護", "案内充実"]
-          }
-        }
-      ];
-      
-      return emotionDataSets[index] || emotionDataSets[0];
-    };
-
-    // 徳島市全域のGeoJSONデータを読み込む関数
-    const loadTokushimaGeoJSON = async () => {
-      try {
-        console.log('📍 徳島市GeoJSONデータを読み込み中...');
-        const response = await fetch('./参考/N03-23_36_230101.geojson');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const geoJsonData = await response.json();
-        console.log('✅ 徳島市GeoJSONデータ読み込み完了:', geoJsonData.features.length + '件');
-        return geoJsonData;
-      } catch (error) {
-        console.warn('⚠️ 徳島市GeoJSONデータの読み込みエラー:', error);
-        return null;
-      }
-    };
-
-    // フォールバック用のGeoJSONデータ
-    // フォールバック用のGeoJSONデータ
-    // 実際のKMLデータベース（ハードコーディング版）
-    const getHardcodedKMLGeoJSON = () => {
-      return {
-        "type": "FeatureCollection",
-        "features": [
-          // 一番町（実際のKMLデータより）
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "362010010",
-              "name": "一番町",
-              "type": "商業地域",
-              "code": "362010010",
-              "population": 47,
-              "households": 16,
-              "area": 11734.743,
-              "density": Math.round(47 / (11734.743 / 1000000)),
-              "emotions": { "joy": 75, "calm": 55, "excitement": 80, "stress": 55 },
-              "incidents": { "total": 12, "joy": 8, "calm": 2, "excitement": 9, "stress": 3 },
-              "features": ["商店街", "デパート", "カフェ", "文化施設"],
-              "analysis": {
-                "primary": "excitement",
-                "intensity": "高",
-                "factors": ["商業中心", "買い物便利", "都市活力", "人口集積"],
-                "recommendations": ["商業活性化", "歩行環境整備", "イベント開催", "集客力向上"]
-              }
-            },
-            "geometry": {
-              "type": "Polygon",
-              "coordinates": [[
-                [134.5545481215, 34.0720417068],
-                [134.5531924199, 34.0726333625],
-                [134.5526953250, 34.0719018123],
-                [134.5526105512, 34.0717269511],
-                [134.5529892892, 34.0715885400],
-                [134.5532203285, 34.0715319010],
-                [134.5534654601, 34.0714923979],
-                [134.5538700529, 34.0714802649],
-                [134.5538896327, 34.0719467137],
-                [134.5540834330, 34.0719652659],
-                [134.5545481215, 34.0720417068]
-              ]]
-            }
-          },
-          // 両国本町（実際のKMLデータより）
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "362010190",
-              "name": "両国本町",
-              "type": "商業・文化地域",
-              "code": "362010190",
-              "population": 131,
-              "households": 55,
-              "area": 18500.0,
-              "density": Math.round(131 / (18500.0 / 1000000)),
-              "emotions": { "joy": 85, "calm": 45, "excitement": 90, "stress": 40 },
-              "incidents": { "total": 28, "joy": 12, "calm": 3, "excitement": 11, "stress": 2 },
-              "features": ["阿波おどり会館", "元町演舞場", "観光案内所", "商店街"],
-              "analysis": {
-                "primary": "excitement",
-                "intensity": "非常に高",
-                "factors": ["阿波踊り拠点", "観光中心", "文化発信", "祭り文化"],
-                "recommendations": ["観光案内強化", "文化発信", "賑わい創出", "伝統継承"]
-              }
-            },
-            "geometry": {
-              "type": "Polygon",
-              "coordinates": [[
-                [134.5528539595, 34.0700178457],
-                [134.5529265933, 34.0702991660],
-                [134.5524716716, 34.0704294958],
-                [134.5524323239, 34.0704419210],
-                [134.5524494557, 34.0704857965],
-                [134.5525682367, 34.0707332489],
-                [134.5524932636, 34.0707486680],
-                [134.5524577064, 34.0706768494],
-                [134.5524527836, 34.0706663525],
-                [134.5522335364, 34.0707393584],
-                [134.5521521457, 34.0705776898],
-                [134.5521288227, 34.0705377566],
-                [134.5519975227, 34.0705792151],
-                [134.5516828904, 34.0700295044],
-                [134.5522530315, 34.0697988788],
-                [134.5527593585, 34.0697189631],
-                [134.5528539595, 34.0700178457]
-              ]]
-            }
-          },
-          // 寺島本町西１丁目（実際のKMLデータより）
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "362010060",
-              "name": "寺島本町西１丁目",
-              "type": "ビジネス・住宅地域",
-              "code": "362010060",
-              "population": 298,
-              "households": 142,
-              "area": 89432.0,
-              "density": Math.round(298 / (89432.0 / 1000000)),
-              "emotions": { "joy": 65, "calm": 70, "excitement": 60, "stress": 45 },
-              "incidents": { "total": 35, "joy": 9, "calm": 12, "excitement": 8, "stress": 6 },
-              "features": ["JR徳島駅", "オフィスビル", "銀行", "商業施設"],
-              "analysis": {
-                "primary": "calm",
-                "intensity": "中程度",
-                "factors": ["交通拠点", "ビジネス中心", "利便性", "都市機能"],
-                "recommendations": ["交通整備", "ビジネス支援", "都市機能充実", "利便性向上"]
-              }
-            },
-            "geometry": {
-              "type": "Polygon",
-              "coordinates": [[
-                [134.5498736974, 34.0741344769],
-                [134.5504815646, 34.0750565982],
-                [134.5505070142, 34.0750953325],
-                [134.5502110242, 34.0752326734],
-                [134.5500733434, 34.0752763916],
-                [134.5498100293, 34.0753661245],
-                [134.5496699126, 34.0754045801],
-                [134.5486543985, 34.0758595253],
-                [134.5481318107, 34.0749401175],
-                [134.5477642855, 34.0743285860],
-                [134.5477149846, 34.0742292023],
-                [134.5476755638, 34.0741417103],
-                [134.5476746294, 34.0740659308],
-                [134.5476931169, 34.0740139342],
-                [134.5474274257, 34.0738764624],
-                [134.5470625957, 34.0736820106],
-                [134.5468928386, 34.0736015604],
-                [134.5469165802, 34.0735781684],
-                [134.5470859722, 34.0733742293],
-                [134.5473002388, 34.0730960201],
-                [134.5476377324, 34.0726935754],
-                [134.5481820593, 34.0720285470],
-                [134.5485299767, 34.0715661395],
-                [134.5487479989, 34.0716957763],
-                [134.5489888913, 34.0718267644],
-                [134.5491288201, 34.0719862274],
-                [134.5493172870, 34.0722172564],
-                [134.5497124625, 34.0726757081],
-                [134.5505111371, 34.0736488102],
-                [134.5497774592, 34.0739768988],
-                [134.5498736974, 34.0741344769]
-              ]]
-            }
-          }
-        ],
-        "metadata": {
-          "source": "実際のKMLデータをハードコーディング",
-          "processed": "2025-01-19",
-          "totalFeatures": 3,
-          "note": "GitHub Pages対応のため、KMLから実座標を抽出してハードコーディング"
-        }
-      };
-    };
-
-    // GitHub Pages対応：埋め込みGeoJSONデータを使用
-    const getHardcodedKMLGeoJSON = () => {
+    // GitHub Pages対応：埋め込みGeoJSONデータ
+    const getEmbeddedGeoJSON = () => {
       return {
         "type": "FeatureCollection",
         "features": [
@@ -1023,8 +351,7 @@
               "incidents": { "total": 12, "safety": 8, "traffic": 3, "other": 1 },
               "analysis": { "primary": "excitement", "intensity": "非常に高", "factors": ["阿波踊り会場", "文化施設", "観光地"] },
               "features": ["阿波踊り演舞場", "文化センター", "観光案内所", "記念館"],
-              "recommendations": ["祭り期間中の交通整理", "観光案内強化", "文化イベント拡充"],
-              "boundaryQuality": "高精度"
+              "recommendations": ["祭り期間中の交通整理", "観光案内強化", "文化イベント拡充"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1043,8 +370,7 @@
               "incidents": { "total": 8, "safety": 5, "traffic": 2, "other": 1 },
               "analysis": { "primary": "calm", "intensity": "高", "factors": ["住宅地", "ビジネス街", "交通利便性"] },
               "features": ["オフィスビル", "住宅", "小学校", "商店街"],
-              "recommendations": ["住環境改善", "交通安全対策", "地域コミュニティ強化"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["住環境改善", "交通安全対策", "地域コミュニティ強化"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1063,8 +389,7 @@
               "incidents": { "total": 6, "safety": 4, "traffic": 1, "other": 1 },
               "analysis": { "primary": "calm", "intensity": "高", "factors": ["静かな住宅地", "公園", "安全性"] },
               "features": ["住宅", "公園", "保育園", "診療所"],
-              "recommendations": ["緑地整備", "子育て支援", "高齢者対策"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["緑地整備", "子育て支援", "高齢者対策"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1083,8 +408,7 @@
               "incidents": { "total": 9, "safety": 6, "traffic": 2, "other": 1 },
               "analysis": { "primary": "joy", "intensity": "高", "factors": ["商業施設", "活気", "利便性"] },
               "features": ["商業施設", "住宅", "銀行", "郵便局"],
-              "recommendations": ["商業活性化", "交通整理", "防犯強化"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["商業活性化", "交通整理", "防犯強化"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1103,8 +427,7 @@
               "incidents": { "total": 7, "safety": 5, "traffic": 1, "other": 1 },
               "analysis": { "primary": "calm", "intensity": "高", "factors": ["バランス良い住環境", "商業利便性"] },
               "features": ["住宅", "小規模商店", "公民館", "神社"],
-              "recommendations": ["地域活性化", "伝統保存", "コミュニティ支援"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["地域活性化", "伝統保存", "コミュニティ支援"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1123,8 +446,7 @@
               "incidents": { "total": 4, "safety": 2, "traffic": 1, "other": 1 },
               "analysis": { "primary": "calm", "intensity": "非常に高", "factors": ["静かな住宅地", "低犯罪率", "自然環境"] },
               "features": ["住宅", "小公園", "集会所", "寺院"],
-              "recommendations": ["住環境保持", "高齢者支援", "防災対策"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["住環境保持", "高齢者支援", "防災対策"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1143,8 +465,7 @@
               "incidents": { "total": 15, "safety": 10, "traffic": 4, "other": 1 },
               "analysis": { "primary": "excitement", "intensity": "高", "factors": ["商業中心地", "人流集中", "活気"] },
               "features": ["百貨店", "商店街", "レストラン", "駅"],
-              "recommendations": ["交通渋滞対策", "商業活性化", "安全対策強化"],
-              "boundaryQuality": "高精度"
+              "recommendations": ["交通渋滞対策", "商業活性化", "安全対策強化"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1163,8 +484,7 @@
               "incidents": { "total": 5, "safety": 3, "traffic": 1, "other": 1 },
               "analysis": { "primary": "calm", "intensity": "高", "factors": ["伝統的商業", "地域密着", "安定性"] },
               "features": ["伝統商店", "職人工房", "市場", "神社"],
-              "recommendations": ["伝統産業支援", "観光化推進", "後継者育成"],
-              "boundaryQuality": "中精度"
+              "recommendations": ["伝統産業支援", "観光化推進", "後継者育成"]
             },
             "geometry": {
               "type": "Polygon",
@@ -1176,232 +496,72 @@
           "source": "GitHub Pages Embedded Data",
           "description": "徳島市阿波踊り演舞場周辺8町域の感情分析データ",
           "created": new Date().toISOString(),
-          "version": "1.0.0-github-pages",
-          "note": "GitHub Pages CORS制限回避のため埋め込みデータを使用"
+          "version": "1.0.0-github-pages"
         }
       };
     };
 
-    // 実際のGISデータまたはフォールバックデータを取得
-    let sanoAzaGeoJSON;
-    
-    // デバッグ用: KMLデータ読み込み確認
-    window.debugKML = async () => {
-      try {
-        console.log('=== KMLデバッグ開始 ===');
-        const response = await fetch('./参考/1755581695189.kml');
-        console.log('ファイル読み込み:', response.ok ? '成功' : `失敗 ${response.status}`);
-        
-        if (response.ok) {
-          const text = await response.text();
-          console.log('ファイルサイズ:', text.length, '文字');
-          console.log('最初の500文字:', text.substring(0, 500));
-          
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, 'text/xml');
-          const placemarks = doc.querySelectorAll('Placemark');
-          console.log('総Placemark数:', placemarks.length);
-          
-          // 最初のPlacemarkの詳細
-          if (placemarks[0]) {
-            const first = placemarks[0];
-            const name = first.querySelector('name')?.textContent;
-            console.log('最初のPlacemark:', name);
-            const coords = first.querySelector('coordinates');
-            if (coords) {
-              const coordText = coords.textContent.trim().substring(0, 200);
-              console.log('座標データ（最初の200文字）:', coordText);
-            }
-          }
-        }
-        console.log('=== KMLデバッグ終了 ===');
-      } catch (error) {
-        console.error('デバッグエラー:', error);
-      }
-    };
-
-    // 現在のデータ状態をデバッグする関数
-    window.debugCurrentData = () => {
-      console.log('=== 現在のデータ状態 ===');
-      if (sanoAzaGeoJSON) {
-        console.log('データタイプ:', sanoAzaGeoJSON.type);
-        console.log('フィーチャー数:', sanoAzaGeoJSON.features ? sanoAzaGeoJSON.features.length : 0);
-        console.log('メタデータ:', sanoAzaGeoJSON.metadata);
-        
-        if (sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
-          console.log('含まれる地域:');
-          sanoAzaGeoJSON.features.forEach((feature, index) => {
-            const name = feature.properties.name || feature.properties.N03_004 || `地域${index+1}`;
-            const coords = feature.geometry.coordinates[0];
-            const coordCount = coords ? coords.length : 0;
-            console.log(`  ${name}: ${coordCount}個の座標点`);
-            
-            if (coordCount > 0) {
-              const firstCoord = coords[0];
-              const lastCoord = coords[coords.length - 1];
-              console.log(`    最初の座標: [${firstCoord[0].toFixed(6)}, ${firstCoord[1].toFixed(6)}]`);
-              console.log(`    最後の座標: [${lastCoord[0].toFixed(6)}, ${lastCoord[1].toFixed(6)}]`);
-            }
-          });
-        }
-      } else {
-        console.log('データが読み込まれていません');
-      }
-      console.log('=== デバッグ終了 ===');
-    };
-
-    // デバッグヘルプ表示
-    window.debugHelp = () => {
-      console.log(`
-=== EMOTERRAIN デバッグコマンド ===
-利用可能なデバッグ関数：
-
-🔍 debugKML()           - KMLファイルの読み込み状況を確認
-📊 debugCurrentData()   - 現在読み込まれているデータの詳細を表示
-🗺️  debugHelp()         - このヘルプを表示
-
-使用例：
-  > debugCurrentData()   // 現在のデータ状況を確認
-  > debugKML()          // KMLファイルの読み込みテスト
-
-📁 参考フォルダには以下のファイルが利用可能：
-  • 1755581695189.kml           - 元のKMLデータ
-  • N03-23_36_230101.geojson    - 徳島市全域データ
-  • その他の地理参考データ
-
-改良されたディレクトリ構造により、複数のデータソースから
-最適なデータを自動選択して読み込みます。
-================================
-      `);
-    };
-
-    // データ初期化関数（改善版）
-    const initializeGeoData = async () => {
-      try {
-        console.log('🔄 地理データの初期化を開始...');
-        
-        // 1. まず参考フォルダのKMLファイルを試行
-        try {
-          console.log('📍 参考フォルダのKMLデータを読み込み試行...');
-          sanoAzaGeoJSON = await loadKMLDataToGeoJSON();
-          if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
-            console.log(`✅ KMLから${sanoAzaGeoJSON.features.length}の町域データを読み込み完了`);
-            return;
-          }
-        } catch (error) {
-          console.warn('⚠️ KML読み込み失敗:', error.message);
-        }
-        
-        // 2. 次に徳島市GeoJSONファイルを試行
-        try {
-          console.log('📍 徳島市GeoJSONデータを読み込み試行...');
-          const tokushimaData = await loadTokushimaGeoJSON();
-          if (tokushimaData && tokushimaData.features && tokushimaData.features.length > 0) {
-            sanoAzaGeoJSON = tokushimaData;
-            console.log(`✅ 徳島市GeoJSONから${sanoAzaGeoJSON.features.length}の地域データを読み込み完了`);
-            return;
-          }
-        } catch (error) {
-          console.warn('⚠️ 徳島市GeoJSON読み込み失敗:', error.message);
-        }
-        
-        // 3. 最後の手段として ハードコーディングデータを使用
-        console.log('📍 ハードコーディングされたデータを使用...');
-        sanoAzaGeoJSON = getHardcodedKMLGeoJSON();
-        
-        if (sanoAzaGeoJSON && sanoAzaGeoJSON.features && sanoAzaGeoJSON.features.length > 0) {
-          console.log(`✅ ${sanoAzaGeoJSON.features.length}の町域データを読み込みました（ハードコーディング版）`);
-          console.log('読み込まれた町域:', sanoAzaGeoJSON.features.map(f => f.properties.name));
-          
-          // 各町域の座標点数を表示
-          sanoAzaGeoJSON.features.forEach(feature => {
-            const coordCount = feature.geometry.coordinates[0].length;
-            console.log(`  ${feature.properties.name}: ${coordCount}個の座標点`);
-          });
-        } else {
-          throw new Error('全てのデータソースが利用できません');
-        }
-      } catch (error) {
-        console.error('❌ データ読み込みエラー:', error);
-        // 最後の手段として空のGeoJSONを返す
-        sanoAzaGeoJSON = {
-          type: "FeatureCollection",
-          features: [],
-          metadata: { source: "empty", error: error.message }
-        };
-      }
+    // 町域タイプ判定
+    const getDistrictType = (districtName) => {
+      const types = {
+        '両国本町': '文化・観光地域',
+        '寺島本町西１丁目': 'ビジネス・住宅地域',
+        '寺島本町西２丁目': '住宅地域',
+        '寺島本町東１丁目': '商業・住宅地域',
+        '寺島本町東２丁目': '住宅・商業地域',
+        '南内町１丁目': '住宅地域',
+        '一番町': '商業地域',
+        '八百屋町': '伝統商業地域'
+      };
+      return types[districtName] || '混合地域';
     };
 
     // グローバル変数
     let map, emotionLayer, selectedEmotion = 'all', selectedArea = null, showEmotionLayer = true, showLabels = true, layerOpacity = 0.7, displayMode = 'boundary';
+    let sanoAzaGeoJSON;
 
-    // 地図初期化（徳島市阿波踊り演舞場付近）
-    async function initializeMap() {
+    // 地図初期化（GitHub Pages対応）
+    function initializeMap() {
       try {
-        console.log('🗺️ 地図初期化開始...');
-        console.log('📁 新しいディレクトリ構造を使用: 参考フォルダからデータを読み込み');
-        console.log('💡 デバッグコマンド利用可能: debugHelp() でヘルプを表示');
+        console.log('🗺️ GitHub Pages対応地図初期化開始...');
         
-        // Leafletライブラリ確認
-        if (typeof L === 'undefined') {
-          throw new Error('Leafletライブラリが読み込まれていません');
-        }
-        console.log('✅ Leafletライブラリ読み込み完了:', L.version);
+        // データ読み込み
+        sanoAzaGeoJSON = getEmbeddedGeoJSON();
+        console.log('✅ 埋め込みGeoJSONデータ読み込み完了:', sanoAzaGeoJSON);
         
-        // 地図要素確認
-        const mapElement = document.getElementById('map');
-        if (!mapElement) {
-          throw new Error('map要素が見つかりません');
-        }
-        console.log('✅ map要素確認:', mapElement);
-        
-        // データ初期化
-        console.log('📊 GISデータ初期化開始...');
-        await initializeGeoData();
-        console.log('✅ GISデータ初期化完了');
-        
-        // 地図作成
-        console.log('🌍 Leaflet地図作成開始...');
+        // 地図作成（徳島市中心部）
         map = L.map('map', {
-          center: [34.0646, 134.5594], // 徳島市中心部・阿波おどり会館付近
-          zoom: 16,
-          minZoom: 14,
-          maxZoom: 19,
-          zoomControl: true,
-          attributionControl: false,
           preferCanvas: true
-        });
-        console.log('✅ 地図オブジェクト作成完了:', map);
+        }).setView([34.0658, 134.5591], 15);
         
-        // タイルレイヤー追加
-        console.log('🗺️ OSMタイルレイヤー追加...');
-        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-          detectRetina: true,
+        // OSMタイルレイヤー追加
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
           crossOrigin: true
-        });
-        tileLayer.addTo(map);
-        console.log('✅ タイルレイヤー追加完了');
+        }).addTo(map);
         
-        // 感情データ読み込み
-        console.log('😊 感情データレイヤー読み込み...');
+        // 感情データレイヤー読み込み
         loadEmotionData();
-        console.log('✅ 地図初期化完了！');
+        
+        console.log('✅ GitHub Pages対応地図初期化完了！');
         
       } catch (error) {
         console.error('❌ 地図初期化エラー:', error);
-        console.error('エラー詳細:', error.stack);
         
         // エラー情報を画面に表示
         const mapElement = document.getElementById('map');
         if (mapElement) {
           mapElement.innerHTML = `
-            <div style="padding: 20px; background: #fee; color: #c00; font-family: monospace;">
-              <h3>🚫 地図初期化エラー</h3>
-              <p><strong>エラー:</strong> ${error.message}</p>
-              <p><strong>時刻:</strong> ${new Date().toLocaleString()}</p>
-              <p>詳細はブラウザのコンソール（F12）を確認してください。</p>
+            <div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;background:#1a1a2e;color:#fff;">
+              <div style="font-size:48px;color:#f59e0b;margin-bottom:20px;">⚠️</div>
+              <h2 style="color:#06b6d4;margin-bottom:15px;">地図読み込みエラー</h2>
+              <p style="color:#9ca3af;text-align:center;max-width:400px;line-height:1.6;">
+                地図の初期化に失敗しました。<br>
+                ブラウザを更新するか、インターネット接続を確認してください。
+              </p>
+              <pre style="background:#374151;padding:10px;border-radius:4px;font-size:12px;color:#f59e0b;margin-top:15px;overflow:auto;max-width:90%;">
+${error.message}
+              </pre>
             </div>
           `;
         }
@@ -1413,122 +573,107 @@
       try {
         console.log('😊 感情データレイヤー作成開始...');
         
-        // データ確認
-        if (!sanoAzaGeoJSON) {
-          throw new Error('sanoAzaGeoJSONが未定義です');
-        }
-        console.log('✅ sanoAzaGeoJSON確認:', sanoAzaGeoJSON);
-        
-        if (!sanoAzaGeoJSON.features || sanoAzaGeoJSON.features.length === 0) {
-          throw new Error('GeoJSONフィーチャーが空です');
-        }
-        console.log(`✅ ${sanoAzaGeoJSON.features.length}個のフィーチャーを確認`);
-        
-        // 地図オブジェクト確認
-        if (!map) {
-          throw new Error('地図オブジェクトが未定義です');
+        if (!sanoAzaGeoJSON || !sanoAzaGeoJSON.features) {
+          throw new Error('GeoJSONデータが存在しません');
         }
         
         // 既存レイヤー削除
-        if (emotionLayer) { 
-          console.log('🗑️ 既存レイヤーを削除');
-          map.removeLayer(emotionLayer); 
+        if (emotionLayer) {
+          map.removeLayer(emotionLayer);
         }
         
         // GeoJSONレイヤー作成
-        console.log('🌍 GeoJSONレイヤー作成...');
         emotionLayer = L.geoJSON(sanoAzaGeoJSON, {
-          style: feature => getEmotionStyle(feature),
-          smoothFactor: 0.5,
-          precision: 6,
-          onEachFeature: (feature, layer) => {
-            layer.on({
-              mouseover: function(e) {
-                this.setStyle({ 
-                  weight: 1.5, 
-                  color: 'rgba(255,255,255,0.8)', 
-                  opacity: 0.8,
-                  dashArray: '3, 3',
-                  fillOpacity: Math.min(layerOpacity + 0.2, 0.8),
-                  lineCap: 'round',
-                  lineJoin: 'round'
-                });
-                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) { 
-                  this.bringToFront(); 
-                }
-              },
-              mouseout: function(e) {
-                emotionLayer.resetStyle(e.target);
-              },
-              click: function(e) {
-                selectArea(feature);
-              // 政府データの境界に合わせたズーム調整
-              map.fitBounds(layer.getBounds(), { maxZoom: 17, padding: [8, 8] });
-            }
-          });
-          // 政府統計データの詳細情報を含むポップアップ
-          layer.bindPopup(createPopupContent(feature), { 
-            closeButton: true, 
-            minWidth: 240, 
-            className: 'government-data-popup' 
-          });
-        },
-        filter: feature => {
-          if (selectedEmotion === 'all') return true;
-          return feature.properties.analysis.primary === selectedEmotion;
+          style: getEmotionStyle,
+          onEachFeature: function(feature, layer) {
+            // ポップアップ設定
+            layer.bindPopup(createPopupContent(feature), {
+              maxWidth: 300,
+              className: 'emotion-popup'
+            });
+            
+            // クリックイベント
+            layer.on('click', function() {
+              selectArea(feature);
+            });
+            
+            // ホバーイベント
+            layer.on('mouseover', function(e) {
+              layer.setStyle({
+                weight: 3,
+                fillOpacity: Math.min(layerOpacity + 0.2, 1)
+              });
+            });
+            
+            layer.on('mouseout', function(e) {
+              layer.setStyle(getEmotionStyle(feature));
+            });
+          },
+          filter: feature => {
+            if (selectedEmotion === 'all') return true;
+            return feature.properties.analysis.primary === selectedEmotion;
+          }
+        });
+        
+        // レイヤーを地図に追加
+        if (showEmotionLayer) {
+          emotionLayer.addTo(map);
         }
-      });
-      
-      // レイヤーを地図に追加
-      emotionLayer.addTo(map);
-      console.log('✅ GeoJSONレイヤー地図に追加完了');
-      
-      // ラベル表示
-      if (showLabels) {
-        console.log('🏷️ ラベル追加...');
-        addLabels();
+        
+        // ラベル表示
+        if (showLabels) {
+          addLabels();
+        }
+        
+        console.log('✅ 感情データレイヤー作成完了！');
+        
+      } catch (error) {
+        console.error('❌ 感情データレイヤー作成エラー:', error);
       }
-      
-      console.log('✅ 感情データレイヤー作成完了！');
-      
-    } catch (error) {
-      console.error('❌ 感情データレイヤー作成エラー:', error);
-      console.error('エラー詳細:', error.stack);
-    }
     }
 
     // ラベル描画
     function addLabels() {
-      sanoAzaGeoJSON.features.forEach(f => {
-        const center = getPolygonCenter(f.geometry.coordinates[0]);
-        L.marker([center[1], center[0]], {
-          icon: L.divIcon({
-            className: 'custom-label',
-            html: `<span style="background:rgba(6,182,212,0.7);color:#fff;padding:2px 8px;border-radius:6px;font-size:11px;">${f.properties.name}</span>`,
-            iconSize: [60, 18],
-            iconAnchor: [30, 9]
-          })
-        }).addTo(map);
+      if (!sanoAzaGeoJSON || !sanoAzaGeoJSON.features) return;
+      
+      sanoAzaGeoJSON.features.forEach(feature => {
+        if (feature.geometry && feature.geometry.coordinates) {
+          const coords = feature.geometry.coordinates[0];
+          const center = getPolygonCenter(coords);
+          
+          const marker = L.marker([center[1], center[0]], {
+            icon: L.divIcon({
+              className: 'district-label',
+              html: `<div style="background:rgba(26,26,46,0.9);color:#06b6d4;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:bold;border:1px solid rgba(6,182,212,0.3);white-space:nowrap;">${feature.properties.name}</div>`,
+              iconSize: [100, 20],
+              iconAnchor: [50, 10]
+            }),
+            interactive: false
+          });
+          
+          if (showLabels) {
+            marker.addTo(map);
+          }
+        }
       });
     }
 
     // ポリゴン中心計算
     function getPolygonCenter(coords) {
-      let x=0, y=0, n=coords.length;
-      coords.forEach(c => { x+=c[0]; y+=c[1]; });
+      let x = 0, y = 0, n = coords.length;
+      coords.forEach(c => { x += c[0]; y += c[1]; });
       return [x/n, y/n];
     }
 
-    // ポリゴンスタイル（地図直接色塗り方式）
+    // ポリゴンスタイル
     function getEmotionStyle(feature) {
       const emotion = feature.properties.analysis.primary;
       const intensity = feature.properties.analysis.intensity;
-      const score = feature.properties.emotions[emotion];
       
-      // 強度に応じた色選択
       let colorLevel;
       switch(intensity) {
         case '低': colorLevel = 'low'; break;
+        case '中程度': 
         case '中': colorLevel = 'medium'; break;
         case '高': colorLevel = 'high'; break;
         case '非常に高': colorLevel = 'veryHigh'; break;
@@ -1536,91 +681,63 @@
       }
       
       if (displayMode === 'heatmap') {
-        // ヒートマップモード：地図と完全一体化
         return {
-          color: 'rgba(255,255,255,0.05)',   // 境界線をほぼ非表示に
-          weight: 0.2,                       // 境界線を極細に
-          opacity: 0.05,                     // 境界線透明度を極低に
-          fillColor: emotionColors[emotion][colorLevel](Math.min(layerOpacity + 0.1, 0.6)),
-          fillOpacity: Math.min(layerOpacity + 0.1, 0.6),  // 地図が透けて見える程度に
-          dashArray: null,
-          interactive: true,
-          smoothFactor: 1.0,                 // 滑らかな境界線
-          lineCap: 'round',
-          lineJoin: 'round'
+          fillColor: emotionColors[emotion][colorLevel](1),
+          weight: 1,
+          opacity: 0.8,
+          color: '#ffffff',
+          fillOpacity: layerOpacity,
+          dashArray: null
         };
       } else {
-        // 境界線モード：OpenStreetMapの道路・区画線と調和する精密表現
         return {
-          color: 'rgba(102,102,102,0.2)',    // より薄いグレー系境界線
-          weight: 0.6,                       // 非常に細い境界線
-          opacity: 0.3,                      // 境界線を薄く
-          fillColor: emotionColors[emotion][colorLevel](layerOpacity * 0.7),
-          fillOpacity: layerOpacity * 0.5,   // 地図の詳細がはっきり見える透明度
-          dashArray: null,
-          interactive: true,
-          smoothFactor: 1.0,                 // 滑らかな境界線
-          lineCap: 'round',
-          lineJoin: 'round'
+          fillColor: emotionColors[emotion][colorLevel](1),
+          weight: 2,
+          opacity: 0.9,
+          color: emotionColors[emotion][colorLevel](1),
+          fillOpacity: layerOpacity * 0.6,
+          dashArray: null
         };
       }
     }
 
-    // ポップアップ内容（政府統計データ統合版）
+    // ポップアップ内容
     function createPopupContent(feature) {
       const p = feature.properties;
       const primaryEmotion = p.analysis.primary;
-      const intensity = p.analysis.intensity;
-      
-      // 政府統計データの品質情報表示
-      const boundaryInfo = p.boundaryQuality ? `
-        <div class="popup-section" style="background:rgba(6,182,212,0.1); padding:6px; border-radius:3px; margin-bottom:8px;">
-          <div style="font-size:10px; color:#06b6d4;">
-            <i class="fa-solid fa-certificate"></i> 政府統計データ (精度: サブメートル級)<br>
-            座標点数: ${p.coordinateCount || 'N/A'}点 | データ年度: 2023年
-          </div>
-        </div>
-      ` : '';
       
       return `
-        ${boundaryInfo}
         <div class="popup-title">${p.name} <span style="color:#9ca3af;">(${p.type})</span></div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-map-location-dot"></i> 行政区画情報</div>
-          <div class="popup-value">
-            区画コード: <strong>${p.code}</strong><br>
-            人口: <strong>${p.population}人</strong> | 面積: <strong>${p.area}km²</strong><br>
-            人口密度: <strong>${p.density.toLocaleString()}人/km²</strong>
-          </div>
+          <div class="popup-label">主要感情・強度</div>
+          <div class="popup-value" style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)} - ${p.analysis.intensity}</div>
         </div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-face-smile"></i> 感情分析結果</div>
-          ${Object.entries(p.emotions).map(([k,v])=>`
+          <div class="popup-label">感情スコア</div>
+          ${Object.entries(p.emotions).map(([emotion, score]) => `
             <div class="emotion-score">
-              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>
-              ${capitalize(k)}: <span style="font-weight:${k === primaryEmotion ? 'bold' : 'normal'}; color:${k === primaryEmotion ? '#06b6d4' : '#fff'}">${v}</span>
+              <span><div class="emotion-indicator" style="background-color:${getEmotionColorForPopup(emotion, score)}"></div>${capitalize(emotion)}</span>
+              <span style="color:${getEmotionColorForPopup(emotion, score)}">${score}</span>
             </div>
           `).join('')}
-          <div style="margin-top:8px; font-size:11px;">
-            主要感情: <strong style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)} (${intensity})</strong>
-          </div>
         </div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-chart-bar"></i> 事案統計</div>
-          <div class="popup-value">総事案数: <strong>${p.incidents.total}件</strong></div>
+          <div class="popup-label">基本情報</div>
+          <div>人口: <span class="popup-value">${p.population.toLocaleString()}人</span></div>
+          <div>世帯数: <span class="popup-value">${p.households.toLocaleString()}世帯</span></div>
+          <div>面積: <span class="popup-value">${p.area}km²</span></div>
         </div>
         
         <div class="popup-section">
-          <div class="popup-label"><i class="fa-solid fa-building"></i> 主要施設</div>
-          <div>${p.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
+          <div class="popup-label">主要施設</div>
+          <div>${p.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}</div>
         </div>
       `;
     }
-    
-    // ポップアップ用色取得
+
     function getEmotionColorForPopup(emotion, score) {
       if (score >= 70) return emotionColors[emotion].veryHigh(1);
       if (score >= 60) return emotionColors[emotion].high(1);
@@ -1628,18 +745,19 @@
       return emotionColors[emotion].low(1);
     }
 
-    // 詳細パネル更新（警視庁マップ風）
+    // 詳細パネル更新
     function updateDetailsPanel() {
       const panel = document.getElementById('details-panel');
       if (!selectedArea) {
         panel.innerHTML = `
           <div class="no-selection">
-            <div class="no-selection-icon"><i class="fa-solid fa-map"></i></div>
-            <div class="no-selection-text">区画を選択すると詳細分析が表示されます</div>
+            <div class="no-selection-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="no-selection-text">地図上の区画をクリックして<br>詳細情報を表示</div>
           </div>
         `;
         return;
       }
+      
       const p = selectedArea.properties;
       const primaryEmotion = p.analysis.primary;
       
@@ -1647,54 +765,37 @@
         <div class="details-title">${p.name}</div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-map-location-dot"></i> 行政区画情報</div>
-          <div class="info-item">区画名: <strong>${p.name}</strong></div>
-          <div class="info-item">区画コード: <strong>${p.code}</strong></div>
-          <div class="info-item">地域分類: <strong>${p.type}</strong></div>
-          <div class="info-item">人口: <strong>${p.population.toLocaleString()}人</strong></div>
-          <div class="info-item">面積: <strong>${p.area}km²</strong></div>
-          <div class="info-item">人口密度: <strong>${p.density.toLocaleString()}人/km²</strong></div>
+          <div class="info-title">基本情報</div>
+          <div class="info-item">地域タイプ: ${p.type}</div>
+          <div class="info-item">人口: ${p.population.toLocaleString()}人</div>
+          <div class="info-item">世帯数: ${p.households.toLocaleString()}世帯</div>
+          <div class="info-item">面積: ${p.area}km²</div>
+          <div class="info-item">人口密度: ${Math.round(p.population/p.area).toLocaleString()}人/km²</div>
         </div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-face-smile"></i> 感情分析</div>
-          <div class="info-item" style="margin-bottom:10px;">
-            主要感情: <span style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])};font-weight:bold;font-size:14px;">
-              ${capitalize(primaryEmotion)} (${p.analysis.intensity})
-            </span>
-          </div>
-          ${Object.entries(p.emotions).map(([k,v])=>`
-            <div class="emotion-score" style="margin-bottom:6px;">
-              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>
-              ${capitalize(k)}: <span style="font-weight:${k === primaryEmotion ? 'bold' : 'normal'}">${v}</span>
-            </div>
-          `).join('')}
+          <div class="info-title">感情分析結果</div>
+          <div class="info-item">主要感情: <span style="color:${getEmotionColorForPopup(primaryEmotion, p.emotions[primaryEmotion])}">${capitalize(primaryEmotion)}</span></div>
+          <div class="info-item">強度レベル: ${p.analysis.intensity}</div>
+          <div class="info-item">影響要因: ${p.analysis.factors.join(', ')}</div>
         </div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-chart-bar"></i> 事案統計</div>
-          <div class="info-item">総事案数: <strong style="color:#06b6d4;">${p.incidents.total}件</strong></div>
-          ${Object.entries(p.incidents).filter(([k]) => k !== 'total').map(([k,v])=>`
-            <div class="info-item" style="font-size:11px;">
-              <span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, 50)}"></span>
-              ${capitalize(k)}: ${v}件
-            </div>
-          `).join('')}
+          <div class="info-title">主要施設</div>
+          ${p.features.map(f => `<div class="info-item">• ${f}</div>`).join('')}
         </div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-location-dot"></i> 主要施設</div>
-          <div>${p.features.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
+          <div class="info-title">事案・安全情報</div>
+          <div class="info-item">総事案数: ${p.incidents.total}件</div>
+          <div class="info-item">安全関連: ${p.incidents.safety}件</div>
+          <div class="info-item">交通関連: ${p.incidents.traffic}件</div>
+          <div class="info-item">その他: ${p.incidents.other}件</div>
         </div>
         
         <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-search"></i> 要因分析</div>
-          <div class="info-item">要因: ${p.analysis.factors.map(f=>`<span class="feature-tag">${f}</span>`).join('')}</div>
-        </div>
-        
-        <div class="info-box">
-          <div class="info-title"><i class="fa-solid fa-lightbulb"></i> 改善提案</div>
-          <div>${p.analysis.recommendations.map(r=>`<span class="feature-tag">${r}</span>`).join('')}</div>
+          <div class="info-title">推奨施策</div>
+          ${p.recommendations.map(r => `<div class="info-item">• ${r}</div>`).join('')}
         </div>
       `;
     }
@@ -1705,31 +806,32 @@
       updateDetailsPanel();
     }
 
-    // 統計パネル更新（詳細統計）
+    // 統計パネル更新
     function updateStatistics() {
       const statsPanel = document.getElementById('stats-panel');
+      if (!sanoAzaGeoJSON || !sanoAzaGeoJSON.features) return;
+      
       const filtered = sanoAzaGeoJSON.features.filter(f => {
         if (selectedEmotion === 'all') return true;
         return f.properties.analysis.primary === selectedEmotion;
       });
       
-      const totalPop = filtered.reduce((sum,f)=>sum+f.properties.population,0);
-      const totalArea = filtered.reduce((sum,f)=>sum+f.properties.area,0);
-      const totalIncidents = filtered.reduce((sum,f)=>sum+f.properties.incidents.total,0);
+      const totalPop = filtered.reduce((sum,f) => sum + f.properties.population, 0);
+      const totalArea = filtered.reduce((sum,f) => sum + f.properties.area, 0);
+      const totalIncidents = filtered.reduce((sum,f) => sum + f.properties.incidents.total, 0);
       const avgDensity = filtered.length ? Math.round(totalPop / totalArea) : 0;
       
       const avgEmotions = { joy:0, calm:0, excitement:0, stress:0 };
-      filtered.forEach(f=>{
-        Object.keys(avgEmotions).forEach(k=>{
+      filtered.forEach(f => {
+        Object.keys(avgEmotions).forEach(k => {
           avgEmotions[k] += f.properties.emotions[k];
         });
       });
-      Object.keys(avgEmotions).forEach(k=>{
+      Object.keys(avgEmotions).forEach(k => {
         avgEmotions[k] = filtered.length ? Math.round(avgEmotions[k]/filtered.length) : 0;
       });
       
-      // 強度別集計
-      const intensityCount = { '低': 0, '中': 0, '高': 0, '非常に高': 0 };
+      const intensityCount = { '低': 0, '中程度': 0, '高': 0, '非常に高': 0 };
       filtered.forEach(f => {
         const intensity = f.properties.analysis.intensity;
         if (intensityCount[intensity] !== undefined) {
@@ -1747,19 +849,19 @@
         <div class="stat-item"><span class="stat-label">総事案数</span><span class="stat-value" style="color:#f59e0b;">${totalIncidents}件</span></div>
         
         <div style="margin:12px 0 8px 0; font-size:11px; color:#06b6d4; font-weight:bold;">
-          <i class="fa-solid fa-face-smile"></i> 感情スコア平均
+          <i class="fa-solid fa-heart"></i> 平均感情スコア
         </div>
-        ${Object.entries(avgEmotions).map(([k,v])=>`
+        ${Object.entries(avgEmotions).map(([k,v]) => `
           <div class="stat-item">
-            <span class="stat-label"><span class="emotion-indicator" style="background:${getEmotionColorForPopup(k, v)}"></span>${capitalize(k)}</span>
+            <span class="stat-label"><div class="emotion-indicator" style="background-color:${getEmotionColorForPopup(k, v)}"></div>${capitalize(k)}</span>
             <span class="stat-value">${v}</span>
           </div>
         `).join('')}
         
         <div style="margin:12px 0 8px 0; font-size:11px; color:#06b6d4; font-weight:bold;">
-          <i class="fa-solid fa-signal"></i> 強度分布
+          <i class="fa-solid fa-signal"></i> 強度別分布
         </div>
-        ${Object.entries(intensityCount).map(([intensity, count])=>`
+        ${Object.entries(intensityCount).map(([intensity, count]) => `
           <div class="stat-item">
             <span class="stat-label">${intensity}</span>
             <span class="stat-value">${count}区画</span>
@@ -1768,7 +870,7 @@
       `;
     }
 
-    // 感情フィルター初期化（更新版）
+    // 感情フィルター初期化
     function initializeControls() {
       const filterDiv = document.getElementById('emotion-filters');
       const emotions = [
@@ -1780,15 +882,13 @@
       ];
       
       filterDiv.innerHTML = '';
-      emotions.forEach(e=>{
+      emotions.forEach(e => {
         const btn = document.createElement('button');
-        btn.className = 'emotion-btn' + (selectedEmotion===e.key?' active':'');
+        btn.className = 'emotion-btn' + (selectedEmotion === e.key ? ' active' : '');
         btn.innerHTML = `<i class="fa-solid ${e.icon}"></i> ${e.label}`;
-        btn.onclick = ()=>{
+        btn.onclick = () => {
           selectedEmotion = e.key;
-          // すべてのボタンのactiveクラスを削除
-          filterDiv.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
-          // クリックされたボタンにactiveクラスを追加
+          document.querySelectorAll('.emotion-btn').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           loadEmotionData();
           updateStatistics();
@@ -1797,33 +897,53 @@
       });
       
       // 表示モード切り替え
-      document.getElementById('display-mode').onchange = function() {
-        displayMode = this.value;
-        loadEmotionData();
-      };
+      const displayModeSelect = document.getElementById('display-mode');
+      if (displayModeSelect) {
+        displayModeSelect.onchange = function() {
+          displayMode = this.value;
+          loadEmotionData();
+        };
+      }
       
       // レイヤーON/OFF
-      document.getElementById('layer-toggle').onclick = function() {
-        showEmotionLayer = !showEmotionLayer;
-        this.classList.toggle('active', showEmotionLayer);
-        this.textContent = showEmotionLayer ? 'ON' : 'OFF';
-        if (showEmotionLayer) loadEmotionData();
-        else if (emotionLayer) map.removeLayer(emotionLayer);
-      };
+      const layerToggle = document.getElementById('layer-toggle');
+      if (layerToggle) {
+        layerToggle.onclick = function() {
+          showEmotionLayer = !showEmotionLayer;
+          this.classList.toggle('active', showEmotionLayer);
+          this.textContent = showEmotionLayer ? 'ON' : 'OFF';
+          if (showEmotionLayer && emotionLayer) {
+            emotionLayer.addTo(map);
+          } else if (emotionLayer) {
+            map.removeLayer(emotionLayer);
+          }
+        };
+      }
       
       // ラベルON/OFF
-      document.getElementById('label-toggle').onclick = function() {
-        showLabels = !showLabels;
-        this.classList.toggle('active', showLabels);
-        this.textContent = showLabels ? 'ON' : 'OFF';
-        loadEmotionData();
-      };
+      const labelToggle = document.getElementById('label-toggle');
+      if (labelToggle) {
+        labelToggle.onclick = function() {
+          showLabels = !showLabels;
+          this.classList.toggle('active', showLabels);
+          this.textContent = showLabels ? 'ON' : 'OFF';
+          loadEmotionData();
+        };
+      }
       
       // 透明度スライダー
-      document.getElementById('opacity-slider').oninput = function() {
-        layerOpacity = parseFloat(this.value);
-        loadEmotionData();
-      };
+      const opacitySlider = document.getElementById('opacity-slider');
+      if (opacitySlider) {
+        opacitySlider.oninput = function() {
+          layerOpacity = parseFloat(this.value);
+          // パーセント表示更新
+          const percentageDisplay = document.querySelector('.control-item:nth-child(4) .stat-value');
+          if (percentageDisplay) {
+            percentageDisplay.textContent = Math.round(layerOpacity * 100) + '%';
+          }
+          loadEmotionData();
+        };
+      }
     }
 
     // タイムスタンプ更新
@@ -1831,65 +951,51 @@
       const now = new Date();
       const y = now.getFullYear(), m = now.getMonth()+1, d = now.getDate();
       const h = now.getHours(), min = now.getMinutes(), s = now.getSeconds();
-      document.getElementById('timestamp').textContent =
-        `${y}年${m}月${d}日 ${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+      const timestampElement = document.getElementById('timestamp');
+      if (timestampElement) {
+        timestampElement.textContent =
+          `${y}年${m}月${d}日 ${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+      }
     }
 
-    // デバッグ用: 現在の地図データ確認
-    window.debugCurrentData = () => {
-      console.log('=== 現在のデータ状況 ===');
-      console.log('sanoAzaGeoJSON:', sanoAzaGeoJSON);
-      if (sanoAzaGeoJSON && sanoAzaGeoJSON.features) {
-        console.log('フィーチャー数:', sanoAzaGeoJSON.features.length);
-        sanoAzaGeoJSON.features.forEach((feature, index) => {
-          console.log(`${index + 1}. ${feature.properties.name}:`, 
-            feature.geometry.type, 
-            feature.geometry.coordinates.length, '座標配列');
-        });
-      } else {
-        console.log('GeoJSONデータが空です');
-      }
-      
-      if (emotionLayer) {
-        console.log('地図レイヤー:', emotionLayer.getLayers().length, 'レイヤー');
-      } else {
-        console.log('地図レイヤーが存在しません');
-      }
-      console.log('=== 現在のデータ状況終了 ===');
-    };
-
-    // 文字列先頭大文字
+    // 文字列先頭大文字化
     function capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // 初期化（エラーハンドリング強化版）
+    // 初期化
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('🚀 DOMContentLoaded - 初期化開始');
-      
-      // 未処理のJavaScriptエラーをキャッチ
-      window.addEventListener('error', function(e) {
-        console.error('❌ 未処理エラー:', e.error);
-        console.error('ファイル:', e.filename);
-        console.error('行:', e.lineno);
-      });
-      
-      // 未処理のPromise rejectionをキャッチ
-      window.addEventListener('unhandledrejection', function(e) {
-        console.error('❌ 未処理Promise reject:', e.reason);
-      });
+      console.log('🚀 GitHub Pages対応版 - 初期化開始');
       
       try {
         initializeMap();
         initializeControls();
         updateStatistics();
         updateDetailsPanel();
+        updateTimestamp();
         setInterval(updateTimestamp, 1000);
-        console.log('✅ 初期化完了');
+        console.log('✅ GitHub Pages対応版 - 初期化完了');
       } catch (error) {
         console.error('❌ 初期化エラー:', error);
       }
     });
+    
+    // GitHub Pages用デバッグ関数
+    window.debugGitHubPages = () => {
+      console.log('=== GitHub Pages対応版デバッグ情報 ===');
+      console.log('データソース: 埋め込みGeoJSON');
+      console.log('フィーチャー数:', sanoAzaGeoJSON ? sanoAzaGeoJSON.features.length : 0);
+      console.log('地図オブジェクト:', map ? 'OK' : 'NG');
+      console.log('感情レイヤー:', emotionLayer ? 'OK' : 'NG');
+      console.log('現在の設定:', {
+        selectedEmotion,
+        displayMode,
+        showEmotionLayer,
+        showLabels,
+        layerOpacity
+      });
+      console.log('=====================================');
+    };
   </script>
   
   <!-- データソースクレジット -->
@@ -1898,7 +1004,7 @@
     国土交通省「国土数値情報（行政区域データ）」<br>
     政府統計の総合窓口（e-Stat）「令和5年全国都道府県市区町村別面積調」<br>
     OpenStreetMap contributors による地図タイル<br>
-    <a href="https://nlftp.mlit.go.jp/ksj/" target="_blank" rel="noopener" style="color: #2563eb;">国土数値情報ダウンロードサービス</a>
+    <small style="color: #f59e0b;">※ GitHub Pages対応版：埋め込みデータを使用</small>
   </div>
 </body>
 </html>
