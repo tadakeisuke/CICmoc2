@@ -1071,58 +1071,129 @@
 
     // 地図初期化（徳島市阿波踊り演舞場付近）
     async function initializeMap() {
-      // 最初にGISデータを初期化
-      await initializeGeoData();
-      
-      map = L.map('map', {
-        center: [34.0646, 134.5594], // 徳島市中心部・阿波おどり会館付近（座標調整）
-        zoom: 16,                    // ズームレベル上げて詳細表示
-        minZoom: 14,
-        maxZoom: 19,
-        zoomControl: true,
-        attributionControl: false,
-        preferCanvas: true           // Canvas描画でパフォーマンス向上
-      });
-      // OSMタイル（高解像度）
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-        detectRetina: true,          // Retina対応
-        crossOrigin: true
-      }).addTo(map);
-      loadEmotionData();
+      try {
+        console.log('🗺️ 地図初期化開始...');
+        
+        // Leafletライブラリ確認
+        if (typeof L === 'undefined') {
+          throw new Error('Leafletライブラリが読み込まれていません');
+        }
+        console.log('✅ Leafletライブラリ読み込み完了:', L.version);
+        
+        // 地図要素確認
+        const mapElement = document.getElementById('map');
+        if (!mapElement) {
+          throw new Error('map要素が見つかりません');
+        }
+        console.log('✅ map要素確認:', mapElement);
+        
+        // データ初期化
+        console.log('📊 GISデータ初期化開始...');
+        await initializeGeoData();
+        console.log('✅ GISデータ初期化完了');
+        
+        // 地図作成
+        console.log('🌍 Leaflet地図作成開始...');
+        map = L.map('map', {
+          center: [34.0646, 134.5594], // 徳島市中心部・阿波おどり会館付近
+          zoom: 16,
+          minZoom: 14,
+          maxZoom: 19,
+          zoomControl: true,
+          attributionControl: false,
+          preferCanvas: true
+        });
+        console.log('✅ 地図オブジェクト作成完了:', map);
+        
+        // タイルレイヤー追加
+        console.log('🗺️ OSMタイルレイヤー追加...');
+        const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+          detectRetina: true,
+          crossOrigin: true
+        });
+        tileLayer.addTo(map);
+        console.log('✅ タイルレイヤー追加完了');
+        
+        // 感情データ読み込み
+        console.log('😊 感情データレイヤー読み込み...');
+        loadEmotionData();
+        console.log('✅ 地図初期化完了！');
+        
+      } catch (error) {
+        console.error('❌ 地図初期化エラー:', error);
+        console.error('エラー詳細:', error.stack);
+        
+        // エラー情報を画面に表示
+        const mapElement = document.getElementById('map');
+        if (mapElement) {
+          mapElement.innerHTML = `
+            <div style="padding: 20px; background: #fee; color: #c00; font-family: monospace;">
+              <h3>🚫 地図初期化エラー</h3>
+              <p><strong>エラー:</strong> ${error.message}</p>
+              <p><strong>時刻:</strong> ${new Date().toLocaleString()}</p>
+              <p>詳細はブラウザのコンソール（F12）を確認してください。</p>
+            </div>
+          `;
+        }
+      }
     }
 
     // 感情レイヤー描画
     function loadEmotionData() {
-      // 政府統計データベースの境界線を高品質でレンダリング
-      if (emotionLayer) { map.removeLayer(emotionLayer); }
-      emotionLayer = L.geoJSON(sanoAzaGeoJSON, {
-        style: feature => getEmotionStyle(feature),
-        smoothFactor: 0.5,    // 政府データの詳細を保持（低値で高精度）
-        precision: 6,         // 座標精度向上（政府データは6桁精度）
-        onEachFeature: (feature, layer) => {
-          layer.on({
-            mouseover: function(e) {
-              // 境界線品質維持：政府データの正確性を活かした表示
-              this.setStyle({ 
-                weight: 1.5, 
-                color: 'rgba(255,255,255,0.8)', 
-                opacity: 0.8,
-                dashArray: '3, 3',  // 政府データの境界を明確に表示
-                fillOpacity: Math.min(layerOpacity + 0.2, 0.8),
-                lineCap: 'round',
-                lineJoin: 'round'
-              });
-              if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) { 
-                this.bringToFront(); 
-              }
-            },
-            mouseout: function(e) {
-              emotionLayer.resetStyle(e.target);
-            },
-            click: function(e) {
-              selectArea(feature);
+      try {
+        console.log('😊 感情データレイヤー作成開始...');
+        
+        // データ確認
+        if (!sanoAzaGeoJSON) {
+          throw new Error('sanoAzaGeoJSONが未定義です');
+        }
+        console.log('✅ sanoAzaGeoJSON確認:', sanoAzaGeoJSON);
+        
+        if (!sanoAzaGeoJSON.features || sanoAzaGeoJSON.features.length === 0) {
+          throw new Error('GeoJSONフィーチャーが空です');
+        }
+        console.log(`✅ ${sanoAzaGeoJSON.features.length}個のフィーチャーを確認`);
+        
+        // 地図オブジェクト確認
+        if (!map) {
+          throw new Error('地図オブジェクトが未定義です');
+        }
+        
+        // 既存レイヤー削除
+        if (emotionLayer) { 
+          console.log('🗑️ 既存レイヤーを削除');
+          map.removeLayer(emotionLayer); 
+        }
+        
+        // GeoJSONレイヤー作成
+        console.log('🌍 GeoJSONレイヤー作成...');
+        emotionLayer = L.geoJSON(sanoAzaGeoJSON, {
+          style: feature => getEmotionStyle(feature),
+          smoothFactor: 0.5,
+          precision: 6,
+          onEachFeature: (feature, layer) => {
+            layer.on({
+              mouseover: function(e) {
+                this.setStyle({ 
+                  weight: 1.5, 
+                  color: 'rgba(255,255,255,0.8)', 
+                  opacity: 0.8,
+                  dashArray: '3, 3',
+                  fillOpacity: Math.min(layerOpacity + 0.2, 0.8),
+                  lineCap: 'round',
+                  lineJoin: 'round'
+                });
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) { 
+                  this.bringToFront(); 
+                }
+              },
+              mouseout: function(e) {
+                emotionLayer.resetStyle(e.target);
+              },
+              click: function(e) {
+                selectArea(feature);
               // 政府データの境界に合わせたズーム調整
               map.fitBounds(layer.getBounds(), { maxZoom: 17, padding: [8, 8] });
             }
@@ -1138,8 +1209,24 @@
           if (selectedEmotion === 'all') return true;
           return feature.properties.analysis.primary === selectedEmotion;
         }
-      }).addTo(map);
-      if (showLabels) addLabels();
+      });
+      
+      // レイヤーを地図に追加
+      emotionLayer.addTo(map);
+      console.log('✅ GeoJSONレイヤー地図に追加完了');
+      
+      // ラベル表示
+      if (showLabels) {
+        console.log('🏷️ ラベル追加...');
+        addLabels();
+      }
+      
+      console.log('✅ 感情データレイヤー作成完了！');
+      
+    } catch (error) {
+      console.error('❌ 感情データレイヤー作成エラー:', error);
+      console.error('エラー詳細:', error.stack);
+    }
     }
 
     // ラベル描画
@@ -1508,13 +1595,32 @@
       return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // 初期化
+    // 初期化（エラーハンドリング強化版）
     document.addEventListener('DOMContentLoaded', function() {
-      initializeMap();
-      initializeControls();
-      updateStatistics();
-      updateDetailsPanel();
-      setInterval(updateTimestamp, 1000);
+      console.log('🚀 DOMContentLoaded - 初期化開始');
+      
+      // 未処理のJavaScriptエラーをキャッチ
+      window.addEventListener('error', function(e) {
+        console.error('❌ 未処理エラー:', e.error);
+        console.error('ファイル:', e.filename);
+        console.error('行:', e.lineno);
+      });
+      
+      // 未処理のPromise rejectionをキャッチ
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error('❌ 未処理Promise reject:', e.reason);
+      });
+      
+      try {
+        initializeMap();
+        initializeControls();
+        updateStatistics();
+        updateDetailsPanel();
+        setInterval(updateTimestamp, 1000);
+        console.log('✅ 初期化完了');
+      } catch (error) {
+        console.error('❌ 初期化エラー:', error);
+      }
     });
   </script>
   
