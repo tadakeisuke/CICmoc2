@@ -920,6 +920,41 @@
     // 実際のGISデータまたはフォールバックデータを取得
     let sanoAzaGeoJSON;
     
+    // デバッグ用: KMLデータ読み込み確認
+    window.debugKML = async () => {
+      try {
+        console.log('=== KMLデバッグ開始 ===');
+        const response = await fetch('./1755581695189.kml');
+        console.log('ファイル読み込み:', response.ok ? '成功' : `失敗 ${response.status}`);
+        
+        if (response.ok) {
+          const text = await response.text();
+          console.log('ファイルサイズ:', text.length, '文字');
+          console.log('最初の500文字:', text.substring(0, 500));
+          
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'text/xml');
+          const placemarks = doc.querySelectorAll('Placemark');
+          console.log('総Placemark数:', placemarks.length);
+          
+          // 最初のPlacemarkの詳細
+          if (placemarks[0]) {
+            const first = placemarks[0];
+            const name = first.querySelector('name')?.textContent;
+            console.log('最初のPlacemark:', name);
+            const coords = first.querySelector('coordinates');
+            if (coords) {
+              const coordText = coords.textContent.trim().substring(0, 200);
+              console.log('座標データ（最初の200文字）:', coordText);
+            }
+          }
+        }
+        console.log('=== KMLデバッグ終了 ===');
+      } catch (error) {
+        console.error('デバッグエラー:', error);
+      }
+    };
+
     // データ初期化関数（KML統合版）
     const initializeGeoData = async () => {
       try {
@@ -1368,6 +1403,29 @@
       document.getElementById('timestamp').textContent =
         `${y}年${m}月${d}日 ${h.toString().padStart(2,'0')}:${min.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }
+
+    // デバッグ用: 現在の地図データ確認
+    window.debugCurrentData = () => {
+      console.log('=== 現在のデータ状況 ===');
+      console.log('sanoAzaGeoJSON:', sanoAzaGeoJSON);
+      if (sanoAzaGeoJSON && sanoAzaGeoJSON.features) {
+        console.log('フィーチャー数:', sanoAzaGeoJSON.features.length);
+        sanoAzaGeoJSON.features.forEach((feature, index) => {
+          console.log(`${index + 1}. ${feature.properties.name}:`, 
+            feature.geometry.type, 
+            feature.geometry.coordinates.length, '座標配列');
+        });
+      } else {
+        console.log('GeoJSONデータが空です');
+      }
+      
+      if (emotionLayer) {
+        console.log('地図レイヤー:', emotionLayer.getLayers().length, 'レイヤー');
+      } else {
+        console.log('地図レイヤーが存在しません');
+      }
+      console.log('=== 現在のデータ状況終了 ===');
+    };
 
     // 文字列先頭大文字
     function capitalize(str) {
