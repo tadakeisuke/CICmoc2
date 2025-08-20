@@ -1,0 +1,138 @@
+{
+  "type": "FeatureCollection",
+  "schemaVersion": "1.0",
+  "updatedAt": "2025-08-20T00:00:00Z",
+  "source": "EMOTERRAIN demo dataset",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "awa-001",
+        "name": "Higashi-Shinmachi A",
+        "type": "district",
+        "population": 1200,
+        "area": 0.45,
+        "households": 520,
+        "emotions": { "joy": 62, "calm": 48, "excitement": 55, "stress": 30 },
+        "incidents": { "total": 8, "safety": 3, "traffic": 4, "other": 1 },
+        "analysis": { "primary": "joy" }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [134.5528, 34.0687],
+            [134.5552, 34.0687],
+            [134.5552, 34.0703],
+            [134.5528, 34.0703],
+            [134.5528, 34.0687]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "awa-002",
+        "name": "Higashi-Shinmachi B",
+        "type": "district",
+        "population": 900,
+        "area": 0.31,
+        "households": 380,
+        "emotions": { "joy": 35, "calm": 60, "excitement": 42, "stress": 25 },
+        "incidents": { "total": 5, "safety": 2, "traffic": 2, "other": 1 },
+        "analysis": { "primary": "calm" }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [134.5555, 34.0684],
+            [134.5578, 34.0684],
+            [134.5578, 34.0700],
+            [134.5555, 34.0700],
+            [134.5555, 34.0684]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "awa-003",
+        "name": "Shinmachi Riverside",
+        "type": "district",
+        "population": 700,
+        "area": 0.28,
+        "households": 260,
+        "emotions": { "joy": 28, "calm": 40, "excitement": 72, "stress": 35 },
+        "incidents": { "total": 6, "safety": 1, "traffic": 4, "other": 1 },
+        "analysis": { "primary": "excitement" }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [134.5581, 34.0682],
+            [134.5601, 34.0682],
+            [134.5601, 34.0699],
+            [134.5581, 34.0699],
+            [134.5581, 34.0682]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "awa-004",
+        "name": "Awa Dance Venue Area",
+        "type": "district",
+        "population": 1500,
+        "area": 0.50,
+        "households": 600,
+        "emotions": { "joy": 40, "calm": 25, "excitement": 65, "stress": 55 },
+        "incidents": { "total": 10, "safety": 4, "traffic": 4, "other": 2 },
+        "analysis": { "primary": "excitement" }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [134.5530, 34.0668],
+            [134.5560, 34.0668],
+            [134.5560, 34.0685],
+            [134.5530, 34.0685],
+            [134.5530, 34.0668]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "awa-005",
+        "name": "Shiyakusho South",
+        "type": "district",
+        "population": 1100,
+        "area": 0.40,
+        "households": 420,
+        "emotions": { "joy": 22, "calm": 30, "excitement": 35, "stress": 68 },
+        "incidents": { "total": 7, "safety": 2, "traffic": 3, "other": 2 },
+        "analysis": { "primary": "stress" }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [134.5562, 34.0666],
+            [134.5586, 34.0666],
+            [134.5586, 34.0681],
+            [134.5562, 34.0681],
+            [134.5562, 34.0666]
+          ]
+        ]
+      }
+    }
+  ]
+}
