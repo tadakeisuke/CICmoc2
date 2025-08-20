@@ -37,7 +37,19 @@
       "properties": {
         "id": 1,
         "name": "一番町",
-        "points": 6
+        "area": 11734.743,
+        "population": 47,
+        "households": 16,
+        "emotions": {
+          "joy": 60.60364268526062,
+          "calm": 59.793322070926784,
+          "excitement": 68.76852760893352,
+          "stress": 39.93824886463105
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 69
+        }
       }
     },
     {
@@ -72,7 +84,19 @@
       "properties": {
         "id": 2,
         "name": "北出来島町１丁目",
-        "points": 5
+        "area": 3781.394,
+        "population": 24,
+        "households": 13,
+        "emotions": {
+          "joy": 78.61154272923471,
+          "calm": 66.53709861771321,
+          "excitement": 81.75004165562227,
+          "stress": 27.728665835716487
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -143,7 +167,19 @@
       "properties": {
         "id": 3,
         "name": "北出来島町２丁目",
-        "points": 14
+        "area": 36828.506,
+        "population": 111,
+        "households": 49,
+        "emotions": {
+          "joy": 77.1072969238997,
+          "calm": 73.79525354359032,
+          "excitement": 84.63888363031813,
+          "stress": 30.138645863141505
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 85
+        }
       }
     },
     {
@@ -194,7 +230,19 @@
       "properties": {
         "id": 4,
         "name": "幸町１丁目",
-        "points": 9
+        "area": 12999.087,
+        "population": 73,
+        "households": 34,
+        "emotions": {
+          "joy": 68.62167005965202,
+          "calm": 73.39646085326441,
+          "excitement": 59.608073233139535,
+          "stress": 14.433020141297014
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 73
+        }
       }
     },
     {
@@ -241,7 +289,19 @@
       "properties": {
         "id": 5,
         "name": "幸町２丁目",
-        "points": 8
+        "area": 31306.305,
+        "population": 30,
+        "households": 12,
+        "emotions": {
+          "joy": 78.14843138000155,
+          "calm": 70.02825839124506,
+          "excitement": 71.42486626447112,
+          "stress": 29.128336670925464
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 78
+        }
       }
     },
     {
@@ -300,7 +360,19 @@
       "properties": {
         "id": 6,
         "name": "幸町３丁目",
-        "points": 11
+        "area": 69133.095,
+        "population": 236,
+        "households": 149,
+        "emotions": {
+          "joy": 91.40955091816664,
+          "calm": 57.07627697992538,
+          "excitement": 85.79156520517515,
+          "stress": 15.714586615499782
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 91
+        }
       }
     },
     {
@@ -343,7 +415,19 @@
       "properties": {
         "id": 7,
         "name": "新内町",
-        "points": 7
+        "area": 13536.577,
+        "population": 155,
+        "households": 91,
+        "emotions": {
+          "joy": 88.10840132865184,
+          "calm": 45.42678608965317,
+          "excitement": 90.82505561586368,
+          "stress": 30.087496181041335
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 91
+        }
       }
     },
     {
@@ -410,7 +494,19 @@
       "properties": {
         "id": 8,
         "name": "新蔵町１丁目",
-        "points": 13
+        "area": 94814.804,
+        "population": 362,
+        "households": 183,
+        "emotions": {
+          "joy": 71.25622554520282,
+          "calm": 60.87296103014626,
+          "excitement": 83.3209614616748,
+          "stress": 30.802624038514857
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 83
+        }
       }
     },
     {
@@ -453,7 +549,19 @@
       "properties": {
         "id": 9,
         "name": "新蔵町２丁目",
-        "points": 7
+        "area": 28568.069,
+        "population": 135,
+        "households": 73,
+        "emotions": {
+          "joy": 77.95553987405873,
+          "calm": 68.17667938217677,
+          "excitement": 97.36250478079276,
+          "stress": 33.38156847154568
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 97
+        }
       }
     },
     {
@@ -496,7 +604,19 @@
       "properties": {
         "id": 10,
         "name": "新蔵町３丁目",
-        "points": 7
+        "area": 58233.434,
+        "population": 331,
+        "households": 189,
+        "emotions": {
+          "joy": 70.28215183281714,
+          "calm": 57.32733123813819,
+          "excitement": 93.4895925501862,
+          "stress": 41.76299013140795
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 93
+        }
       }
     },
     {
@@ -555,7 +675,19 @@
       "properties": {
         "id": 11,
         "name": "寺島本町西１丁目",
-        "points": 11
+        "area": 84954.696,
+        "population": 101,
+        "households": 53,
+        "emotions": {
+          "joy": 74.71383837392372,
+          "calm": 72.52094428556208,
+          "excitement": 55.98363534102366,
+          "stress": 11.713703807792651
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 75
+        }
       }
     },
     {
@@ -606,7 +738,19 @@
       "properties": {
         "id": 12,
         "name": "寺島本町西２丁目",
-        "points": 9
+        "area": 56474.405,
+        "population": 83,
+        "households": 41,
+        "emotions": {
+          "joy": 60.918573164696426,
+          "calm": 60.08380612785211,
+          "excitement": 71.07650763430738,
+          "stress": 27.577610427226134
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 71
+        }
       }
     },
     {
@@ -641,7 +785,19 @@
       "properties": {
         "id": 13,
         "name": "寺島本町東１丁目",
-        "points": 5
+        "area": 13850.704,
+        "population": 32,
+        "households": 12,
+        "emotions": {
+          "joy": 73.50643334128306,
+          "calm": 81.43832698224848,
+          "excitement": 53.82256819302833,
+          "stress": 21.960122152857018
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 81
+        }
       }
     },
     {
@@ -688,7 +844,19 @@
       "properties": {
         "id": 14,
         "name": "寺島本町東２丁目",
-        "points": 8
+        "area": 19360.381,
+        "population": 107,
+        "households": 65,
+        "emotions": {
+          "joy": 75.56105837407674,
+          "calm": 71.67914089139254,
+          "excitement": 82.21529675688772,
+          "stress": 36.69197943575959
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -735,7 +903,19 @@
       "properties": {
         "id": 15,
         "name": "寺島本町東３丁目",
-        "points": 8
+        "area": 37689.831,
+        "population": 145,
+        "households": 57,
+        "emotions": {
+          "joy": 67.98693834303802,
+          "calm": 79.83673652837234,
+          "excitement": 59.489749992897515,
+          "stress": 18.52890351534475
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 80
+        }
       }
     },
     {
@@ -778,7 +958,19 @@
       "properties": {
         "id": 16,
         "name": "出来島本町１丁目",
-        "points": 7
+        "area": 24498.524,
+        "population": 72,
+        "households": 34,
+        "emotions": {
+          "joy": 65.81700949193007,
+          "calm": 75.63466484665145,
+          "excitement": 59.645408923859705,
+          "stress": 20.389677803805846
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 76
+        }
       }
     },
     {
@@ -821,7 +1013,19 @@
       "properties": {
         "id": 17,
         "name": "出来島本町２丁目",
-        "points": 7
+        "area": 16894.129,
+        "population": 116,
+        "households": 55,
+        "emotions": {
+          "joy": 75.22719757457878,
+          "calm": 54.81235780483192,
+          "excitement": 100,
+          "stress": 28.194864587108725
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -872,7 +1076,19 @@
       "properties": {
         "id": 18,
         "name": "出来島本町３丁目",
-        "points": 9
+        "area": 21602.584,
+        "population": 229,
+        "households": 156,
+        "emotions": {
+          "joy": 63.31453862811876,
+          "calm": 70.45139057655113,
+          "excitement": 54.19149005831318,
+          "stress": 15.087836845722746
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 70
+        }
       }
     },
     {
@@ -919,7 +1135,19 @@
       "properties": {
         "id": 19,
         "name": "出来島本町４丁目",
-        "points": 8
+        "area": 20453.146,
+        "population": 204,
+        "households": 100,
+        "emotions": {
+          "joy": 82.04049596794101,
+          "calm": 58.11465484083345,
+          "excitement": 99.74813402655464,
+          "stress": 42.334348624341715
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -962,7 +1190,19 @@
       "properties": {
         "id": 20,
         "name": "徳島本町１丁目",
-        "points": 7
+        "area": 35707.289,
+        "population": 63,
+        "households": 41,
+        "emotions": {
+          "joy": 83.6738450554544,
+          "calm": 61.89715572394305,
+          "excitement": 86.84097082233747,
+          "stress": 31.028757718869503
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 87
+        }
       }
     },
     {
@@ -1001,7 +1241,19 @@
       "properties": {
         "id": 21,
         "name": "徳島本町２丁目",
-        "points": 6
+        "area": 33270.328,
+        "population": 26,
+        "households": 13,
+        "emotions": {
+          "joy": 63.187674418907235,
+          "calm": 86.12748814023338,
+          "excitement": 67.60318584687857,
+          "stress": 28.904442477745395
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 86
+        }
       }
     },
     {
@@ -1036,7 +1288,19 @@
       "properties": {
         "id": 22,
         "name": "徳島本町３丁目",
-        "points": 5
+        "area": 4833.875,
+        "population": 58,
+        "households": 34,
+        "emotions": {
+          "joy": 82.90403517384115,
+          "calm": 50.24956003501803,
+          "excitement": 80.56461067056684,
+          "stress": 49.12104771196546
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 83
+        }
       }
     },
     {
@@ -1091,7 +1355,19 @@
       "properties": {
         "id": 23,
         "name": "通町１丁目",
-        "points": 10
+        "area": 20895.245,
+        "population": 84,
+        "households": 56,
+        "emotions": {
+          "joy": 82.7780070325419,
+          "calm": 63.99781851337748,
+          "excitement": 81.04758588402188,
+          "stress": 47.086174832336795
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 83
+        }
       }
     },
     {
@@ -1126,7 +1402,19 @@
       "properties": {
         "id": 24,
         "name": "通町２丁目",
-        "points": 5
+        "area": 9793.181,
+        "population": 62,
+        "households": 35,
+        "emotions": {
+          "joy": 85.01096202427516,
+          "calm": 56.99809444385904,
+          "excitement": 96.75446167375773,
+          "stress": 36.69433618278986
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 97
+        }
       }
     },
     {
@@ -1173,7 +1461,19 @@
       "properties": {
         "id": 25,
         "name": "通町３丁目",
-        "points": 8
+        "area": 16370.777,
+        "population": 65,
+        "households": 31,
+        "emotions": {
+          "joy": 77.39202008202705,
+          "calm": 74.44129733364493,
+          "excitement": 82.0430177113135,
+          "stress": 25.960744458263143
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -1264,7 +1564,19 @@
       "properties": {
         "id": 26,
         "name": "徳島町城内",
-        "points": 19
+        "area": 319084.093,
+        "population": 121,
+        "households": 59,
+        "emotions": {
+          "joy": 87.07351538153947,
+          "calm": 61.623675770150044,
+          "excitement": 95.02163403525101,
+          "stress": 44.36653593348477
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -1299,7 +1611,19 @@
       "properties": {
         "id": 27,
         "name": "徳島町３丁目",
-        "points": 5
+        "area": 43766.26,
+        "population": 597,
+        "households": 328,
+        "emotions": {
+          "joy": 81.73280292572404,
+          "calm": 77.50990493852292,
+          "excitement": 75.12628428243907,
+          "stress": 36.42729390387531
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 82
+        }
       }
     },
     {
@@ -1338,7 +1662,19 @@
       "properties": {
         "id": 28,
         "name": "中洲町１丁目",
-        "points": 6
+        "area": 19155.442,
+        "population": 140,
+        "households": 58,
+        "emotions": {
+          "joy": 71.70771747557905,
+          "calm": 71.10112730330817,
+          "excitement": 64.9074754591596,
+          "stress": 20.31335641435055
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 72
+        }
       }
     },
     {
@@ -1381,7 +1717,19 @@
       "properties": {
         "id": 29,
         "name": "中洲町２丁目",
-        "points": 7
+        "area": 48804.374,
+        "population": 147,
+        "households": 63,
+        "emotions": {
+          "joy": 83.14996194124744,
+          "calm": 59.67191267547631,
+          "excitement": 88.11307478949888,
+          "stress": 30.7395019138899
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 88
+        }
       }
     },
     {
@@ -1424,7 +1772,19 @@
       "properties": {
         "id": 30,
         "name": "中洲町３丁目",
-        "points": 7
+        "area": 66311.616,
+        "population": 272,
+        "households": 121,
+        "emotions": {
+          "joy": 63.0441311771595,
+          "calm": 82.27331753974326,
+          "excitement": 50.8325623094573,
+          "stress": 27.69023766617496
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -1463,7 +1823,19 @@
       "properties": {
         "id": 31,
         "name": "中通町１丁目",
-        "points": 6
+        "area": 9458.097,
+        "population": 114,
+        "households": 70,
+        "emotions": {
+          "joy": 70.52722177378938,
+          "calm": 68.37504058826343,
+          "excitement": 72.07438341347549,
+          "stress": 33.06169650106003
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 72
+        }
       }
     },
     {
@@ -1498,7 +1870,19 @@
       "properties": {
         "id": 32,
         "name": "中通町２丁目",
-        "points": 5
+        "area": 9387.69,
+        "population": 37,
+        "households": 17,
+        "emotions": {
+          "joy": 67.1232998774694,
+          "calm": 76.49465009817837,
+          "excitement": 52.90161353683055,
+          "stress": 29.023977569461966
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 76
+        }
       }
     },
     {
@@ -1549,7 +1933,19 @@
       "properties": {
         "id": 33,
         "name": "中通町３丁目",
-        "points": 9
+        "area": 7404.373,
+        "population": 35,
+        "households": 17,
+        "emotions": {
+          "joy": 74.13423000242474,
+          "calm": 70.22037460522168,
+          "excitement": 83.56071795957823,
+          "stress": 27.49405727420882
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 84
+        }
       }
     },
     {
@@ -1588,7 +1984,19 @@
       "properties": {
         "id": 34,
         "name": "中徳島町１丁目",
-        "points": 6
+        "area": 32390.276,
+        "population": 225,
+        "households": 113,
+        "emotions": {
+          "joy": 74.55044477215355,
+          "calm": 79.48665850295014,
+          "excitement": 66.41897515841143,
+          "stress": 13.387719393682538
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 79
+        }
       }
     },
     {
@@ -1631,7 +2039,19 @@
       "properties": {
         "id": 35,
         "name": "中徳島町２丁目",
-        "points": 7
+        "area": 91704.033,
+        "population": 274,
+        "households": 175,
+        "emotions": {
+          "joy": 63.479011591022456,
+          "calm": 77.05081530125267,
+          "excitement": 52.33725587963729,
+          "stress": 16.190137942953555
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 77
+        }
       }
     },
     {
@@ -1674,7 +2094,19 @@
       "properties": {
         "id": 36,
         "name": "東出来島町",
-        "points": 7
+        "area": 13245.786,
+        "population": 290,
+        "households": 117,
+        "emotions": {
+          "joy": 75.7596210676756,
+          "calm": 63.835313518039754,
+          "excitement": 67.23781023211494,
+          "stress": 44.129706858051705
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 76
+        }
       }
     },
     {
@@ -1725,7 +2157,19 @@
       "properties": {
         "id": 37,
         "name": "南内町１丁目",
-        "points": 9
+        "area": 30970.778,
+        "population": 241,
+        "households": 100,
+        "emotions": {
+          "joy": 67.34921546854645,
+          "calm": 71.48460691721502,
+          "excitement": 81.91952546594769,
+          "stress": 41.90780360231152
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -1764,7 +2208,19 @@
       "properties": {
         "id": 38,
         "name": "南内町２丁目",
-        "points": 6
+        "area": 18321.287,
+        "population": 102,
+        "households": 39,
+        "emotions": {
+          "joy": 70.31336011174031,
+          "calm": 74.02647474932985,
+          "excitement": 73.15480738800795,
+          "stress": 43.64496101915803
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 74
+        }
       }
     },
     {
@@ -1815,7 +2271,19 @@
       "properties": {
         "id": 39,
         "name": "南内町３丁目",
-        "points": 9
+        "area": 14789.341,
+        "population": 64,
+        "households": 28,
+        "emotions": {
+          "joy": 78.07324802619738,
+          "calm": 73.31641016026512,
+          "excitement": 70.10484498391948,
+          "stress": 39.27681473646453
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 78
+        }
       }
     },
     {
@@ -1874,7 +2342,19 @@
       "properties": {
         "id": 40,
         "name": "南出来島町",
-        "points": 11
+        "area": 66116.852,
+        "population": 125,
+        "households": 69,
+        "emotions": {
+          "joy": 82.0894499387574,
+          "calm": 52.36120755149781,
+          "excitement": 95.32310724859165,
+          "stress": 31.544278952058043
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -1913,7 +2393,19 @@
       "properties": {
         "id": 41,
         "name": "八百屋町",
-        "points": 6
+        "area": 21619.581,
+        "population": 36,
+        "households": 14,
+        "emotions": {
+          "joy": 65.2676517252487,
+          "calm": 70.10863981723095,
+          "excitement": 78.63905888613797,
+          "stress": 36.36498509495907
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 79
+        }
       }
     },
     {
@@ -1956,7 +2448,19 @@
       "properties": {
         "id": 42,
         "name": "両国本町",
-        "points": 7
+        "area": 7663.904,
+        "population": 124,
+        "households": 54,
+        "emotions": {
+          "joy": 71.12969887000217,
+          "calm": 45.143324995126974,
+          "excitement": 89.20982951540886,
+          "stress": 37.409563463914296
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 89
+        }
       }
     },
     {
@@ -2007,7 +2511,19 @@
       "properties": {
         "id": 43,
         "name": "かちどき橋１丁目",
-        "points": 9
+        "area": 22246.176,
+        "population": 158,
+        "households": 74,
+        "emotions": {
+          "joy": 57.21920071559106,
+          "calm": 78.03091055216079,
+          "excitement": 62.394616343472215,
+          "stress": 15.84091114513721
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 78
+        }
       }
     },
     {
@@ -2058,7 +2574,19 @@
       "properties": {
         "id": 44,
         "name": "かちどき橋２丁目",
-        "points": 9
+        "area": 24944.751,
+        "population": 129,
+        "households": 53,
+        "emotions": {
+          "joy": 76.09034274450384,
+          "calm": 60.361355346158,
+          "excitement": 96.41885604235671,
+          "stress": 43.7310140699484
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 96
+        }
       }
     },
     {
@@ -2105,7 +2633,19 @@
       "properties": {
         "id": 45,
         "name": "かちどき橋３丁目",
-        "points": 8
+        "area": 31461.336,
+        "population": 265,
+        "households": 183,
+        "emotions": {
+          "joy": 77.1179122048911,
+          "calm": 73.20182446737469,
+          "excitement": 80.91864340132484,
+          "stress": 43.335501640407976
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -2156,7 +2696,19 @@
       "properties": {
         "id": 46,
         "name": "かちどき橋４丁目",
-        "points": 9
+        "area": 23468.88,
+        "population": 230,
+        "households": 102,
+        "emotions": {
+          "joy": 80.66712516866419,
+          "calm": 69.96956235404959,
+          "excitement": 91.32580973144177,
+          "stress": 24.45349177714189
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 91
+        }
       }
     },
     {
@@ -2191,7 +2743,19 @@
       "properties": {
         "id": 47,
         "name": "昭和町１丁目",
-        "points": 5
+        "area": 33447.186,
+        "population": 218,
+        "households": 136,
+        "emotions": {
+          "joy": 84.48621065435131,
+          "calm": 61.53057049507535,
+          "excitement": 100,
+          "stress": 21.33428357221286
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -2226,7 +2790,19 @@
       "properties": {
         "id": 48,
         "name": "昭和町２丁目",
-        "points": 5
+        "area": 26058.968,
+        "population": 196,
+        "households": 99,
+        "emotions": {
+          "joy": 83.63704205808702,
+          "calm": 56.467844867544486,
+          "excitement": 94.80637671198998,
+          "stress": 34.97125402957027
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -2301,7 +2877,19 @@
       "properties": {
         "id": 49,
         "name": "昭和町３丁目",
-        "points": 15
+        "area": 132597.051,
+        "population": 256,
+        "households": 148,
+        "emotions": {
+          "joy": 65.09016842849228,
+          "calm": 78.50168394136338,
+          "excitement": 83.73291315733978,
+          "stress": 36.69168851095057
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 84
+        }
       }
     },
     {
@@ -2340,7 +2928,19 @@
       "properties": {
         "id": 50,
         "name": "昭和町４丁目",
-        "points": 6
+        "area": 22597.738,
+        "population": 156,
+        "households": 89,
+        "emotions": {
+          "joy": 77.15811234768891,
+          "calm": 58.13782290851882,
+          "excitement": 91.27962145796559,
+          "stress": 15.162110872051446
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 91
+        }
       }
     },
     {
@@ -2383,7 +2983,19 @@
       "properties": {
         "id": 51,
         "name": "昭和町４丁目",
-        "points": 7
+        "area": 16280.526,
+        "population": 0,
+        "households": 0,
+        "emotions": {
+          "joy": 87.61487258898835,
+          "calm": 47.92345085335784,
+          "excitement": 97.72275483972237,
+          "stress": 43.04553837782822
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 98
+        }
       }
     },
     {
@@ -2418,7 +3030,19 @@
       "properties": {
         "id": 52,
         "name": "昭和町５丁目",
-        "points": 5
+        "area": 1335.57,
+        "population": 124,
+        "households": 85,
+        "emotions": {
+          "joy": 63.90584561900576,
+          "calm": 68.9061329369138,
+          "excitement": 79.66421898173498,
+          "stress": 29.37166271473853
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 80
+        }
       }
     },
     {
@@ -2449,7 +3073,19 @@
       "properties": {
         "id": 53,
         "name": "昭和町５丁目",
-        "points": 4
+        "area": 843.103,
+        "population": 0,
+        "households": 0,
+        "emotions": {
+          "joy": 94.61894222821283,
+          "calm": 63.22760425434855,
+          "excitement": 94.39942875990857,
+          "stress": 15.680431963044414
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 95
+        }
       }
     },
     {
@@ -2550,7 +3186,19 @@
       "properties": {
         "id": 54,
         "name": "昭和町６丁目",
-        "points": 17
+        "area": 75950.514,
+        "population": 634,
+        "households": 318,
+        "emotions": {
+          "joy": 63.612178656319266,
+          "calm": 55.37752752683602,
+          "excitement": 75.79109103220108,
+          "stress": 29.001762250466697
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 76
+        }
       }
     },
     {
@@ -2597,7 +3245,19 @@
       "properties": {
         "id": 55,
         "name": "昭和町７丁目",
-        "points": 8
+        "area": 122364.043,
+        "population": 771,
+        "households": 428,
+        "emotions": {
+          "joy": 84.17332476117355,
+          "calm": 65.32054350931107,
+          "excitement": 100,
+          "stress": 17.49952081433741
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -2644,7 +3304,19 @@
       "properties": {
         "id": 56,
         "name": "栄町１丁目",
-        "points": 8
+        "area": 20123.492,
+        "population": 58,
+        "households": 37,
+        "emotions": {
+          "joy": 80.5531197799153,
+          "calm": 58.046610887481435,
+          "excitement": 100,
+          "stress": 32.42634885310037
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -2679,7 +3351,19 @@
       "properties": {
         "id": 57,
         "name": "栄町２丁目",
-        "points": 5
+        "area": 13045.858,
+        "population": 72,
+        "households": 44,
+        "emotions": {
+          "joy": 85.7451832126571,
+          "calm": 69.13701852582825,
+          "excitement": 100,
+          "stress": 18.275268651991603
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -2718,7 +3402,19 @@
       "properties": {
         "id": 58,
         "name": "栄町３丁目",
-        "points": 6
+        "area": 14449.394,
+        "population": 153,
+        "households": 106,
+        "emotions": {
+          "joy": 85.14099765590123,
+          "calm": 50.39955281611172,
+          "excitement": 86.7122091467023,
+          "stress": 26.22227340307252
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 87
+        }
       }
     },
     {
@@ -2765,7 +3461,19 @@
       "properties": {
         "id": 59,
         "name": "栄町４丁目",
-        "points": 8
+        "area": 8230.513,
+        "population": 100,
+        "households": 51,
+        "emotions": {
+          "joy": 70.7701521706826,
+          "calm": 81.64019615378746,
+          "excitement": 61.20307164511091,
+          "stress": 23.515650542421067
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -2820,7 +3528,19 @@
       "properties": {
         "id": 60,
         "name": "栄町５丁目",
-        "points": 10
+        "area": 8527.896,
+        "population": 85,
+        "households": 54,
+        "emotions": {
+          "joy": 74.69814972459872,
+          "calm": 72.9154142100649,
+          "excitement": 51.19002780210508,
+          "stress": 23.585060905091257
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 75
+        }
       }
     },
     {
@@ -2879,7 +3599,19 @@
       "properties": {
         "id": 61,
         "name": "中昭和町１丁目",
-        "points": 11
+        "area": 32426.472,
+        "population": 227,
+        "households": 123,
+        "emotions": {
+          "joy": 82.61409264672312,
+          "calm": 51.09537198493243,
+          "excitement": 94.97836128610811,
+          "stress": 15.53390137302082
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -2926,7 +3658,19 @@
       "properties": {
         "id": 62,
         "name": "中昭和町２丁目",
-        "points": 8
+        "area": 51415.05,
+        "population": 675,
+        "households": 322,
+        "emotions": {
+          "joy": 71.2433439406353,
+          "calm": 72.48395895640029,
+          "excitement": 66.36265815528064,
+          "stress": 31.12514139025692
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 72
+        }
       }
     },
     {
@@ -2973,7 +3717,19 @@
       "properties": {
         "id": 63,
         "name": "中昭和町３丁目",
-        "points": 8
+        "area": 93100.216,
+        "population": 300,
+        "households": 123,
+        "emotions": {
+          "joy": 74.3508209857165,
+          "calm": 54.428054400162466,
+          "excitement": 96.1734092244383,
+          "stress": 34.35749650402167
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 96
+        }
       }
     },
     {
@@ -3036,7 +3792,19 @@
       "properties": {
         "id": 64,
         "name": "中昭和町４丁目",
-        "points": 12
+        "area": 48243.478,
+        "population": 321,
+        "households": 173,
+        "emotions": {
+          "joy": 80.66033201984786,
+          "calm": 62.23651164998505,
+          "excitement": 91.27338771357559,
+          "stress": 25.569411028610038
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 91
+        }
       }
     },
     {
@@ -3095,7 +3863,19 @@
       "properties": {
         "id": 65,
         "name": "中昭和町５丁目",
-        "points": 11
+        "area": 56460.414,
+        "population": 293,
+        "households": 146,
+        "emotions": {
+          "joy": 68.17414749724871,
+          "calm": 60.08965353428332,
+          "excitement": 76.68044682616326,
+          "stress": 21.43944329390548
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 77
+        }
       }
     },
     {
@@ -3154,7 +3934,19 @@
       "properties": {
         "id": 66,
         "name": "万代町４丁目",
-        "points": 11
+        "area": 46058.22,
+        "population": 175,
+        "households": 58,
+        "emotions": {
+          "joy": 74.5497318844417,
+          "calm": 51.22034908072869,
+          "excitement": 96.60572202118647,
+          "stress": 34.89200507804138
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 97
+        }
       }
     },
     {
@@ -3213,7 +4005,19 @@
       "properties": {
         "id": 67,
         "name": "万代町５丁目",
-        "points": 11
+        "area": 44356.076,
+        "population": 426,
+        "households": 231,
+        "emotions": {
+          "joy": 76.59960587267577,
+          "calm": 62.53607521146381,
+          "excitement": 81.96847063713712,
+          "stress": 43.51340135314174
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -3312,7 +4116,19 @@
       "properties": {
         "id": 68,
         "name": "万代町６丁目",
-        "points": 21
+        "area": 154122.308,
+        "population": 252,
+        "households": 156,
+        "emotions": {
+          "joy": 67.6616791930575,
+          "calm": 67.74175976208942,
+          "excitement": 67.40411966850978,
+          "stress": 32.89003097582056
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 68
+        }
       }
     },
     {
@@ -3355,7 +4171,19 @@
       "properties": {
         "id": 69,
         "name": "南昭和町１丁目",
-        "points": 7
+        "area": 32221.969,
+        "population": 196,
+        "households": 156,
+        "emotions": {
+          "joy": 86.82190035113535,
+          "calm": 61.058592329957264,
+          "excitement": 90.57815937064407,
+          "stress": 41.86930385444502
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 91
+        }
       }
     },
     {
@@ -3386,7 +4214,19 @@
       "properties": {
         "id": 70,
         "name": "南昭和町２丁目",
-        "points": 4
+        "area": 12480.046,
+        "population": 232,
+        "households": 150,
+        "emotions": {
+          "joy": 61.473286581379064,
+          "calm": 67.91976001753027,
+          "excitement": 78.04066912675404,
+          "stress": 34.90966913686223
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 78
+        }
       }
     },
     {
@@ -3421,7 +4261,19 @@
       "properties": {
         "id": 71,
         "name": "秋田町１丁目",
-        "points": 5
+        "area": 4731.598,
+        "population": 32,
+        "households": 17,
+        "emotions": {
+          "joy": 87.79789910651053,
+          "calm": 58.5984441652819,
+          "excitement": 100,
+          "stress": 15.377682829033382
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -3460,7 +4312,19 @@
       "properties": {
         "id": 72,
         "name": "秋田町１丁目",
-        "points": 6
+        "area": 4831.431,
+        "population": 0,
+        "households": 0,
+        "emotions": {
+          "joy": 76.40846976722531,
+          "calm": 59.758089645845864,
+          "excitement": 100,
+          "stress": 23.426117565041675
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -3515,7 +4379,19 @@
       "properties": {
         "id": 73,
         "name": "秋田町２丁目",
-        "points": 10
+        "area": 18482.05,
+        "population": 129,
+        "households": 89,
+        "emotions": {
+          "joy": 79.14362963827175,
+          "calm": 60.735278410149625,
+          "excitement": 82.05636119653983,
+          "stress": 33.17973847995754
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -3550,7 +4426,19 @@
       "properties": {
         "id": 74,
         "name": "秋田町３丁目",
-        "points": 5
+        "area": 5755.158,
+        "population": 19,
+        "households": 11,
+        "emotions": {
+          "joy": 66.49155261626015,
+          "calm": 79.56995383256108,
+          "excitement": 68.87181305232086,
+          "stress": 25.623977892577198
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 80
+        }
       }
     },
     {
@@ -3613,7 +4501,19 @@
       "properties": {
         "id": 75,
         "name": "秋田町４丁目",
-        "points": 12
+        "area": 19995.978,
+        "population": 212,
+        "households": 149,
+        "emotions": {
+          "joy": 79.73837124049766,
+          "calm": 61.09956614864583,
+          "excitement": 80.11974918879825,
+          "stress": 44.2044913237048
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 80
+        }
       }
     },
     {
@@ -3652,7 +4552,19 @@
       "properties": {
         "id": 76,
         "name": "秋田町５丁目",
-        "points": 6
+        "area": 20525.503,
+        "population": 148,
+        "households": 79,
+        "emotions": {
+          "joy": 88.00863020940109,
+          "calm": 51.00467743285469,
+          "excitement": 92.77492532369143,
+          "stress": 47.97504910544646
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 93
+        }
       }
     },
     {
@@ -3687,7 +4599,19 @@
       "properties": {
         "id": 77,
         "name": "伊月町１丁目",
-        "points": 5
+        "area": 5879.298,
+        "population": 69,
+        "households": 36,
+        "emotions": {
+          "joy": 79.27048164263634,
+          "calm": 59.09366846694396,
+          "excitement": 73.003989800226,
+          "stress": 40.352864041502954
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 79
+        }
       }
     },
     {
@@ -3734,7 +4658,19 @@
       "properties": {
         "id": 78,
         "name": "伊月町２丁目",
-        "points": 8
+        "area": 22988.571,
+        "population": 133,
+        "households": 73,
+        "emotions": {
+          "joy": 77.5685011143594,
+          "calm": 51.23683922418736,
+          "excitement": 88.64739955968419,
+          "stress": 44.531377809886536
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 89
+        }
       }
     },
     {
@@ -3773,7 +4709,19 @@
       "properties": {
         "id": 79,
         "name": "伊月町３丁目",
-        "points": 6
+        "area": 8310.881,
+        "population": 50,
+        "households": 24,
+        "emotions": {
+          "joy": 57.79324281104207,
+          "calm": 82.69404630582156,
+          "excitement": 66.08094286571776,
+          "stress": 10.814829820444398
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 83
+        }
       }
     },
     {
@@ -3836,7 +4784,19 @@
       "properties": {
         "id": 80,
         "name": "伊月町４丁目",
-        "points": 12
+        "area": 17412.901,
+        "population": 185,
+        "households": 108,
+        "emotions": {
+          "joy": 87.01899467181983,
+          "calm": 67.0118437476865,
+          "excitement": 98.44196062626028,
+          "stress": 29.914497837057233
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 98
+        }
       }
     },
     {
@@ -3875,7 +4835,19 @@
       "properties": {
         "id": 81,
         "name": "伊月町５丁目",
-        "points": 6
+        "area": 8280.002,
+        "population": 71,
+        "households": 35,
+        "emotions": {
+          "joy": 80.14317747813989,
+          "calm": 54.95447513801026,
+          "excitement": 93.6077739351527,
+          "stress": 24.732099006256792
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 94
+        }
       }
     },
     {
@@ -3930,7 +4902,19 @@
       "properties": {
         "id": 82,
         "name": "鷹匠町４丁目",
-        "points": 10
+        "area": 10238.337,
+        "population": 137,
+        "households": 86,
+        "emotions": {
+          "joy": 74.34794288824695,
+          "calm": 69.51495328829179,
+          "excitement": 82.33265835524196,
+          "stress": 43.03655030959473
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -3965,7 +4949,19 @@
       "properties": {
         "id": 83,
         "name": "鷹匠町５丁目",
-        "points": 5
+        "area": 3540.81,
+        "population": 46,
+        "households": 26,
+        "emotions": {
+          "joy": 68.68360878969105,
+          "calm": 65.86491629362908,
+          "excitement": 89.59979920491469,
+          "stress": 39.31016987980899
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 90
+        }
       }
     },
     {
@@ -4016,7 +5012,19 @@
       "properties": {
         "id": 84,
         "name": "中央通２丁目",
-        "points": 9
+        "area": 13059.724,
+        "population": 96,
+        "households": 56,
+        "emotions": {
+          "joy": 75.6425211563292,
+          "calm": 64.56734339271134,
+          "excitement": 94.35507243447405,
+          "stress": 23.018423723200023
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 94
+        }
       }
     },
     {
@@ -4055,7 +5063,19 @@
       "properties": {
         "id": 85,
         "name": "中央通３丁目",
-        "points": 6
+        "area": 8502.574,
+        "population": 40,
+        "households": 21,
+        "emotions": {
+          "joy": 58.57840726762908,
+          "calm": 75.61153631507884,
+          "excitement": 66.52962619010086,
+          "stress": 18.534560142794483
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 76
+        }
       }
     },
     {
@@ -4118,7 +5138,19 @@
       "properties": {
         "id": 86,
         "name": "富田浜１丁目",
-        "points": 12
+        "area": 33773.253,
+        "population": 135,
+        "households": 71,
+        "emotions": {
+          "joy": 62.19130713895459,
+          "calm": 64.04657314165073,
+          "excitement": 70.36116163569966,
+          "stress": 40.68470477675923
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 70
+        }
       }
     },
     {
@@ -4153,7 +5185,19 @@
       "properties": {
         "id": 87,
         "name": "富田浜２丁目",
-        "points": 5
+        "area": 4650.218,
+        "population": 24,
+        "households": 17,
+        "emotions": {
+          "joy": 85.87244242037833,
+          "calm": 50.87485161047229,
+          "excitement": 82.182430289368,
+          "stress": 39.70413011424223
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 86
+        }
       }
     },
     {
@@ -4196,7 +5240,19 @@
       "properties": {
         "id": 88,
         "name": "富田浜３丁目",
-        "points": 7
+        "area": 11746.277,
+        "population": 3,
+        "households": 2,
+        "emotions": {
+          "joy": 71.77269066138606,
+          "calm": 57.36250929888831,
+          "excitement": 71.26915179845088,
+          "stress": 26.974378444946648
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 72
+        }
       }
     },
     {
@@ -4283,7 +5339,19 @@
       "properties": {
         "id": 89,
         "name": "富田橋１丁目",
-        "points": 18
+        "area": 53210.982,
+        "population": 319,
+        "households": 176,
+        "emotions": {
+          "joy": 71.53184413219641,
+          "calm": 60.05223548668394,
+          "excitement": 96.48136140570956,
+          "stress": 46.216034570741286
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 96
+        }
       }
     },
     {
@@ -4346,7 +5414,19 @@
       "properties": {
         "id": 90,
         "name": "富田橋２丁目",
-        "points": 12
+        "area": 26455.054,
+        "population": 378,
+        "households": 211,
+        "emotions": {
+          "joy": 87.9544114783541,
+          "calm": 57.461394489799986,
+          "excitement": 82.03265218763738,
+          "stress": 37.30451413227256
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 88
+        }
       }
     },
     {
@@ -4397,7 +5477,19 @@
       "properties": {
         "id": 91,
         "name": "富田橋３丁目",
-        "points": 9
+        "area": 27313.165,
+        "population": 291,
+        "households": 165,
+        "emotions": {
+          "joy": 76.38942948312405,
+          "calm": 74.78995344543574,
+          "excitement": 80.94158560540292,
+          "stress": 24.291369986575244
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -4440,7 +5532,19 @@
       "properties": {
         "id": 92,
         "name": "富田橋４丁目",
-        "points": 7
+        "area": 17955.551,
+        "population": 179,
+        "households": 93,
+        "emotions": {
+          "joy": 71.18715120997355,
+          "calm": 79.20830858632495,
+          "excitement": 72.85982517949519,
+          "stress": 34.893764107448575
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 79
+        }
       }
     },
     {
@@ -4479,7 +5583,19 @@
       "properties": {
         "id": 93,
         "name": "富田橋５丁目",
-        "points": 6
+        "area": 25382.319,
+        "population": 207,
+        "households": 148,
+        "emotions": {
+          "joy": 77.60707270347687,
+          "calm": 56.34042356591186,
+          "excitement": 99.36492390611711,
+          "stress": 24.84952353771165
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 99
+        }
       }
     },
     {
@@ -4518,7 +5634,19 @@
       "properties": {
         "id": 94,
         "name": "仲之町１丁目",
-        "points": 6
+        "area": 7801.572,
+        "population": 74,
+        "households": 42,
+        "emotions": {
+          "joy": 75.91511584775509,
+          "calm": 56.79567410708743,
+          "excitement": 99.70692129300845,
+          "stress": 25.294328714069643
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -4557,7 +5685,19 @@
       "properties": {
         "id": 95,
         "name": "仲之町２丁目",
-        "points": 6
+        "area": 11895.971,
+        "population": 161,
+        "households": 87,
+        "emotions": {
+          "joy": 75.52846520054241,
+          "calm": 74.19128515494748,
+          "excitement": 88.97422732534471,
+          "stress": 34.127974395454316
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 89
+        }
       }
     },
     {
@@ -4612,7 +5752,19 @@
       "properties": {
         "id": 96,
         "name": "仲之町３丁目",
-        "points": 10
+        "area": 21749.348,
+        "population": 114,
+        "households": 55,
+        "emotions": {
+          "joy": 75.26582815798608,
+          "calm": 70.04551497625735,
+          "excitement": 89.89777800871654,
+          "stress": 21.21064053248411
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 90
+        }
       }
     },
     {
@@ -4651,7 +5803,19 @@
       "properties": {
         "id": 97,
         "name": "仲之町４丁目",
-        "points": 6
+        "area": 19231.447,
+        "population": 125,
+        "households": 82,
+        "emotions": {
+          "joy": 59.603687940173195,
+          "calm": 76.08203632987421,
+          "excitement": 55.89989957109331,
+          "stress": 23.26432630033647
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 76
+        }
       }
     },
     {
@@ -4710,7 +5874,19 @@
       "properties": {
         "id": 98,
         "name": "二軒屋町１丁目",
-        "points": 11
+        "area": 75982.613,
+        "population": 105,
+        "households": 56,
+        "emotions": {
+          "joy": 74.21307209045385,
+          "calm": 68.0614454857112,
+          "excitement": 85.78980409419576,
+          "stress": 26.538259969220018
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 86
+        }
       }
     },
     {
@@ -4769,7 +5945,19 @@
       "properties": {
         "id": 99,
         "name": "南仲之町１丁目",
-        "points": 11
+        "area": 19128.583,
+        "population": 143,
+        "households": 90,
+        "emotions": {
+          "joy": 66.8110402560381,
+          "calm": 76.38112624016749,
+          "excitement": 52.02434032613367,
+          "stress": 14.148882603035101
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 76
+        }
       }
     },
     {
@@ -4804,7 +5992,19 @@
       "properties": {
         "id": 100,
         "name": "南仲之町２丁目",
-        "points": 5
+        "area": 7799.119,
+        "population": 80,
+        "households": 35,
+        "emotions": {
+          "joy": 62.11893535901007,
+          "calm": 56.80249398290909,
+          "excitement": 74.82393370658153,
+          "stress": 34.01537442379209
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 75
+        }
       }
     },
     {
@@ -4839,7 +6039,19 @@
       "properties": {
         "id": 101,
         "name": "南仲之町４丁目",
-        "points": 5
+        "area": 5763.982,
+        "population": 38,
+        "households": 18,
+        "emotions": {
+          "joy": 86.07084591951309,
+          "calm": 64.66602531996355,
+          "excitement": 89.03117721507735,
+          "stress": 48.10528382309228
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 89
+        }
       }
     },
     {
@@ -4874,7 +6086,19 @@
       "properties": {
         "id": 102,
         "name": "明神町１丁目",
-        "points": 5
+        "area": 10182.601,
+        "population": 93,
+        "households": 37,
+        "emotions": {
+          "joy": 76.70037191437919,
+          "calm": 63.499780068177486,
+          "excitement": 77.8156354746093,
+          "stress": 40.529563557408906
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 78
+        }
       }
     },
     {
@@ -4941,7 +6165,19 @@
       "properties": {
         "id": 103,
         "name": "明神町２丁目",
-        "points": 13
+        "area": 15149.779,
+        "population": 183,
+        "households": 116,
+        "emotions": {
+          "joy": 74.18351148921683,
+          "calm": 60.131293765254725,
+          "excitement": 76.28406167938418,
+          "stress": 33.26808922070359
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 76
+        }
       }
     },
     {
@@ -4996,7 +6232,19 @@
       "properties": {
         "id": 104,
         "name": "明神町３丁目",
-        "points": 10
+        "area": 37037.958,
+        "population": 250,
+        "households": 135,
+        "emotions": {
+          "joy": 88.86948614239992,
+          "calm": 52.141548808597975,
+          "excitement": 99.72584507031885,
+          "stress": 19.86018561879119
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -5039,7 +6287,19 @@
       "properties": {
         "id": 105,
         "name": "明神町４丁目",
-        "points": 7
+        "area": 7962.087,
+        "population": 44,
+        "households": 21,
+        "emotions": {
+          "joy": 81.52542283571944,
+          "calm": 65.84285200750864,
+          "excitement": 83.95349066551177,
+          "stress": 30.087925134701994
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 84
+        }
       }
     },
     {
@@ -5082,7 +6342,19 @@
       "properties": {
         "id": 106,
         "name": "両国橋",
-        "points": 7
+        "area": 7832.232,
+        "population": 42,
+        "households": 28,
+        "emotions": {
+          "joy": 74.39590440440816,
+          "calm": 71.04697165145829,
+          "excitement": 81.96223896226675,
+          "stress": 43.44169609681101
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -5137,7 +6409,19 @@
       "properties": {
         "id": 107,
         "name": "伊賀町２丁目",
-        "points": 10
+        "area": 99303.192,
+        "population": 127,
+        "households": 63,
+        "emotions": {
+          "joy": 79.22145237753702,
+          "calm": 52.62048237095377,
+          "excitement": 81.84334993458162,
+          "stress": 37.8039457457366
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -5176,7 +6460,19 @@
       "properties": {
         "id": 108,
         "name": "伊賀町３丁目",
-        "points": 6
+        "area": 9876.866,
+        "population": 96,
+        "households": 59,
+        "emotions": {
+          "joy": 85.04213039813092,
+          "calm": 66.49680247321166,
+          "excitement": 99.05078381747546,
+          "stress": 23.19319732656075
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 99
+        }
       }
     },
     {
@@ -5231,7 +6527,19 @@
       "properties": {
         "id": 109,
         "name": "伊賀町４丁目",
-        "points": 10
+        "area": 92081.184,
+        "population": 136,
+        "households": 56,
+        "emotions": {
+          "joy": 76.35256210325339,
+          "calm": 65.50610906786574,
+          "excitement": 75.31586545639883,
+          "stress": 26.940191636274974
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 76
+        }
       }
     },
     {
@@ -5294,7 +6602,19 @@
       "properties": {
         "id": 110,
         "name": "大道１丁目",
-        "points": 12
+        "area": 29337.432,
+        "population": 146,
+        "households": 70,
+        "emotions": {
+          "joy": 83.57291725214108,
+          "calm": 52.96312124945552,
+          "excitement": 82.83939342997792,
+          "stress": 31.00624156493521
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 84
+        }
       }
     },
     {
@@ -5341,7 +6661,19 @@
       "properties": {
         "id": 111,
         "name": "大道２丁目",
-        "points": 8
+        "area": 23279.449,
+        "population": 241,
+        "households": 82,
+        "emotions": {
+          "joy": 93.35203839190322,
+          "calm": 58.273879668661316,
+          "excitement": 100,
+          "stress": 16.447853310563033
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -5380,7 +6712,19 @@
       "properties": {
         "id": 112,
         "name": "大道３丁目",
-        "points": 6
+        "area": 9429.041,
+        "population": 97,
+        "households": 69,
+        "emotions": {
+          "joy": 74.49728714325936,
+          "calm": 60.67257918494448,
+          "excitement": 95.38336565612829,
+          "stress": 37.434359373116955
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -5419,7 +6763,19 @@
       "properties": {
         "id": 113,
         "name": "大道４丁目",
-        "points": 6
+        "area": 5593.112,
+        "population": 27,
+        "households": 16,
+        "emotions": {
+          "joy": 93.52309612972154,
+          "calm": 52.53303499159401,
+          "excitement": 97.57865053098081,
+          "stress": 25.291991260057145
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 98
+        }
       }
     },
     {
@@ -5466,7 +6822,19 @@
       "properties": {
         "id": 114,
         "name": "幟町１丁目",
-        "points": 8
+        "area": 23154.41,
+        "population": 60,
+        "households": 24,
+        "emotions": {
+          "joy": 85.08711004292601,
+          "calm": 54.73712539988429,
+          "excitement": 99.45232217443585,
+          "stress": 45.36200345485537
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 99
+        }
       }
     },
     {
@@ -5501,7 +6869,19 @@
       "properties": {
         "id": 115,
         "name": "幟町２丁目",
-        "points": 5
+        "area": 13194.064,
+        "population": 101,
+        "households": 45,
+        "emotions": {
+          "joy": 74.62985021210508,
+          "calm": 61.45474012083606,
+          "excitement": 85.97863112907362,
+          "stress": 20.895726284336668
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 86
+        }
       }
     },
     {
@@ -5548,7 +6928,19 @@
       "properties": {
         "id": 116,
         "name": "幟町３丁目",
-        "points": 8
+        "area": 19039.352,
+        "population": 186,
+        "households": 99,
+        "emotions": {
+          "joy": 76.25843848498289,
+          "calm": 57.127077264298414,
+          "excitement": 100,
+          "stress": 33.55971894644071
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -5583,7 +6975,19 @@
       "properties": {
         "id": 117,
         "name": "幟町４丁目",
-        "points": 5
+        "area": 13500.627,
+        "population": 93,
+        "households": 44,
+        "emotions": {
+          "joy": 87.07045534222678,
+          "calm": 62.340905312155705,
+          "excitement": 99.66743227825248,
+          "stress": 44.43070082918075
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -5618,7 +7022,19 @@
       "properties": {
         "id": 118,
         "name": "弓町１丁目",
-        "points": 5
+        "area": 15455.612,
+        "population": 91,
+        "households": 44,
+        "emotions": {
+          "joy": 77.9885226912232,
+          "calm": 64.98591605496088,
+          "excitement": 73.16521332666905,
+          "stress": 38.17488908714704
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 78
+        }
       }
     },
     {
@@ -5653,7 +7069,19 @@
       "properties": {
         "id": 119,
         "name": "弓町２丁目",
-        "points": 5
+        "area": 12560.732,
+        "population": 61,
+        "households": 29,
+        "emotions": {
+          "joy": 73.11567353278082,
+          "calm": 45.836889297948886,
+          "excitement": 95.49397687448145,
+          "stress": 47.10838100029379
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 95
+        }
       }
     },
     {
@@ -5688,7 +7116,19 @@
       "properties": {
         "id": 120,
         "name": "弓町３丁目",
-        "points": 5
+        "area": 3507.434,
+        "population": 29,
+        "households": 13,
+        "emotions": {
+          "joy": 78.20248575766236,
+          "calm": 53.943979827711004,
+          "excitement": 89.54398900910616,
+          "stress": 17.398007129225213
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 90
+        }
       }
     },
     {
@@ -5747,7 +7187,19 @@
       "properties": {
         "id": 121,
         "name": "弓町４丁目",
-        "points": 11
+        "area": 66074.669,
+        "population": 60,
+        "households": 26,
+        "emotions": {
+          "joy": 70.9524020994457,
+          "calm": 71.2649772525231,
+          "excitement": 71.66891762394195,
+          "stress": 25.726961606560423
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 72
+        }
       }
     },
     {
@@ -5778,7 +7230,19 @@
       "properties": {
         "id": 122,
         "name": "籠屋町１丁目",
-        "points": 4
+        "area": 561.086,
+        "population": 67,
+        "households": 38,
+        "emotions": {
+          "joy": 81.9263163435115,
+          "calm": 76.86294135621355,
+          "excitement": 72.04805393962667,
+          "stress": 34.96292936068304
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 82
+        }
       }
     },
     {
@@ -5821,7 +7285,19 @@
       "properties": {
         "id": 123,
         "name": "籠屋町２丁目",
-        "points": 7
+        "area": 24044.709,
+        "population": 116,
+        "households": 61,
+        "emotions": {
+          "joy": 69.72926991025207,
+          "calm": 70.3982023466969,
+          "excitement": 54.34751643063103,
+          "stress": 15.035596962901675
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 70
+        }
       }
     },
     {
@@ -5924,7 +7400,19 @@
       "properties": {
         "id": 124,
         "name": "寺町",
-        "points": 22
+        "area": 767365.483,
+        "population": 84,
+        "households": 27,
+        "emotions": {
+          "joy": 71.53548999262522,
+          "calm": 64.35043418145328,
+          "excitement": 70.77794177450019,
+          "stress": 25.73056570266511
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 72
+        }
       }
     },
     {
@@ -5971,7 +7459,19 @@
       "properties": {
         "id": 125,
         "name": "銀座",
-        "points": 8
+        "area": 12582.764,
+        "population": 146,
+        "households": 84,
+        "emotions": {
+          "joy": 94.65434452466016,
+          "calm": 53.02601331915589,
+          "excitement": 97.77103780131095,
+          "stress": 17.47381115717601
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 98
+        }
       }
     },
     {
@@ -6010,7 +7510,19 @@
       "properties": {
         "id": 126,
         "name": "西新町１丁目",
-        "points": 6
+        "area": 10136.998,
+        "population": 43,
+        "households": 21,
+        "emotions": {
+          "joy": 62.159798545764396,
+          "calm": 75.34780845838061,
+          "excitement": 65.41682923690516,
+          "stress": 23.31154625184036
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 75
+        }
       }
     },
     {
@@ -6073,7 +7585,19 @@
       "properties": {
         "id": 127,
         "name": "西新町２丁目",
-        "points": 12
+        "area": 44696.212,
+        "population": 135,
+        "households": 75,
+        "emotions": {
+          "joy": 68.17122941440853,
+          "calm": 61.95538750818305,
+          "excitement": 71.84833621812429,
+          "stress": 26.38055591858579
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 72
+        }
       }
     },
     {
@@ -6120,7 +7644,19 @@
       "properties": {
         "id": 128,
         "name": "西新町４丁目",
-        "points": 8
+        "area": 28211.839,
+        "population": 159,
+        "households": 75,
+        "emotions": {
+          "joy": 65.67999576447298,
+          "calm": 89.65266241781873,
+          "excitement": 55.63626344422062,
+          "stress": 26.34531112916099
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 90
+        }
       }
     },
     {
@@ -6167,7 +7703,19 @@
       "properties": {
         "id": 129,
         "name": "西船場町３丁目",
-        "points": 8
+        "area": 15260.545,
+        "population": 113,
+        "households": 78,
+        "emotions": {
+          "joy": 78.2802627934833,
+          "calm": 73.45164870307354,
+          "excitement": 77.93728918108017,
+          "stress": 35.30437955937328
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 78
+        }
       }
     },
     {
@@ -6210,7 +7758,19 @@
       "properties": {
         "id": 130,
         "name": "西船場町５丁目",
-        "points": 7
+        "area": 14322.146,
+        "population": 72,
+        "households": 31,
+        "emotions": {
+          "joy": 60.72437377489971,
+          "calm": 67.03830532871218,
+          "excitement": 83.05077184334377,
+          "stress": 36.103420136652716
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 83
+        }
       }
     },
     {
@@ -6261,7 +7821,19 @@
       "properties": {
         "id": 131,
         "name": "西大工町１丁目",
-        "points": 9
+        "area": 22873.584,
+        "population": 61,
+        "households": 22,
+        "emotions": {
+          "joy": 74.04754016791311,
+          "calm": 60.283785257374355,
+          "excitement": 80.98187682211622,
+          "stress": 44.74528420300868
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -6324,7 +7896,19 @@
       "properties": {
         "id": 132,
         "name": "西大工町４丁目",
-        "points": 12
+        "area": 44365.783,
+        "population": 77,
+        "households": 35,
+        "emotions": {
+          "joy": 62.93589430712525,
+          "calm": 85.35365859908006,
+          "excitement": 58.275827849170675,
+          "stress": 26.87645544692593
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 85
+        }
       }
     },
     {
@@ -6367,7 +7951,19 @@
       "properties": {
         "id": 133,
         "name": "西大工町５丁目",
-        "points": 7
+        "area": 11309.775,
+        "population": 62,
+        "households": 28,
+        "emotions": {
+          "joy": 78.48364343027677,
+          "calm": 66.19071217371496,
+          "excitement": 89.1854782981685,
+          "stress": 24.352022531512624
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 89
+        }
       }
     },
     {
@@ -6432,7 +8028,19 @@
       "properties": {
         "id": 134,
         "name": "東新町１丁目",
-        "points": 8
+        "area": 9617.171,
+        "population": 168,
+        "households": 86,
+        "emotions": {
+          "joy": 80.91257101317704,
+          "calm": 58.884162310592984,
+          "excitement": 85.15407439208677,
+          "stress": 41.58091400238611
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 85
+        }
       }
     },
     {
@@ -6471,7 +8079,19 @@
       "properties": {
         "id": 135,
         "name": "東新町２丁目",
-        "points": 6
+        "area": 8910.578,
+        "population": 26,
+        "households": 12,
+        "emotions": {
+          "joy": 78.8118851504788,
+          "calm": 63.735307982303226,
+          "excitement": 100,
+          "stress": 15.964999946169058
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -6518,7 +8138,19 @@
       "properties": {
         "id": 136,
         "name": "東船場町１丁目",
-        "points": 8
+        "area": 22601.627,
+        "population": 66,
+        "households": 25,
+        "emotions": {
+          "joy": 64.65444561030517,
+          "calm": 82.393246675733,
+          "excitement": 62.90759384655631,
+          "stress": 29.03045840571254
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -6573,7 +8205,19 @@
       "properties": {
         "id": 137,
         "name": "東船場町２丁目",
-        "points": 10
+        "area": 21019.511,
+        "population": 190,
+        "households": 132,
+        "emotions": {
+          "joy": 69.93757536960302,
+          "calm": 81.71662405334564,
+          "excitement": 57.315753618538196,
+          "stress": 23.43132111909408
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -6624,7 +8268,19 @@
       "properties": {
         "id": 138,
         "name": "東大工町１丁目",
-        "points": 9
+        "area": 12090.331,
+        "population": 43,
+        "households": 20,
+        "emotions": {
+          "joy": 85.92460684086593,
+          "calm": 63.443286869931484,
+          "excitement": 85.09114778533466,
+          "stress": 19.158724770068645
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 86
+        }
       }
     },
     {
@@ -6663,7 +8319,19 @@
       "properties": {
         "id": 139,
         "name": "東大工町２丁目",
-        "points": 6
+        "area": 7488.65,
+        "population": 30,
+        "households": 15,
+        "emotions": {
+          "joy": 69.2132829498674,
+          "calm": 82.13637439145865,
+          "excitement": 59.386914582626176,
+          "stress": 18.185945858448154
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -6698,7 +8366,19 @@
       "properties": {
         "id": 140,
         "name": "東大工町３丁目",
-        "points": 5
+        "area": 4363.269,
+        "population": 12,
+        "households": 5,
+        "emotions": {
+          "joy": 75.85705782267814,
+          "calm": 65.73249812576672,
+          "excitement": 84.89788231589377,
+          "stress": 40.58405563848967
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 85
+        }
       }
     },
     {
@@ -6737,7 +8417,19 @@
       "properties": {
         "id": 141,
         "name": "東山手町１丁目",
-        "points": 6
+        "area": 26436.099,
+        "population": 102,
+        "households": 56,
+        "emotions": {
+          "joy": 65.1011375470602,
+          "calm": 87.37831160791212,
+          "excitement": 61.64253184790937,
+          "stress": 13.987473022712571
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 87
+        }
       }
     },
     {
@@ -6792,7 +8484,19 @@
       "properties": {
         "id": 142,
         "name": "東山手町２丁目",
-        "points": 10
+        "area": 36581.128,
+        "population": 51,
+        "households": 17,
+        "emotions": {
+          "joy": 74.4651271007989,
+          "calm": 63.38939685064428,
+          "excitement": 74.13351631423805,
+          "stress": 20.142030998675168
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 74
+        }
       }
     },
     {
@@ -6827,7 +8531,19 @@
       "properties": {
         "id": 143,
         "name": "東山手町３丁目",
-        "points": 5
+        "area": 5877.936,
+        "population": 28,
+        "households": 20,
+        "emotions": {
+          "joy": 74.45727872084646,
+          "calm": 62.81451724203911,
+          "excitement": 72.80350326479183,
+          "stress": 28.862486989983687
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 74
+        }
       }
     },
     {
@@ -6862,7 +8578,19 @@
       "properties": {
         "id": 144,
         "name": "南新町１丁目",
-        "points": 5
+        "area": 3062.577,
+        "population": 29,
+        "households": 16,
+        "emotions": {
+          "joy": 74.90470224494395,
+          "calm": 69.41487595924326,
+          "excitement": 79.72708816424242,
+          "stress": 20.454640405471952
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 80
+        }
       }
     },
     {
@@ -6897,7 +8625,19 @@
       "properties": {
         "id": 145,
         "name": "南新町２丁目",
-        "points": 5
+        "area": 2954.147,
+        "population": 32,
+        "households": 12,
+        "emotions": {
+          "joy": 75.95488512474861,
+          "calm": 68.97909803961691,
+          "excitement": 81.4237890852117,
+          "stress": 21.043274230801792
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -6928,7 +8668,19 @@
       "properties": {
         "id": 146,
         "name": "北佐古一番町",
-        "points": 4
+        "area": 197491.954,
+        "population": 743,
+        "households": 303,
+        "emotions": {
+          "joy": 72.50308475916557,
+          "calm": 49.97400020765947,
+          "excitement": 81.68874273300241,
+          "stress": 43.85263349305148
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -6967,7 +8719,19 @@
       "properties": {
         "id": 147,
         "name": "佐古一番町",
-        "points": 6
+        "area": 129125.352,
+        "population": 882,
+        "households": 461,
+        "emotions": {
+          "joy": 68.61113570071771,
+          "calm": 61.67118060702138,
+          "excitement": 69.05184992130222,
+          "stress": 31.613240708809762
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 69
+        }
       }
     },
     {
@@ -7010,7 +8774,19 @@
       "properties": {
         "id": 148,
         "name": "南佐古一番町",
-        "points": 7
+        "area": 140061.22,
+        "population": 216,
+        "households": 87,
+        "emotions": {
+          "joy": 84.90870715167618,
+          "calm": 69.10375983614401,
+          "excitement": 85.59943808241106,
+          "stress": 21.56267321828274
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 86
+        }
       }
     },
     {
@@ -7049,7 +8825,19 @@
       "properties": {
         "id": 149,
         "name": "南田宮２丁目",
-        "points": 6
+        "area": 255808.586,
+        "population": 793,
+        "households": 366,
+        "emotions": {
+          "joy": 71.17628198143704,
+          "calm": 61.541441490311385,
+          "excitement": 67.83696883259121,
+          "stress": 39.13597288636671
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 71
+        }
       }
     },
     {
@@ -7080,7 +8868,19 @@
       "properties": {
         "id": 150,
         "name": "北前川町１丁目",
-        "points": 4
+        "area": 9755.832,
+        "population": 101,
+        "households": 54,
+        "emotions": {
+          "joy": 63.450215322045416,
+          "calm": 62.66486145214984,
+          "excitement": 76.80783950804981,
+          "stress": 38.176115430864925
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 77
+        }
       }
     },
     {
@@ -7119,7 +8919,19 @@
       "properties": {
         "id": 151,
         "name": "北前川町２丁目",
-        "points": 6
+        "area": 7488.89,
+        "population": 87,
+        "households": 50,
+        "emotions": {
+          "joy": 70.90296947426343,
+          "calm": 69.86917987420944,
+          "excitement": 87.08357080318457,
+          "stress": 39.733575213997085
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 87
+        }
       }
     },
     {
@@ -7162,7 +8974,19 @@
       "properties": {
         "id": 152,
         "name": "助任本町１丁目",
-        "points": 7
+        "area": 30733.25,
+        "population": 204,
+        "households": 125,
+        "emotions": {
+          "joy": 64.25489909582342,
+          "calm": 82.18678326290728,
+          "excitement": 64.35928667223018,
+          "stress": 18.34061211861677
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -7217,7 +9041,19 @@
       "properties": {
         "id": 153,
         "name": "助任本町２丁目",
-        "points": 10
+        "area": 16026.172,
+        "population": 230,
+        "households": 150,
+        "emotions": {
+          "joy": 72.70748131159385,
+          "calm": 82.32327475489909,
+          "excitement": 52.24317166653755,
+          "stress": 23.357243947239116
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 82
+        }
       }
     },
     {
@@ -7278,7 +9114,19 @@
       "properties": {
         "id": 154,
         "name": "助任本町３丁目",
-        "points": 1
+        "area": 27357.298,
+        "population": 63,
+        "households": 24,
+        "emotions": {
+          "joy": 78.16915880302395,
+          "calm": 58.02835471362912,
+          "excitement": 78.81555235623475,
+          "stress": 44.50167409466302
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 79
+        }
       }
     },
     {
@@ -7317,7 +9165,19 @@
       "properties": {
         "id": 155,
         "name": "助任橋２丁目",
-        "points": 6
+        "area": 6745.54,
+        "population": 75,
+        "households": 37,
+        "emotions": {
+          "joy": 69.2040874141652,
+          "calm": 72.02645108782652,
+          "excitement": 67.0615046318845,
+          "stress": 42.94198310218441
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 72
+        }
       }
     },
     {
@@ -7356,7 +9216,19 @@
       "properties": {
         "id": 156,
         "name": "助任橋３丁目",
-        "points": 6
+        "area": 29144.28,
+        "population": 216,
+        "households": 118,
+        "emotions": {
+          "joy": 79.99765931746757,
+          "calm": 75.67996280486256,
+          "excitement": 75.98807390698506,
+          "stress": 39.35028422386987
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 80
+        }
       }
     },
     {
@@ -7415,7 +9287,19 @@
       "properties": {
         "id": 157,
         "name": "中前川町１丁目",
-        "points": 11
+        "area": 28388.557,
+        "population": 210,
+        "households": 139,
+        "emotions": {
+          "joy": 60.456593620245854,
+          "calm": 72.90381889957065,
+          "excitement": 61.77149286842709,
+          "stress": 20.47484686206356
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 73
+        }
       }
     },
     {
@@ -7458,7 +9342,19 @@
       "properties": {
         "id": 158,
         "name": "中前川町２丁目",
-        "points": 7
+        "area": 48603.673,
+        "population": 209,
+        "households": 102,
+        "emotions": {
+          "joy": 64.75889444529678,
+          "calm": 59.361175763773865,
+          "excitement": 66.58385544545109,
+          "stress": 31.22616630188507
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 67
+        }
       }
     },
     {
@@ -7497,7 +9393,19 @@
       "properties": {
         "id": 159,
         "name": "中前川町３丁目",
-        "points": 6
+        "area": 8561.181,
+        "population": 85,
+        "households": 76,
+        "emotions": {
+          "joy": 81.64658308543105,
+          "calm": 51.56140175418069,
+          "excitement": 88.24812039255265,
+          "stress": 27.137919973556862
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 88
+        }
       }
     },
     {
@@ -7544,7 +9452,19 @@
       "properties": {
         "id": 160,
         "name": "中前川町４丁目",
-        "points": 8
+        "area": 21994.444,
+        "population": 203,
+        "households": 126,
+        "emotions": {
+          "joy": 61.51600992259047,
+          "calm": 78.12141740095782,
+          "excitement": 51.322551113491656,
+          "stress": 13.315583145350413
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 78
+        }
       }
     },
     {
@@ -7591,7 +9511,19 @@
       "properties": {
         "id": 161,
         "name": "南前川町２丁目",
-        "points": 8
+        "area": 82547.759,
+        "population": 440,
+        "households": 201,
+        "emotions": {
+          "joy": 66.35045529984166,
+          "calm": 66.1890277729471,
+          "excitement": 73.13358417177696,
+          "stress": 20.106814862015973
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 73
+        }
       }
     },
     {
@@ -7634,7 +9566,19 @@
       "properties": {
         "id": 162,
         "name": "南前川町３丁目",
-        "points": 7
+        "area": 22760.973,
+        "population": 136,
+        "households": 73,
+        "emotions": {
+          "joy": 73.44420964167305,
+          "calm": 78.73165090408672,
+          "excitement": 73.10911331433363,
+          "stress": 36.91040769671599
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 79
+        }
       }
     },
     {
@@ -7689,7 +9633,19 @@
       "properties": {
         "id": 163,
         "name": "南前川町４丁目",
-        "points": 10
+        "area": 41614.607,
+        "population": 152,
+        "households": 68,
+        "emotions": {
+          "joy": 66.6365932519888,
+          "calm": 70.49441732913495,
+          "excitement": 81.21522930598245,
+          "stress": 34.39716027651496
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -7720,7 +9676,19 @@
       "properties": {
         "id": 164,
         "name": "南前川町５丁目",
-        "points": 4
+        "area": 47640.823,
+        "population": 91,
+        "households": 56,
+        "emotions": {
+          "joy": 67.26418572638678,
+          "calm": 62.31023005176857,
+          "excitement": 66.97760604530592,
+          "stress": 27.175081661752856
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 67
+        }
       }
     },
     {
@@ -7755,7 +9723,19 @@
       "properties": {
         "id": 165,
         "name": "吉野本町２丁目",
-        "points": 5
+        "area": 11409.812,
+        "population": 94,
+        "households": 44,
+        "emotions": {
+          "joy": 80.9719165409862,
+          "calm": 51.54660314261492,
+          "excitement": 100,
+          "stress": 28.964801657748758
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -7786,7 +9766,19 @@
       "properties": {
         "id": 166,
         "name": "北常三島町２丁目",
-        "points": 4
+        "area": 41475.316,
+        "population": 313,
+        "households": 255,
+        "emotions": {
+          "joy": 68.66850339732366,
+          "calm": 76.89028429241544,
+          "excitement": 82.3519048919896,
+          "stress": 20.269029786322793
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -7821,7 +9813,19 @@
       "properties": {
         "id": 167,
         "name": "北常三島町３丁目",
-        "points": 5
+        "area": 104609.434,
+        "population": 334,
+        "households": 209,
+        "emotions": {
+          "joy": 69.20928083230376,
+          "calm": 74.96718803002173,
+          "excitement": 77.06147273392438,
+          "stress": 29.673615974807056
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 77
+        }
       }
     },
     {
@@ -7884,7 +9888,19 @@
       "properties": {
         "id": 168,
         "name": "中常三島町１丁目",
-        "points": 12
+        "area": 168085.716,
+        "population": 294,
+        "households": 199,
+        "emotions": {
+          "joy": 76.1323269033632,
+          "calm": 69.2426678437069,
+          "excitement": 92.79256250297749,
+          "stress": 34.56557854547138
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 93
+        }
       }
     },
     {
@@ -7923,7 +9939,19 @@
       "properties": {
         "id": 169,
         "name": "中常三島町２丁目",
-        "points": 6
+        "area": 30682.857,
+        "population": 313,
+        "households": 197,
+        "emotions": {
+          "joy": 68.93069538486833,
+          "calm": 58.30146539042082,
+          "excitement": 77.97016380437219,
+          "stress": 26.254750753625324
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 78
+        }
       }
     },
     {
@@ -8010,7 +10038,19 @@
       "properties": {
         "id": 170,
         "name": "中常三島町３丁目",
-        "points": 18
+        "area": 68429.656,
+        "population": 772,
+        "households": 539,
+        "emotions": {
+          "joy": 72.71392627902974,
+          "calm": 75.44986004488945,
+          "excitement": 76.34752264483663,
+          "stress": 23.877481570103672
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 76
+        }
       }
     },
     {
@@ -8061,7 +10101,19 @@
       "properties": {
         "id": 171,
         "name": "南常三島町１丁目",
-        "points": 9
+        "area": 30424.741,
+        "population": 340,
+        "households": 196,
+        "emotions": {
+          "joy": 58.486586603097386,
+          "calm": 84.4820591912385,
+          "excitement": 61.739823852961386,
+          "stress": 14.155447726780658
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 84
+        }
       }
     },
     {
@@ -8124,7 +10176,19 @@
       "properties": {
         "id": 172,
         "name": "南常三島町３丁目",
-        "points": 12
+        "area": 41568.773,
+        "population": 349,
+        "households": 258,
+        "emotions": {
+          "joy": 77.99539103398784,
+          "calm": 62.471329324642554,
+          "excitement": 100,
+          "stress": 17.21189323646808
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -8191,7 +10255,19 @@
       "properties": {
         "id": 173,
         "name": "住吉１丁目",
-        "points": 13
+        "area": 205048.219,
+        "population": 1805,
+        "households": 1072,
+        "emotions": {
+          "joy": 76.6652569499214,
+          "calm": 74.96826530129916,
+          "excitement": 72.240465789989,
+          "stress": 26.031274032088053
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 77
+        }
       }
     },
     {
@@ -8242,7 +10318,19 @@
       "properties": {
         "id": 174,
         "name": "住吉２丁目",
-        "points": 9
+        "area": 138904.155,
+        "population": 1336,
+        "households": 774,
+        "emotions": {
+          "joy": 79.33973872774106,
+          "calm": 66.8592804975834,
+          "excitement": 83.28216204662625,
+          "stress": 29.369190429653266
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 83
+        }
       }
     },
     {
@@ -8301,7 +10389,19 @@
       "properties": {
         "id": 175,
         "name": "住吉３丁目",
-        "points": 11
+        "area": 172933.831,
+        "population": 1359,
+        "households": 777,
+        "emotions": {
+          "joy": 75.44735794343867,
+          "calm": 79.89980768592987,
+          "excitement": 83.07336058790094,
+          "stress": 26.319568241111128
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 83
+        }
       }
     },
     {
@@ -8344,7 +10444,19 @@
       "properties": {
         "id": 176,
         "name": "住吉４丁目",
-        "points": 7
+        "area": 531492.742,
+        "population": 2320,
+        "households": 1187,
+        "emotions": {
+          "joy": 94.78002473757843,
+          "calm": 53.469273564665144,
+          "excitement": 99.89950284310602,
+          "stress": 28.733969303634193
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 100
+        }
       }
     },
     {
@@ -8419,7 +10531,19 @@
       "properties": {
         "id": 177,
         "name": "福島１丁目",
-        "points": 15
+        "area": 230207.488,
+        "population": 1370,
+        "households": 643,
+        "emotions": {
+          "joy": 80.35957760684364,
+          "calm": 64.76018567271458,
+          "excitement": 97.55828761301666,
+          "stress": 42.29908348284866
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 98
+        }
       }
     },
     {
@@ -8466,7 +10590,19 @@
       "properties": {
         "id": 178,
         "name": "福島２丁目",
-        "points": 8
+        "area": 105092.802,
+        "population": 741,
+        "households": 459,
+        "emotions": {
+          "joy": 73.61455303581634,
+          "calm": 57.809887700017555,
+          "excitement": 86.1019462688192,
+          "stress": 31.29719970251077
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 86
+        }
       }
     },
     {
@@ -8501,7 +10637,19 @@
       "properties": {
         "id": 179,
         "name": "安宅１丁目",
-        "points": 5
+        "area": 93674.545,
+        "population": 639,
+        "households": 319,
+        "emotions": {
+          "joy": 70.86540441363204,
+          "calm": 62.045266944211214,
+          "excitement": 81.41250553694486,
+          "stress": 43.154548111821086
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 81
+        }
       }
     },
     {
@@ -8544,7 +10692,19 @@
       "properties": {
         "id": 180,
         "name": "大和町１丁目",
-        "points": 7
+        "area": 55181.523,
+        "population": 481,
+        "households": 234,
+        "emotions": {
+          "joy": 63.41144652972859,
+          "calm": 61.30185396410549,
+          "excitement": 75.87230667621624,
+          "stress": 35.63168841960574
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 76
+        }
       }
     },
     {
@@ -8599,7 +10759,19 @@
       "properties": {
         "id": 181,
         "name": "新南福島１丁目",
-        "points": 10
+        "area": 79615.381,
+        "population": 374,
+        "households": 185,
+        "emotions": {
+          "joy": 57.74708302823048,
+          "calm": 81.29974658203056,
+          "excitement": 65.68713064543446,
+          "stress": 15.391269004126787
+        },
+        "analysis": {
+          "primary": "calm",
+          "intensity": 81
+        }
       }
     },
     {
@@ -8650,7 +10822,19 @@
       "properties": {
         "id": 182,
         "name": "新南福島２丁目",
-        "points": 9
+        "area": 29422.095,
+        "population": 211,
+        "households": 77,
+        "emotions": {
+          "joy": 75.29943502250073,
+          "calm": 67.4340152424898,
+          "excitement": 81.52656927212249,
+          "stress": 44.679369249242015
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 82
+        }
       }
     },
     {
@@ -8701,7 +10885,19 @@
       "properties": {
         "id": 183,
         "name": "末広１丁目",
-        "points": 9
+        "area": 194398.841,
+        "population": 994,
+        "households": 446,
+        "emotions": {
+          "joy": 81.55302440991487,
+          "calm": 53.40063920365326,
+          "excitement": 88.34076004702996,
+          "stress": 20.330475023904512
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 88
+        }
       }
     },
     {
@@ -8732,7 +10928,19 @@
       "properties": {
         "id": 184,
         "name": "南末広町",
-        "points": 4
+        "area": 420394.81,
+        "population": 2450,
+        "households": 1025,
+        "emotions": {
+          "joy": 82.97175382161248,
+          "calm": 62.28114543408661,
+          "excitement": 82.83120720669979,
+          "stress": 23.869224866262822
+        },
+        "analysis": {
+          "primary": "joy",
+          "intensity": 83
+        }
       }
     },
     {
@@ -8795,7 +11003,19 @@
       "properties": {
         "id": 185,
         "name": "八万町中津山",
-        "points": 12
+        "area": 414900.898,
+        "population": 569,
+        "households": 228,
+        "emotions": {
+          "joy": 73.78574096822358,
+          "calm": 45.64773769065407,
+          "excitement": 96.5523241076573,
+          "stress": 45.957279427261106
+        },
+        "analysis": {
+          "primary": "excitement",
+          "intensity": 97
+        }
       }
     }
   ]
