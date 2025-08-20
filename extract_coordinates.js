@@ -134,31 +134,58 @@ if (allCoords.length > 0) {
 
 // CSVファイルとして座標データをエクスポート
 const csvData = ['地区ID,地区名,座標点数,経度,緯度,順序'];
+let csvRowCount = 0;
+
 data.features.forEach(feature => {
     const { name, id } = feature.properties;
-    const coordinates = feature.geometry.coordinates[0];
     
-    coordinates.forEach((coord, index) => {
-        csvData.push(`${id},"${name}",${coordinates.length},${coord[0]},${coord[1]},${index + 1}`);
-    });
+    try {
+        const coordinates = feature.geometry.coordinates[0];
+        if (Array.isArray(coordinates)) {
+            coordinates.forEach((coord, index) => {
+                if (Array.isArray(coord) && coord.length >= 2 && 
+                    typeof coord[0] === 'number' && typeof coord[1] === 'number') {
+                    csvData.push(`${id},"${name}",${coordinates.length},${coord[0]},${coord[1]},${index + 1}`);
+                    csvRowCount++;
+                }
+            });
+        }
+    } catch (error) {
+        console.log(`CSV出力エラー - 地区 ${id}: ${error.message}`);
+    }
 });
 
-fs.writeFileSync('polygon_coordinates.csv', csvData.join('\n'), 'utf8');
-console.log('\n💾 座標データをCSVファイルに出力: polygon_coordinates.csv');
+if (csvRowCount > 0) {
+    fs.writeFileSync('polygon_coordinates.csv', csvData.join('\n'), 'utf8');
+    console.log(`\n💾 座標データをCSVファイルに出力: polygon_coordinates.csv (${csvRowCount.toLocaleString()}行)`);
+}
 
 // GeoJSON座標のみのファイルも生成
 const coordsOnly = {
     type: "FeatureCollection",
-    features: data.features.map(feature => ({
-        type: "Feature",
-        geometry: feature.geometry,
-        properties: {
-            id: feature.properties.id,
-            name: feature.properties.name,
-            points: feature.geometry.coordinates[0].length
-        }
-    }))
+    features: []
 };
 
-fs.writeFileSync('coordinates_only.geojson', JSON.stringify(coordsOnly, null, 2), 'utf8');
-console.log('💾 座標のみのGeoJSONファイルに出力: coordinates_only.geojson');
+data.features.forEach(feature => {
+    try {
+        const coordinates = feature.geometry.coordinates[0];
+        if (Array.isArray(coordinates) && coordinates.length > 0) {
+            coordsOnly.features.push({
+                type: "Feature",
+                geometry: feature.geometry,
+                properties: {
+                    id: feature.properties.id,
+                    name: feature.properties.name,
+                    points: coordinates.length
+                }
+            });
+        }
+    } catch (error) {
+        console.log(`GeoJSON出力エラー - 地区 ${feature.properties.id}: ${error.message}`);
+    }
+});
+
+if (coordsOnly.features.length > 0) {
+    fs.writeFileSync('coordinates_only.geojson', JSON.stringify(coordsOnly, null, 2), 'utf8');
+    console.log(`💾 座標のみのGeoJSONファイルに出力: coordinates_only.geojson (${coordsOnly.features.length}地区)`);
+}
