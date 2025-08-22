@@ -88,7 +88,7 @@
           <input id="opacityRange" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Layer opacity" title="Layer opacity" />
           <div class="value" id="opacityValue">0.75</div>
         </div>
-  <div class="notice mt6">OSM tiles © OpenStreetMap contributors</div>
+        <div class="notice mt6">OSM tiles © OpenStreetMap contributors</div>
       </div>
 
       <div class="card" id="infoCard">
@@ -111,8 +111,226 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
     // ————— Config —————
-    const DATA_URL = 'data/data.json'; // relative path for GitHub Pages subpaths
     const FALLBACK_VIEW = { center: [34.0700, 134.5550], zoom: 14 };
+
+    // Embedded data (no external file needed)
+    const EMBEDDED_DATA = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [134.554548, 34.072042],
+                [134.553192, 34.072633],
+                [134.552611, 34.071727],
+                [134.55387, 34.07148],
+                [134.55389, 34.071947],
+                [134.554548, 34.072042]
+              ]
+            ]
+          },
+          "properties": {
+            "id": 1,
+            "name": "一番町",
+            "area": 11734.743,
+            "population": 47,
+            "households": 16,
+            "emotions": {
+              "joy": 60.60364268526062,
+              "calm": 59.793322070926784,
+              "excitement": 68.76852760893352,
+              "stress": 39.93824886463105
+            },
+            "analysis": {
+              "primary": "excitement",
+              "intensity": 69
+            },
+            "metrics": {
+              "electricity": 12000,
+              "gas": 8000,
+              "water": 5000,
+              "land": 20000,
+              "security": 4.5
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [134.548165, 34.078366],
+                [134.54766, 34.078635],
+                [134.547343, 34.078027],
+                [134.547867, 34.077822],
+                [134.548165, 34.078366]
+              ]
+            ]
+          },
+          "properties": {
+            "id": 2,
+            "name": "北出来島町１丁目",
+            "area": 3781.394,
+            "population": 24,
+            "households": 13,
+            "emotions": {
+              "joy": 78.61154272923471,
+              "calm": 66.53709861771321,
+              "excitement": 81.75004165562227,
+              "stress": 27.728665835716487
+            },
+            "analysis": {
+              "primary": "excitement",
+              "intensity": 82
+            },
+            "metrics": {
+              "electricity": 11000,
+              "gas": 8500,
+              "water": 4800,
+              "land": 21000,
+              "security": 3.8
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [134.548165, 34.078366],
+                [134.548634, 34.078136],
+                [134.548885, 34.078521],
+                [134.547968, 34.078951],
+                [134.545808, 34.08],
+                [134.544535, 34.08],
+                [134.544611, 34.079756],
+                [134.544983, 34.079924],
+                [134.54556, 34.079123],
+                [134.54652, 34.078424],
+                [134.547228, 34.077873],
+                [134.547343, 34.078027],
+                [134.54766, 34.078635],
+                [134.548165, 34.078366]
+              ]
+            ]
+          },
+          "properties": {
+            "id": 3,
+            "name": "北出来島町２丁目",
+            "area": 36828.506,
+            "population": 111,
+            "households": 49,
+            "emotions": {
+              "joy": 77.1072969238997,
+              "calm": 73.79525354359032,
+              "excitement": 84.63888363031813,
+              "stress": 30.138645863141505
+            },
+            "analysis": {
+              "primary": "excitement",
+              "intensity": 85
+            },
+            "metrics": {
+              "electricity": 11500,
+              "gas": 8200,
+              "water": 5100,
+              "land": 20500,
+              "security": 4.2
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [134.55387, 34.07148],
+                [134.553898, 34.070803],
+                [134.554593, 34.070762],
+                [134.554595, 34.071493],
+                [134.555418, 34.071538],
+                [134.55509, 34.072154],
+                [134.554548, 34.072042],
+                [134.55389, 34.071947],
+                [134.55387, 34.07148]
+              ]
+            ]
+          },
+          "properties": {
+            "id": 4,
+            "name": "幸町１丁目",
+            "area": 12999.087,
+            "population": 73,
+            "households": 34,
+            "emotions": {
+              "joy": 68.62167005965202,
+              "calm": 73.39646085326441,
+              "excitement": 59.608073233139535,
+              "stress": 14.433020141297014
+            },
+            "analysis": {
+              "primary": "calm",
+              "intensity": 73
+            },
+            "metrics": {
+              "electricity": 11800,
+              "gas": 8300,
+              "water": 4950,
+              "land": 20800,
+              "security": 4.0
+            }
+          }
+        },
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [134.553898, 34.070803],
+                [134.553871, 34.070006],
+                [134.55385, 34.06957],
+                [134.555953, 34.06967],
+                [134.555418, 34.071538],
+                [134.554595, 34.071493],
+                [134.554593, 34.070762],
+                [134.553898, 34.070803]
+              ]
+            ]
+          },
+          "properties": {
+            "id": 5,
+            "name": "幸町２丁目",
+            "area": 31306.305,
+            "population": 30,
+            "households": 12,
+            "emotions": {
+              "joy": 78.14843138000155,
+              "calm": 70.02825839124506,
+              "excitement": 71.42486626447112,
+              "stress": 29.128336670925464
+            },
+            "analysis": {
+              "primary": "joy",
+              "intensity": 78
+            },
+            "metrics": {
+              "electricity": 12200,
+              "gas": 8100,
+              "water": 5050,
+              "land": 20200,
+              "security": 4.7
+            }
+          }
+        }
+      ]
+    };
 
     const EMOTION_ORDER = ['joy', 'calm', 'excitement', 'stress']; // tie-breaker priority
     const COLORS = {
@@ -186,9 +404,8 @@
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(DATA_URL, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`Failed to fetch ${DATA_URL}: ${res.status}`);
-        const data = await res.json();
+        // Use embedded data instead of fetch
+        const data = EMBEDDED_DATA;
 
         if (!data || data.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
           throw new Error('Invalid GeoJSON: FeatureCollection expected');
@@ -256,6 +473,7 @@
       const p = feature.properties || {};
       const a = p.analysis || {};
       const e = p.emotions || {};
+      const m = p.metrics || {};
       const name = p.name || p.id || 'Area';
       const html = `
         <div style="min-width:220px">
@@ -268,6 +486,13 @@
             <div>calm: ${fmt(e.calm)}</div>
             <div>excitement: ${fmt(e.excitement)}</div>
             <div>stress: ${fmt(e.stress)}</div>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:#888">
+            <b>電気代:</b> ${fmt(m.electricity)} 円<br>
+            <b>ガス代:</b> ${fmt(m.gas)} 円<br>
+            <b>水道代:</b> ${fmt(m.water)} 円<br>
+            <b>地代:</b> ${fmt(m.land)} 円<br>
+            <b>治安:</b> ${fmt(m.security)}
           </div>
         </div>`;
       layer.bindPopup(html);
