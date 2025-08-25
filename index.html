@@ -268,13 +268,32 @@
     function styleForCostFeature(feature) {
       // サンプル値で色分け（電気代）
       const p = feature.properties || {};
-      const val = Math.floor(4000 + Math.random() * 2000); // 電気代サンプル
-      // 色グラデーション例: 安い→青、高い→赤
-      const min = 4000, max = 6000;
-      const ratio = Math.min(1, Math.max(0, (val-min)/(max-min)));
-      const r = Math.floor(78 + (255-78)*ratio);
-      const g = Math.floor(160 - 160*ratio);
-      const b = Math.floor(255 - 255*ratio);
+      // 電気・ガス・水道代の合計コスト（サンプル）
+      const electricity = Math.floor(4000 + Math.random() * 2000);
+      const gas = Math.floor(3000 + Math.random() * 1500);
+      const water = Math.floor(2500 + Math.random() * 1000);
+      const totalCost = electricity + gas + water;
+      // コスト範囲（サンプル値）
+      const min = 9500, max = 13500;
+      const ratio = Math.min(1, Math.max(0, (totalCost - min) / (max - min)));
+      // 安い→青系、普通→黄系、高い→赤系（高いほど濃い赤）
+      let r, g, b;
+      if (ratio < 0.33) {
+        // 青系（安い）
+        r = Math.floor(78 + (120 - 78) * (ratio / 0.33));
+        g = Math.floor(160 + (200 - 160) * (ratio / 0.33));
+        b = Math.floor(255 - (255 - 200) * (ratio / 0.33));
+      } else if (ratio < 0.66) {
+        // 黄系（普通）
+        r = Math.floor(220 + (255 - 220) * ((ratio - 0.33) / 0.33));
+        g = Math.floor(220 + (255 - 220) * ((ratio - 0.33) / 0.33));
+        b = Math.floor(120 + (78 - 120) * ((ratio - 0.33) / 0.33));
+      } else {
+        // 赤系（高い）
+        r = Math.floor(255);
+        g = Math.floor(78 + (0 - 78) * ((ratio - 0.66) / 0.34));
+        b = Math.floor(78 + (0 - 78) * ((ratio - 0.66) / 0.34));
+      }
       const fill = `rgb(${r},${g},${b})`;
       return {
         color: '#222',
@@ -287,12 +306,23 @@
 
     // 犯罪発生率用ポリゴンスタイル
     function styleForCrimeFeature(feature) {
+      // 犯罪発生率（サンプル値）
       const val = Number((Math.random() * 2.5).toFixed(2));
       const min = 0, max = 2.5;
-      const ratio = Math.min(1, Math.max(0, (val-min)/(max-min)));
-      const r = Math.floor(78 + (255-78)*ratio);
-      const g = Math.floor(160 - 160*ratio);
-      const b = Math.floor(255 - 255*ratio);
+      const ratio = Math.min(1, Math.max(0, (val - min) / (max - min)));
+      // 低い→薄紫、普通→紫、高い→赤紫（高いほど濃い警戒色）
+      let r, g, b;
+      if (ratio < 0.5) {
+        // 薄紫～紫
+        r = Math.floor(180 + (200 - 180) * (ratio / 0.5));
+        g = Math.floor(120 + (60 - 120) * (ratio / 0.5));
+        b = Math.floor(220 + (180 - 220) * (ratio / 0.5));
+      } else {
+        // 紫～赤紫（警戒色）
+        r = Math.floor(200 + (255 - 200) * ((ratio - 0.5) / 0.5));
+        g = Math.floor(60 - 60 * ((ratio - 0.5) / 0.5));
+        b = Math.floor(180 - 80 * ((ratio - 0.5) / 0.5));
+      }
       const fill = `rgb(${r},${g},${b})`;
       return {
         color: '#222',
