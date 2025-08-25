@@ -91,8 +91,19 @@
       <div class="card">
         <h2>Layer opacity</h2>
         <div class="range">
-          <input id="opacityRange" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Layer opacity" title="Layer opacity" />
-          <div class="value" id="opacityValue">0.75</div>
+          <label style="width:80px;display:inline-block;">感情</label>
+          <input id="opacityRangeEmotion" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Emotion layer opacity" title="Emotion layer opacity" />
+          <div class="value" id="opacityValueEmotion">0.75</div>
+        </div>
+        <div class="range mt6">
+          <label style="width:80px;display:inline-block;">料金</label>
+          <input id="opacityRangeCost" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Cost layer opacity" title="Cost layer opacity" />
+          <div class="value" id="opacityValueCost">0.75</div>
+        </div>
+        <div class="range mt6">
+          <label style="width:80px;display:inline-block;">犯罪</label>
+          <input id="opacityRangeCrime" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Crime layer opacity" title="Crime layer opacity" />
+          <div class="value" id="opacityValueCrime">0.75</div>
         </div>
         <div class="notice mt6">OSM tiles © OpenStreetMap contributors</div>
       </div>
@@ -148,6 +159,7 @@
     let selectedEmotion = 'all';
     let emotionOpacity = 0.75;
     let costOpacity = 0.75;
+    let crimeOpacity = 0.75;
     let popupFilter = 'all';
 
     // ————— Init —————
@@ -180,43 +192,29 @@
       });
 
         // 感情レイヤーの透明度
-        const rangeEmotion = document.getElementById('opacityRange');
-        const valEmotion = document.getElementById('opacityValue');
+        const rangeEmotion = document.getElementById('opacityRangeEmotion');
+        const valEmotion = document.getElementById('opacityValueEmotion');
         rangeEmotion.addEventListener('input', () => {
           emotionOpacity = parseFloat(rangeEmotion.value);
           valEmotion.textContent = rangeEmotion.value;
           applyOpacity();
         });
         // 料金レイヤーの透明度
-        // 追加: 料金用スライダー
-        let costSlider = document.getElementById('opacityRangeCost');
-        let costValue = document.getElementById('opacityValueCost');
-        if (!costSlider) {
-          // jQueryの:containsは使えないので、textContentで判定
-          const cards = document.querySelectorAll('.card h2');
-          let card = null;
-          cards.forEach(h2 => {
-            if (h2.textContent.includes('Layer opacity')) {
-              card = h2.parentElement;
-            }
-          });
-          if (card) {
-            const div = document.createElement('div');
-            div.className = 'range';
-            div.innerHTML = `<input id="opacityRangeCost" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Cost layer opacity" title="Cost layer opacity" />
-            <div class="value" id="opacityValueCost">0.75</div>`;
-            card.appendChild(div);
-            costSlider = document.getElementById('opacityRangeCost');
-            costValue = document.getElementById('opacityValueCost');
-          }
-        }
-        if (costSlider) {
-          costSlider.addEventListener('input', () => {
-            costOpacity = parseFloat(costSlider.value);
-            costValue.textContent = costSlider.value;
-            applyOpacity();
-          });
-        }
+        const costSlider = document.getElementById('opacityRangeCost');
+        const costValue = document.getElementById('opacityValueCost');
+        costSlider.addEventListener('input', () => {
+          costOpacity = parseFloat(costSlider.value);
+          costValue.textContent = costSlider.value;
+          applyOpacity();
+        });
+        // 犯罪レイヤーの透明度
+        const crimeSlider = document.getElementById('opacityRangeCrime');
+        const crimeValue = document.getElementById('opacityValueCrime');
+        crimeSlider.addEventListener('input', () => {
+          crimeOpacity = parseFloat(crimeSlider.value);
+          crimeValue.textContent = crimeSlider.value;
+          applyOpacity();
+        });
         // 表示項目フィルター
         const filterSel = document.getElementById('popupFilter');
         if (filterSel) {
@@ -312,6 +310,23 @@
 
     // 料金用ポリゴンスタイル
     function styleForCostFeature(feature) {
+    // 犯罪発生率用ポリゴンスタイル
+    function styleForCrimeFeature(feature) {
+      const val = Number((Math.random() * 2.5).toFixed(2));
+      const min = 0, max = 2.5;
+      const ratio = Math.min(1, Math.max(0, (val-min)/(max-min)));
+      const r = Math.floor(78 + (255-78)*ratio);
+      const g = Math.floor(160 - 160*ratio);
+      const b = Math.floor(255 - 255*ratio);
+      const fill = `rgb(${r},${g},${b})`;
+      return {
+        color: '#222',
+        weight: 1.2,
+        opacity: 0.7,
+        fillColor: fill,
+        fillOpacity: crimeOpacity
+      };
+    }
       // サンプル値で色分け（電気代）
       const p = feature.properties || {};
       const val = Math.floor(4000 + Math.random() * 2000); // 電気代サンプル
@@ -455,7 +470,10 @@
 
     function applyOpacity() {
   if (geoLayerEmotion) geoLayerEmotion.setStyle(styleForFeature);
-  if (geoLayerCost) geoLayerCost.setStyle(styleForCostFeature);
+  if (geoLayerCost) {
+    if (popupFilter === 'cost') geoLayerCost.setStyle(styleForCostFeature);
+    if (popupFilter === 'crime') geoLayerCost.setStyle(styleForCrimeFeature);
+  }
     }
 
     function fitToData() {
