@@ -73,7 +73,13 @@
 
     <aside class="sidebar">
       <div class="card">
-        <h2>Emotion filter</h2>
+        <h2>表示項目フィルター</h2>
+        <select id="popupFilter" style="width:100%;margin-bottom:8px;">
+          <option value="all">すべて表示</option>
+          <option value="emotion">感情</option>
+          <option value="cost">料金</option>
+          <option value="crime_land">犯罪率・路線価</option>
+        </select>
         <div class="filters" id="filterButtons">
           <button data-emotion="all" class="active">All</button>
           <button data-emotion="joy">joy</button>
@@ -82,6 +88,7 @@
           <button data-emotion="stress">stress</button>
         </div>
       </div>
+  #popupFilter { font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--border); background:#181c24; color:var(--text); }
 
       <div class="card">
         <h2>Layer opacity</h2>
@@ -147,6 +154,7 @@
     let rawData = null; // GeoJSON FeatureCollection
     let selectedEmotion = 'all';
     let layerOpacity = 0.75;
+    let popupFilter = 'all';
 
     // ————— Init —————
     init();
@@ -184,6 +192,13 @@
         val.textContent = range.value;
         applyOpacity();
       });
+        // 表示項目フィルター
+        const filterSel = document.getElementById('popupFilter');
+        if (filterSel) {
+          filterSel.addEventListener('change', () => {
+            popupFilter = filterSel.value;
+          });
+        }
         // サンプルパラメーター一覧を左側パネルに表示
         setTimeout(() => {
           const paramList = document.getElementById('paramList');
@@ -278,6 +293,10 @@
       const name = p.name || p.id || 'Area';
       // サンプル値生成
       const sampleParams = {
+        joy: Math.floor(50 + Math.random() * 50),
+        calm: Math.floor(50 + Math.random() * 50),
+        excitement: Math.floor(50 + Math.random() * 50),
+        stress: Math.floor(50 + Math.random() * 50),
         electricity: Math.floor(4000 + Math.random() * 2000), // 円/月
         gas: Math.floor(3000 + Math.random() * 1500), // 円/月
         water: Math.floor(2500 + Math.random() * 1000), // 円/月
@@ -285,6 +304,24 @@
         land: Math.floor(80000 + Math.random() * 40000) // 円/m2
       };
       const chartId = `paramChart-${Math.random().toString(36).slice(2,8)}`;
+      let chartLabels = [], chartData = [], chartColors = [];
+      if (popupFilter === 'emotion') {
+        chartLabels = ['joy', 'calm', 'excitement', 'stress'];
+        chartData = [sampleParams.joy, sampleParams.calm, sampleParams.excitement, sampleParams.stress];
+        chartColors = ['#ffd94a', '#4ea0ff', '#ff5ec4', '#ff6b6b'];
+      } else if (popupFilter === 'cost') {
+        chartLabels = ['電気代', 'ガス代', '水道代'];
+        chartData = [sampleParams.electricity, sampleParams.gas, sampleParams.water];
+        chartColors = ['#ffd94a', '#4ea0ff', '#5ec4ff'];
+      } else if (popupFilter === 'crime_land') {
+        chartLabels = ['犯罪率', '路線価'];
+        chartData = [sampleParams.crime, sampleParams.land];
+        chartColors = ['#ff6b6b', '#888'];
+      } else {
+        chartLabels = ['joy', 'calm', 'excitement', 'stress', '電気代', 'ガス代', '水道代', '犯罪率', '路線価'];
+        chartData = [sampleParams.joy, sampleParams.calm, sampleParams.excitement, sampleParams.stress, sampleParams.electricity, sampleParams.gas, sampleParams.water, sampleParams.crime, sampleParams.land];
+        chartColors = ['#ffd94a', '#4ea0ff', '#ff5ec4', '#ff6b6b', '#ffd94a', '#4ea0ff', '#5ec4ff', '#ff6b6b', '#888'];
+      }
       const html = `
         <div style="min-width:240px">
           <div style="font-weight:600;margin-bottom:4px">${escapeHtml(name)}</div>
@@ -302,11 +339,11 @@
           new Chart(ctx, {
             type: 'bar',
             data: {
-              labels: ['電気代', 'ガス代', '水道代', '犯罪率', '路線価'],
+              labels: chartLabels,
               datasets: [{
                 label: 'サンプル値',
-                data: [sampleParams.electricity, sampleParams.gas, sampleParams.water, sampleParams.crime, sampleParams.land],
-                backgroundColor: ['#ffd94a', '#4ea0ff', '#5ec4ff', '#ff6b6b', '#888']
+                data: chartData,
+                backgroundColor: chartColors
               }]
             },
             options: {
