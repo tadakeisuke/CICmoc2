@@ -76,10 +76,9 @@
       <div class="card">
         <h2>表示項目フィルター</h2>
         <select id="popupFilter" style="width:100%;margin-bottom:8px;">
-          <option value="all">すべて表示</option>
           <option value="emotion">感情</option>
-          <option value="cost">料金</option>
-          <option value="crime_land">犯罪率・路線価</option>
+          <option value="cost">電気・ガス・水道代・路線価</option>
+          <option value="crime">犯罪発生率</option>
         </select>
         <div class="filters" id="filterButtons">
           <button data-emotion="all" class="active">All</button>
@@ -223,6 +222,7 @@
         if (filterSel) {
           filterSel.addEventListener('change', () => {
             popupFilter = filterSel.value;
+            renderLayers();
           });
         }
         // サンプルパラメーター一覧を左側パネルに表示
@@ -420,21 +420,36 @@
       if (!rawData) return;
       if (geoLayerEmotion) { geoLayerEmotion.remove(); geoLayerEmotion = null; }
       if (geoLayerCost) { geoLayerCost.remove(); geoLayerCost = null; }
-      const shown = [];
-      geoLayerEmotion = L.geoJSON(rawData, {
-        style: styleForFeature,
-        filter: (f) => {
-          const ok = featureFilter(f);
-          if (ok) shown.push(f);
-          return ok;
-        },
-        onEachFeature: (f, layer) => popupForFeature(f, layer)
-      }).addTo(map);
-      geoLayerCost = L.geoJSON(rawData, {
-        style: styleForCostFeature,
-        filter: (f) => true,
-        onEachFeature: () => {}
-      }).addTo(map);
+      let shown = [];
+      if (popupFilter === 'emotion') {
+        geoLayerEmotion = L.geoJSON(rawData, {
+          style: styleForFeature,
+          filter: (f) => {
+            const ok = featureFilter(f);
+            if (ok) shown.push(f);
+            return ok;
+          },
+          onEachFeature: (f, layer) => popupForFeature(f, layer)
+        }).addTo(map);
+      } else if (popupFilter === 'cost') {
+        geoLayerCost = L.geoJSON(rawData, {
+          style: styleForCostFeature,
+          filter: (f) => {
+            shown.push(f);
+            return true;
+          },
+          onEachFeature: (f, layer) => popupForFeature(f, layer)
+        }).addTo(map);
+      } else if (popupFilter === 'crime') {
+        geoLayerCost = L.geoJSON(rawData, {
+          style: styleForCrimeFeature,
+          filter: (f) => {
+            shown.push(f);
+            return true;
+          },
+          onEachFeature: (f, layer) => popupForFeature(f, layer)
+        }).addTo(map);
+      }
       document.getElementById('featCount').textContent = String(shown.length);
     }
 
