@@ -334,9 +334,9 @@
         b = Math.floor(180 - 80 * ((ratio - 0.5) / 0.5));
       }
       let style = {
-        color: '#222',
-        weight: 1.2,
-        opacity: 0.7,
+        color: 'rgba(34,34,34,0.15)', // 枠線をかなり薄く
+        weight: 0.7,                  // 枠線も細く
+        opacity: 0.3,                 // 枠線の透明度も低く
         fillColor: `rgb(${r},${g},${b})`,
         fillOpacity: 0.0 // デフォルトは透明
       };
@@ -346,6 +346,7 @@
         style.weight = 3.5;      // 太枠
         style.dashArray = '6,3'; // 破線
         style.fillOpacity = 0.8; // 濃く
+        style.opacity = 0.7;     // 枠線の透明度も濃く
       }
       return style;
     }
