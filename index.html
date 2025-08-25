@@ -334,9 +334,8 @@
     }
 
     function featureFilter(feature) {
-      if (selectedEmotion === 'all') return true;
-      const p = feature.properties?.analysis?.primary;
-      return p === selectedEmotion;
+      // 感情ボタン廃止のため、常にtrue（全て表示）
+      return true;
     }
 
     function popupForFeature(feature, layer) {
@@ -346,7 +345,7 @@
       const sampleParams = {
         joy: p._joy !== undefined ? p._joy : Math.floor(50 + Math.random() * 50),
         stress: p._stress !== undefined ? p._stress : Math.floor(50 + Math.random() * 50),
-        crime: p._crimeRate !== undefined ? Number(p._crimeRate) : Number(((sampleParams.stress * 0.012) + (Math.max(0, sampleParams.joy - 80) * 0.008) + (Math.random() * 0.3)).toFixed(2))
+        crime: p._crimeRate !== undefined ? Number(p._crimeRate) : Number(((sampleParams.stress * 0.005) + (Math.max(0, sampleParams.joy - 80) * 0.003) + (Math.random() * 0.15)).toFixed(2))
       };
       const chartId = `paramChart-${Math.random().toString(36).slice(2,8)}`;
       let chartLabels = [], chartData = [], chartColors = [];
@@ -438,7 +437,7 @@
         }).addTo(map);
       } else if (popupFilter === 'crime') {
         // 犯罪発生率が一定しきい値以上のエリアのみ表示
-        const CRIME_THRESHOLD = 1.0; // 例: 1.0件/年以上
+        const CRIME_THRESHOLD = 0.5; // 例: 0.5件/年以上
         geoLayerCost = L.geoJSON(rawData, {
           style: styleForCrimeFeature,
           filter: (f) => {
@@ -446,8 +445,8 @@
             const p = f.properties || {};
             const joy = Math.floor(50 + Math.random() * 50);
             const stress = Math.floor(50 + Math.random() * 50);
-            // 犯罪発生率の最大値を1.5件/年程度に抑える
-            const crimeRate = ((stress * 0.012) + (Math.max(0, joy - 80) * 0.008) + (Math.random() * 0.3));
+            // 犯罪発生率の最大値を0.7件/年程度に抑える
+            const crimeRate = ((stress * 0.005) + (Math.max(0, joy - 80) * 0.003) + (Math.random() * 0.15));
             if (crimeRate >= CRIME_THRESHOLD) {
               shown.push(f);
               // ポップアップ用に値を保存
