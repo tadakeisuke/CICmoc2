@@ -351,9 +351,17 @@
         electricity: Math.floor(4000 + Math.random() * 2000), // 円/月
         gas: Math.floor(3000 + Math.random() * 1500), // 円/月
         water: Math.floor(2500 + Math.random() * 1000), // 円/月
-        crime: Number((Math.random() * 2.5).toFixed(2)), // 件/年
         land: Math.floor(80000 + Math.random() * 40000) // 円/m2
       };
+      // 犯罪発生率は感情値（stress, joy）からサンプル生成
+      let crimeRate = 0;
+      if (popupFilter === 'crime') {
+        // stress高いほど犯罪発生率高い、joy高すぎても高い
+        crimeRate = ((sampleParams.stress * 0.03) + (Math.max(0, sampleParams.joy - 80) * 0.02) + (Math.random() * 0.5)).toFixed(2);
+      } else {
+        crimeRate = (Math.random() * 2.5).toFixed(2);
+      }
+      sampleParams.crime = Number(crimeRate);
       const chartId = `paramChart-${Math.random().toString(36).slice(2,8)}`;
       let chartLabels = [], chartData = [], chartColors = [];
       if (popupFilter === 'emotion') {
@@ -364,10 +372,10 @@
         chartLabels = ['電気代', 'ガス代', '水道代'];
         chartData = [sampleParams.electricity, sampleParams.gas, sampleParams.water];
         chartColors = ['#ffd94a', '#4ea0ff', '#5ec4ff'];
-      } else if (popupFilter === 'crime_land') {
-        chartLabels = ['犯罪率', '路線価'];
-        chartData = [sampleParams.crime, sampleParams.land];
-        chartColors = ['#ff6b6b', '#888'];
+      } else if (popupFilter === 'crime') {
+        chartLabels = ['犯罪発生率'];
+        chartData = [sampleParams.crime];
+        chartColors = ['#a020f0']; // 赤紫系
       } else {
         chartLabels = ['joy', 'calm', 'excitement', 'stress', '電気代', 'ガス代', '水道代', '犯罪率', '路線価'];
         chartData = [sampleParams.joy, sampleParams.calm, sampleParams.excitement, sampleParams.stress, sampleParams.electricity, sampleParams.gas, sampleParams.water, sampleParams.crime, sampleParams.land];
