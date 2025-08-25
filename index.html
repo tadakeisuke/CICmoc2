@@ -193,7 +193,14 @@
         let costSlider = document.getElementById('opacityRangeCost');
         let costValue = document.getElementById('opacityValueCost');
         if (!costSlider) {
-          const card = document.querySelector('.card h2:contains("Layer opacity")')?.parentElement;
+          // jQueryの:containsは使えないので、textContentで判定
+          const cards = document.querySelectorAll('.card h2');
+          let card = null;
+          cards.forEach(h2 => {
+            if (h2.textContent.includes('Layer opacity')) {
+              card = h2.parentElement;
+            }
+          });
           if (card) {
             const div = document.createElement('div');
             div.className = 'range';
