@@ -255,10 +255,12 @@
       try {
         // temp_kml_output.geojsonからGeoJSONデータをfetch
         const response = await fetch('temp_kml_output.geojson');
+        console.log('fetch response:', response);
         if (!response.ok) throw new Error('GeoJSONファイルの取得に失敗しました');
         rawData = await response.json();
-  renderLayers();
-  fitToData();
+        console.log('rawData:', rawData);
+        renderLayers();
+        fitToData();
         setStatus('Ready');
       } catch (err) {
         console.error(err);
