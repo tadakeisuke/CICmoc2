@@ -436,8 +436,7 @@
           onEachFeature: (f, layer) => popupForFeature(f, layer)
         }).addTo(map);
       } else if (popupFilter === 'crime') {
-        // 犯罪発生率が一定しきい値以上のエリアのみ表示
-        const CRIME_THRESHOLD = 1.0; // 元の値に戻す（例: 1.0件/年以上）
+        // 犯罪発生率のしきい値条件を外し、全ポリゴン表示
         geoLayerCost = L.geoJSON(rawData, {
           style: styleForCrimeFeature,
           filter: (f) => {
@@ -445,17 +444,13 @@
             const p = f.properties || {};
             const joy = Math.floor(50 + Math.random() * 50);
             const stress = Math.floor(50 + Math.random() * 50);
-            // 犯罪発生率の最大値も元に戻す（0.012, 0.008, 0.3）
             const crimeRate = ((stress * 0.012) + (Math.max(0, joy - 80) * 0.008) + (Math.random() * 0.3));
-            if (crimeRate >= CRIME_THRESHOLD) {
-              shown.push(f);
-              // ポップアップ用に値を保存
-              f.properties._crimeRate = crimeRate.toFixed(2);
-              f.properties._joy = joy;
-              f.properties._stress = stress;
-              return true;
-            }
-            return false;
+            // ポップアップ用に値を保存
+            f.properties._crimeRate = crimeRate.toFixed(2);
+            f.properties._joy = joy;
+            f.properties._stress = stress;
+            shown.push(f);
+            return true;
           },
           onEachFeature: (f, layer) => popupForFeature(f, layer)
         }).addTo(map);
