@@ -150,10 +150,11 @@
     };
 
     // ————— State —————
-    let map, baseLayer, geoLayer;
+    let map, baseLayer, geoLayerEmotion, geoLayerCost;
     let rawData = null; // GeoJSON FeatureCollection
     let selectedEmotion = 'all';
-    let layerOpacity = 0.75;
+    let emotionOpacity = 0.75;
+    let costOpacity = 0.75;
     let popupFilter = 'all';
 
     // ————— Init —————
@@ -181,17 +182,41 @@
           btns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           selectedEmotion = btn.getAttribute('data-emotion');
-          renderLayer();
+            renderLayers();
         });
       });
 
-      const range = document.getElementById('opacityRange');
-      const val = document.getElementById('opacityValue');
-      range.addEventListener('input', () => {
-        layerOpacity = parseFloat(range.value);
-        val.textContent = range.value;
-        applyOpacity();
-      });
+        // 感情レイヤーの透明度
+        const rangeEmotion = document.getElementById('opacityRange');
+        const valEmotion = document.getElementById('opacityValue');
+        rangeEmotion.addEventListener('input', () => {
+          emotionOpacity = parseFloat(rangeEmotion.value);
+          valEmotion.textContent = rangeEmotion.value;
+          applyOpacity();
+        });
+        // 料金レイヤーの透明度
+        // 追加: 料金用スライダー
+        let costSlider = document.getElementById('opacityRangeCost');
+        let costValue = document.getElementById('opacityValueCost');
+        if (!costSlider) {
+          const card = document.querySelector('.card h2:contains("Layer opacity")')?.parentElement;
+          if (card) {
+            const div = document.createElement('div');
+            div.className = 'range';
+            div.innerHTML = `<input id="opacityRangeCost" type="range" min="0.2" max="1" step="0.05" value="0.75" aria-label="Cost layer opacity" title="Cost layer opacity" />
+            <div class="value" id="opacityValueCost">0.75</div>`;
+            card.appendChild(div);
+            costSlider = document.getElementById('opacityRangeCost');
+            costValue = document.getElementById('opacityValueCost');
+          }
+        }
+        if (costSlider) {
+          costSlider.addEventListener('input', () => {
+            costOpacity = parseFloat(costSlider.value);
+            costValue.textContent = costSlider.value;
+            applyOpacity();
+          });
+        }
         // 表示項目フィルター
         const filterSel = document.getElementById('popupFilter');
         if (filterSel) {
@@ -238,8 +263,8 @@
         const response = await fetch('temp_kml_output.geojson');
         if (!response.ok) throw new Error('GeoJSONファイルの取得に失敗しました');
         rawData = await response.json();
-        renderLayer();
-        fitToData();
+  renderLayers();
+  fitToData();
         setStatus('Ready');
       } catch (err) {
         console.error(err);
@@ -272,13 +297,34 @@
       colorIndex = colorIndex % EMOTION_ORDER.length;
       const primary = EMOTION_ORDER[colorIndex];
       const base = COLORS[primary] || '#888';
-      const op = layerOpacity;
+      const op = emotionOpacity;
       return {
         color: '#ffffff',
         weight: 0.8,
         opacity: 0.9,
         fillColor: base,
         fillOpacity: op
+      };
+    }
+
+    // 料金用ポリゴンスタイル
+    function styleForCostFeature(feature) {
+      // サンプル値で色分け（電気代）
+      const p = feature.properties || {};
+      const val = Math.floor(4000 + Math.random() * 2000); // 電気代サンプル
+      // 色グラデーション例: 安い→青、高い→赤
+      const min = 4000, max = 6000;
+      const ratio = Math.min(1, Math.max(0, (val-min)/(max-min)));
+      const r = Math.floor(78 + (255-78)*ratio);
+      const g = Math.floor(160 - 160*ratio);
+      const b = Math.floor(255 - 255*ratio);
+      const fill = `rgb(${r},${g},${b})`;
+      return {
+        color: '#222',
+        weight: 1.2,
+        opacity: 0.7,
+        fillColor: fill,
+        fillOpacity: costOpacity
       };
     }
 
@@ -363,10 +409,16 @@
     function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s])); }
 
     function renderLayer() {
+      // ...未使用...
+    }
+
+    // 二重レイヤー表示
+    function renderLayers() {
       if (!rawData) return;
-      if (geoLayer) { geoLayer.remove(); geoLayer = null; }
+      if (geoLayerEmotion) { geoLayerEmotion.remove(); geoLayerEmotion = null; }
+      if (geoLayerCost) { geoLayerCost.remove(); geoLayerCost = null; }
       const shown = [];
-      geoLayer = L.geoJSON(rawData, {
+      geoLayerEmotion = L.geoJSON(rawData, {
         style: styleForFeature,
         filter: (f) => {
           const ok = featureFilter(f);
@@ -375,13 +427,17 @@
         },
         onEachFeature: (f, layer) => popupForFeature(f, layer)
       }).addTo(map);
+      geoLayerCost = L.geoJSON(rawData, {
+        style: styleForCostFeature,
+        filter: (f) => true,
+        onEachFeature: () => {}
+      }).addTo(map);
       document.getElementById('featCount').textContent = String(shown.length);
     }
 
     function applyOpacity() {
-      if (!geoLayer) return;
-      // Reapply style with updated global opacity multiplier
-      geoLayer.setStyle(styleForFeature);
+  if (geoLayerEmotion) geoLayerEmotion.setStyle(styleForFeature);
+  if (geoLayerCost) geoLayerCost.setStyle(styleForCostFeature);
     }
 
     function fitToData() {
