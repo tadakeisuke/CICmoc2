@@ -255,11 +255,16 @@
     }
 
     function styleForFeature(feature) {
-      const { analysis } = feature.properties || {};
-      const primary = analysis?.primary || 'joy';
-      const intensity = analysis?.intensity || 'low';
+      // analysisプロパティがないため、町名ごとに色を割り当てる
+      const name = feature.properties?.name || '';
+      let colorIndex = 0;
+      for (let i = 0; i < name.length; i++) {
+        colorIndex += name.charCodeAt(i);
+      }
+      colorIndex = colorIndex % EMOTION_ORDER.length;
+      const primary = EMOTION_ORDER[colorIndex];
       const base = COLORS[primary] || '#888';
-      const op = Math.min(1, Math.max(0, OPACITY_BY_INTENSITY[intensity] ?? 0.5) * layerOpacity);
+      const op = layerOpacity;
       return {
         color: '#ffffff',
         weight: 0.8,
@@ -277,28 +282,13 @@
 
     function popupForFeature(feature, layer) {
       const p = feature.properties || {};
-      const a = p.analysis || {};
-      const e = p.emotions || {};
-      const m = p.metrics || {};
       const name = p.name || p.id || 'Area';
       const html = `
         <div style="min-width:220px">
           <div style="font-weight:600;margin-bottom:4px">${escapeHtml(name)}</div>
-          <div style="margin-bottom:6px;font-size:13px">
-            primary: <b>${escapeHtml(a.primary || '-')}</b> &nbsp; intensity: <b>${escapeHtml(a.intensity || '-')}</b>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;font-size:12px">
-            <div>joy: ${fmt(e.joy)}</div>
-            <div>calm: ${fmt(e.calm)}</div>
-            <div>excitement: ${fmt(e.excitement)}</div>
-            <div>stress: ${fmt(e.stress)}</div>
-          </div>
-          <div style="margin-top:8px;font-size:12px;color:#888">
-            <b>電気代:</b> ${fmt(m.electricity)} 円<br>
-            <b>ガス代:</b> ${fmt(m.gas)} 円<br>
-            <b>水道代:</b> ${fmt(m.water)} 円<br>
-            <b>地代:</b> ${fmt(m.land)} 円<br>
-            <b>治安:</b> ${fmt(m.security)}
+          <div style="margin-top:8px;font-size:12px">
+            <b>人口:</b> ${p.JINKO || '-'} 人<br>
+            <b>世帯数:</b> ${p.SETAI || '-'} 世帯<br>
           </div>
         </div>`;
       layer.bindPopup(html);
