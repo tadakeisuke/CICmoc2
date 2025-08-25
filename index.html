@@ -103,6 +103,11 @@
           <div class="item"><span class="swatch stress"></span>stress</div>
         </div>
       </div>
+        <div class="card" id="paramCard">
+          <h2>町名ごとのサンプルパラメーター</h2>
+          <div id="paramList" style="max-height:320px;overflow:auto;"></div>
+        </div>
+  .param-card { background: #181c24; border-radius: 7px; margin-bottom: 8px; padding: 8px 10px; border: 1px solid var(--border); }
     </aside>
 
     <main id="map"></main>
@@ -178,6 +183,34 @@
         val.textContent = range.value;
         applyOpacity();
       });
+        // サンプルパラメーター一覧を左側パネルに表示
+        setTimeout(() => {
+          const paramList = document.getElementById('paramList');
+          if (!paramList || !rawData?.features) return;
+          let html = '';
+          rawData.features.forEach(f => {
+            const p = f.properties || {};
+            const name = p.name || p.id || '-';
+            const sampleParams = {
+              electricity: Math.floor(4000 + Math.random() * 2000),
+              gas: Math.floor(3000 + Math.random() * 1500),
+              water: Math.floor(2500 + Math.random() * 1000),
+              crime: (Math.random() * 2.5).toFixed(2),
+              land: Math.floor(80000 + Math.random() * 40000)
+            };
+            html += `<div class="param-card">
+              <div style="font-weight:600">${escapeHtml(name)}</div>
+              <div style="font-size:12px">
+                電気代: ${sampleParams.electricity} 円/月<br>
+                ガス代: ${sampleParams.gas} 円/月<br>
+                水道代: ${sampleParams.water} 円/月<br>
+                犯罪率: ${sampleParams.crime} 件/年<br>
+                路線価: ${sampleParams.land} 円/m²<br>
+              </div>
+            </div>`;
+          });
+          paramList.innerHTML = html;
+        }, 1200);
     }
 
     async function fetchData() {
@@ -242,12 +275,25 @@
     function popupForFeature(feature, layer) {
       const p = feature.properties || {};
       const name = p.name || p.id || 'Area';
+      // サンプル値生成
+      const sampleParams = {
+        electricity: Math.floor(4000 + Math.random() * 2000), // 円/月
+        gas: Math.floor(3000 + Math.random() * 1500), // 円/月
+        water: Math.floor(2500 + Math.random() * 1000), // 円/月
+        crime: (Math.random() * 2.5).toFixed(2), // 件/年
+        land: Math.floor(80000 + Math.random() * 40000) // 円/m2
+      };
       const html = `
         <div style="min-width:220px">
           <div style="font-weight:600;margin-bottom:4px">${escapeHtml(name)}</div>
           <div style="margin-top:8px;font-size:12px">
             <b>人口:</b> ${p.JINKO || '-'} 人<br>
             <b>世帯数:</b> ${p.SETAI || '-'} 世帯<br>
+            <b>電気代:</b> ${sampleParams.electricity} 円/月<br>
+            <b>ガス代:</b> ${sampleParams.gas} 円/月<br>
+            <b>水道代:</b> ${sampleParams.water} 円/月<br>
+            <b>犯罪率:</b> ${sampleParams.crime} 件/年<br>
+            <b>路線価:</b> ${sampleParams.land} 円/m²<br>
           </div>
         </div>`;
       layer.bindPopup(html);
